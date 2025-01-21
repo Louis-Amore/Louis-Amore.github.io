@@ -22,11 +22,15 @@ html { -webkit-text-size-adjust:none; }
 
 p{
 	position:relative;
-	font-size:80%;
-	color:#3c3c3c;
+	font-size:90%;
+	color:#252525;
 	top:0px;
 	left:10px;
 	margin:0px 0px 2px 0px;
+	font-family: "Mulish", serif;
+	//font-optical-sizing: auto;
+	font-weight: 350;
+	font-style: normal;
 }
 
 body{
@@ -83,7 +87,7 @@ img:not(#menu img){
   
   font-family: "Mulish", serif;
   font-optical-sizing: auto;
-  font-weight: 100;
+  font-weight: 300;
   font-style: normal;
   
   text-decoration:none;
