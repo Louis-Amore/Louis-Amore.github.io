@@ -96,7 +96,10 @@ img:not(#menu img){
 
 
 .links {
-margin-top:100px;
+	position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 
