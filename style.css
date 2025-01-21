@@ -91,6 +91,11 @@ img:not(#menu img){
 }
 
 
+.links {
+margin-top:100px;
+}
+
+
 @media screen and (orientation:portrait) {
 
 	
