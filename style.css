@@ -80,6 +80,14 @@ img:not(#menu img){
   display: block; /* Ensures each link is on a new line */
   text-align: center; /* Centers the text inside the link */
   margin: 10px 0; /* Adds vertical spacing between the links */
+  
+  font-family: "Mulish", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+  
+  text-decoration:none;
+  color:#1c1c1c;
 }
 
 
