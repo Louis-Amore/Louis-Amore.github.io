@@ -76,6 +76,12 @@ img:not(#menu img){
     -webkit-user-drag: none; /* Safari-specific */
 }
 
+.links a {
+  display: block; /* Ensures each link is on a new line */
+  text-align: center; /* Centers the text inside the link */
+  margin: 10px 0; /* Adds vertical spacing between the links */
+}
+
 
 @media screen and (orientation:portrait) {
 
