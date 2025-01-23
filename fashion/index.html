@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Louis</title>
+<meta name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- <div id="menu" class="curved8"><p>Malta - Jan 2025</p></div> -->
+
+<img src="1.jpg"><img src="2.jpg">
+<div id="contact"><p>Louis Amore</p><p onClick="window.open('mailto:someone@example.com')" style="cursor: pointer" >louis.amore@gmail.com</p><p onclick="window.open('https://www.instagram.com/louis_amore_photographer/', '_blank')" style="cursor: pointer" >@louis_amore_photographer</p></div>
+
+   <script>
+        let isDragging = false;
+        let startX, scrollLeft;
+
+        document.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            scrollLeft = window.scrollX;
+            document.body.style.cursor = "grabbing";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            const deltaX = startX - e.clientX;
+            window.scrollTo(scrollLeft + deltaX, 0);
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+            //document.body.style.cursor = "grab";
+			document.body.style.cursor = "default";
+        });
+
+        document.addEventListener("mouseleave", () => {
+            isDragging = false;
+        });
+    </script>
+
+</body></html>
