@@ -1,155 +1,79 @@
-html { -webkit-text-size-adjust:none; }
+html { 
+-webkit-text-size-adjust:none; 
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+
 
 *{
   box-sizing: border-box;
-      user-select: none; /* Disable text selection */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE/Edge */
+  transition: all 0.3s; 
 }
 
 
- 
-#logo{
-	position:absolute;
-	top:50%;
-	transform:translateY(-50%); 
-	left:20px;
-	cursor: pointer;
-}
 
-p{
-	position:relative;
-	font-size:90%;
-	color:#252525;
-	top:0px;
-	left:10px;
-	margin:0px 0px 2px 0px;
-	font-family: "Mulish", serif;
-	//font-optical-sizing: auto;
-	font-weight: 350;
-	font-style: normal;
-}
+
 
 body{
-	background-color:#ebebeb;
-	margin:0px 0px 5px 0px;
+	background-color:#fff;
+	margin:20px auto;
 	padding:0px;
 	font-size:100%;
 	color:#999;
 	font-family: 'Arimo', sans-serif;
-	text-align: left;
-	white-space: nowrap;
+	text-align: center;
+	
 
+	
 }
 
-
-#contact
+.scrollContainer
 {
-	position:fixed;
-}
-
-
-.curved8{
-	border-radius:8px;
-}
-  
-#menu{
-	position:fixed;
-	width:fit-content;
-	margin:15px;
-	padding:0px 10px;
-	background-color:#F5F5F5;
-	box-shadow: 1px 1px #ddd;
+	//height: 100vh; /* Fill the entire viewport height */
+	//overflow-y: scroll; /* Enable vertical scrolling */
+	//scroll-snap-type: y mandatory; /* Enable snapping on vertical scroll */
 
 }
 
-img:not(#menu img){
-	display:inline-block;
-	margin-left:1px;
-	margin-top:50px;
-	margin-bottom:20px;
-	margin-right:1px;
-	max-height:900px;
-	height: calc(100vh - 150px) ;
-	
-	pointer-events: none; /* Prevents interaction */
-    user-drag: none;
-    -webkit-user-drag: none; /* Safari-specific */
+img{
+	max-height:100vh;
+	display:block;
+	margin:0px auto 0px;
+	max-width:100vw;
+	scroll-snap-align: center; 
+	display:block;
 }
 
-.links a {
-  display: block; /* Ensures each link is on a new line */
-  text-align: center; /* Centers the text inside the link */
-  margin: 10px 0; /* Adds vertical spacing between the links */
-  
-  font-family: "Mulish", serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  
-  text-decoration:none;
-  color:#1c1c1c;
+/* Fixed Navigation Menu Styles */
+.fixed-menu {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 1000; /* Ensures it stays on top */
+  //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom:50px;
 }
 
-
-.links {
-	position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.fixed-menu ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 10px 0;
 }
 
-
-@media screen and (orientation:portrait) {
-
-	
-	
-	img:not(#menu img){
-		display:block;
-		//width: calc(100vw - 40px) ;
-		width: 100vw ;
-		max-width:1275px;
-		margin:auto;
-		margin-bottom:10px;
-		height:auto;
-	}
-	
-	img.v:not(#menu img){
-		max-width: 567px;
-	}
-  
-
-  
-	#menu{
-		position:fixed;
-		//width:fit-content;
-		width:90vw;
-		margin:15px;
-		padding:0px 10px;
-		background-color:#F5F5F5;
-		box-shadow: 1px 1px #ddd;
-		top:0px;
-		text-align:center;
-	
-	}
-  
-	#logo{
-		position:relative;
-		left:0px;
-		top:25px;
-		width:90px;
-	}
-  
-
-	
-	body{
-		margin:75px 0px 0px 0px;
-	}
-	
-	.curved8{
-		//border-radius:0px;
-	}
+.fixed-menu ul li {
+  margin: 0 15px;
 }
+
+.fixed-menu ul li a {
+  color: #666;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.fixed-menu ul li a:hover {
+  color: #00bcd4;
+}
+
