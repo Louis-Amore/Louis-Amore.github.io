@@ -16,21 +16,17 @@
 </head>
 
 <body>
-		<nav class="fixed-menu">
-			<ul>
-				<li><a href="../commercial/index.html">commercial</a></li>
-				<li><a href="../fashion/index.html">fashion</a></li>
-				<li><a href="../portrait/index.html">portraits</a></li>
-				<li><a href="../interiors/index.html">interiors</a></li>
-			</ul>
-		</nav>
+<div id="menu-container"></div>
 <img src="1.jpg"><img src="2.jpg"><img src="3.jpg"><img src="4.jpg"><img src="5.jpg"><img src="6.jpg"><img src="7.jpg"><img src="8.jpg"><img src="9.jpg">
 
 
 </body>
 
 	
-	
-
+<script>
+  fetch('../menu.html')
+    .then(response => response.text())
+    .then(data => document.getElementById('menu-container').innerHTML = data);
+</script>
 
 </html>
