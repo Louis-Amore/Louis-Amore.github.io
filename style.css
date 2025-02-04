@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 html { 
 -webkit-text-size-adjust:none; 
 }
@@ -19,10 +21,12 @@ body{
 	padding:0px;
 	font-size:100%;
 	color:#999;
-	font-family: 'Arimo', sans-serif;
 	text-align: center;
 	
-
+	font-family: "Mulish", serif;
+	  font-optical-sizing: auto;
+	  font-weight:400;
+	  font-style: normal;
 	
 }
 
@@ -31,14 +35,14 @@ body{
 	//height: 100vh; /* Fill the entire viewport height */
 	//overflow-y: scroll; /* Enable vertical scrolling */
 	//scroll-snap-type: y mandatory; /* Enable snapping on vertical scroll */
-
+	margin-left:170px;
 }
 
 img{
 	max-height:100vh;
 	display:block;
 	margin:0px auto 0px;
-	max-width:100vw;
+	max-width:90%;
 	scroll-snap-align: center; 
 	display:block;
 }
@@ -48,11 +52,17 @@ img{
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px;
+  width: 170px;
   height:100vh;
   background-color: #fff;
   z-index: 1000; /* Ensures it stays on top */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  
+  
+  font-family: "Mulish", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 
 }
 
