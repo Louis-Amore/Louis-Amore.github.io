@@ -45,25 +45,25 @@ img{
 
 /* Fixed Navigation Menu Styles */
 .fixed-menu {
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 250px;
+  height:100vh;
   background-color: #fff;
   z-index: 1000; /* Ensures it stays on top */
-  //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  margin-bottom:50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
 }
 
 .fixed-menu ul {
-  display: flex;
-  justify-content: center;
+  //display: flex;
   list-style: none;
   padding: 10px 0;
 }
 
 .fixed-menu ul li {
-  margin: 0 15px;
+  margin: 15px 0px;
 }
 
 .fixed-menu ul li a {
