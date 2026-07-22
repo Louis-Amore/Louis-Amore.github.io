@@ -91,6 +91,20 @@ a{ color:inherit; text-decoration:none; }
 .field-frame.in{ opacity:1; transform:translateY(0); }
 .field-frame span{ padding:14px; }
 .field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Double-border: an outer border on the frame itself, plus an inner border
+   on a wrapping div around the photo — no gap between them since the inner
+   border sits flush against the outer one. Customize per-photo with inline
+   CSS variables, e.g.:
+   style="--db-outer:12px; --db-outer-color:#fff; --db-inner:2px; --db-inner-color:#111110;" */
+.field-frame.double-border{
+  border: var(--db-outer, 12px) solid var(--db-outer-color, #ffffff);
+}
+.field-frame.double-border .db-inner{
+  width:100%; height:100%; box-sizing:border-box;
+  border: var(--db-inner, 2px) solid var(--db-inner-color, #111110);
+  overflow:hidden;
+}
 .field-frame::before{
   content: 'Image ' attr(data-num);
   position:absolute; top:0; left:0; z-index:20;
@@ -352,7 +366,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t2" data-num="28" style="left:72.1%; top:673.1vh;"><span>Image 28</span><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1" data-num="30" style="left:82.7%; top:347.6vh;"><span>Image 30</span><figcaption>Portrait</figcaption></figure>
 
-  <figure class="field-frame w-t1 border-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.jpg" alt="Image 07"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t1 double-border" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/portrait-07.jpg" alt="Image 07"></div><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-label="Image 16" data-num="16" style="left:72.8%; top:69.0vh;"><img src="photos/interiors-16.jpg" alt="Image 16"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-gold" data-num="17" data-label="Image 17" style="left:0.1%; top:194.3vh;"><img src="photos/commercial-17.jpg" alt="Image 17"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="27" style="left:4.0%; top:413.2vh;"><span>Image 27</span><figcaption>Personal</figcaption></figure>
