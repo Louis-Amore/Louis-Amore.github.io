@@ -444,6 +444,23 @@ body.lb-open{ overflow:hidden; }
       { label: 'Extra Portrait 2', ratio: 'landscape' },
       { label: 'Extra Portrait 3', ratio: 'portrait' },
     ],
+    'Fashion': [
+      { label: 'Fashion 01', ratio: 'landscape', src: 'photos/fashion-01.jpg' },
+      { label: 'Fashion 03', ratio: 'landscape', src: 'photos/fashion-03.jpg' },
+      { label: 'Fashion 04', ratio: 'landscape', src: 'photos/fashion-04.jpg' },
+      { label: 'Fashion 05', ratio: 'portrait', src: 'photos/fashion-05.jpg' },
+      { label: 'Fashion 06', ratio: 'landscape', src: 'photos/fashion-06.jpg' },
+      { label: 'Fashion 07', ratio: 'landscape', src: 'photos/fashion-07.jpg' },
+      { label: 'Fashion 09', ratio: 'portrait', src: 'photos/fashion-09.jpg' },
+      { label: 'Fashion 11', ratio: 'portrait', src: 'photos/fashion-11.jpg' },
+      { label: 'Fashion 12', ratio: 'landscape', src: 'photos/fashion-12.jpg' },
+      { label: 'Fashion 13', ratio: 'portrait', src: 'photos/fashion-13.jpg' },
+      { label: 'Fashion 14', ratio: 'landscape', src: 'photos/fashion-14.jpg' },
+      { label: 'Fashion 15', ratio: 'portrait', src: 'photos/fashion-15.jpg' },
+      { label: 'Fashion 16', ratio: 'portrait', src: 'photos/fashion-16.jpg' },
+      { label: 'Fashion 17', ratio: 'portrait', src: 'photos/fashion-17.jpg' },
+      { label: 'Fashion 19', ratio: 'portrait', src: 'photos/fashion-19.jpg' },
+    ],
   };
 
   // EDIT: same idea as extraCategoryPhotos, but for a subcategory's rail —
@@ -469,7 +486,7 @@ body.lb-open{ overflow:hidden; }
       .filter(x => x.info.cat === info.cat);
 
     // add any rail-only extras for this category (not on the homepage field)
-    const extras = (extraCategoryPhotos[info.cat] || []).map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio } }));
+    const extras = (extraCategoryPhotos[info.cat] || []).map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     currentPos = currentCategoryItems.findIndex(x => x.i === index);
@@ -489,7 +506,7 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.subcat === subcat);
 
-    const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio } }));
+    const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     currentPos = startIndex !== undefined
