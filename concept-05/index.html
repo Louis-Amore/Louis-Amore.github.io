@@ -470,6 +470,7 @@ body.lb-open{ overflow:hidden; }
       { label: 'UL 02', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-02.jpg' },
       { label: 'UL 03', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-03.jpg' },
       { label: 'UL 04', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-04.jpg' },
+      { label: 'UL 05', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-05.jpg' },
       { label: 'UL 09', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-09.jpg' },
       { label: 'UL 12', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-12.jpg' },
       { label: 'UL 14', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-14.jpg' },
@@ -562,7 +563,7 @@ body.lb-open{ overflow:hidden; }
         "During my visit I saw that many homeless people kept animals with them and it gave me an idea to document their connection and dependence on each other. I approached and sought permission to photograph in Tent City 3 — a non-sanctioned temporary homeless encampment — and also other homeless people throughout the area.",
         "Animals accept us as we are. They love unconditionally and without reserve. They bring joy, love and reassurance during our best and worst times. I felt compelled to use this connection; the unwavering bond between human and animal as the basis for this series — \"Unconditional Love\"."
       ],
-      images: ['Image 04', 'Image 18', 'Image 20', 'UL 02', 'UL 03', 'UL 04', 'UL 09', 'UL 12', 'UL 14']
+      images: ['Image 04', 'Image 18', 'Image 20', 'UL 02', 'UL 03', 'UL 04', 'UL 05', 'UL 09', 'UL 12', 'UL 14']
     }
   };
 
@@ -576,6 +577,18 @@ body.lb-open{ overflow:hidden; }
   // who's in it, a name, a detail, and optionally a bit more text below
   // it. Falls back to generic mood words if a photo doesn't have one yet.
   const photoCaptions = {
+    'UL 04': {
+      name: 'Candi & Calli',
+      text: "Calli was rescued by Candi two and a half years ago from an abusive home. She nurtured her back to health and the bond between the two of them has grown very strong. Calli, a great support to Candi, has been trained to be her seizure dog. Originally from New Orleans, Candi and her husband moved to Tent City 3 eight months ago. Candi was the first person we met at the site, advocating for us to be allowed into the camp."
+    },
+    'Image 20': {
+      name: 'Alicia, Braylen & Drew',
+      text: "\u201cI got Drew for my son Braylen, I wanted him to have someone to play with,\u201d Alicia said. \u201cHe always roamed the encampment finding objects to keep himself entertained.\u201d They have lived at Tent City 3 for the past four months."
+    },
+    'UL 02': {
+      name: 'Jamie & Meatball',
+      text: "Jamie had found Meatball less than 24 hours before this photo was taken. Her previous dog, Nemesis, was purchased on the recommendation of her doctor as treatment for her schizoaffective disorder. \u201cMeatball provides me with motivation; life without animals would be much harder,\u201d she says."
+    },
     'Image 18': {
       name: 'Sonny & Houdini',
       text: "Sonny has been living in Tent City 3 for 9 months. Houdini is Sonny's companion. He says, \u201che calms me down when I get my panic and anxiety attacks. I can get to my medicine because of Houdini. He calms me down when I get excited. Houdini gives me responsibility and pride.\u201d"
@@ -583,6 +596,10 @@ body.lb-open{ overflow:hidden; }
     'UL 09': {
       name: 'Sonny & Houdini',
       text: "Sonny has been living in Tent City 3 for 9 months. Houdini is Sonny's companion. He says, \u201che calms me down when I get my panic and anxiety attacks. I can get to my medicine because of Houdini. He calms me down when I get excited. Houdini gives me responsibility and pride.\u201d"
+    },
+    'UL 12': {
+      name: 'Maranda & Bully',
+      text: "Maranda has been in Seattle for 5 years and has owned Bully since she was a puppy. Bully provides love and safety and a sense of security while Maranda's husband is away."
     },
   };
 
