@@ -68,6 +68,13 @@ a{ color:inherit; text-decoration:none; }
 .field-frame.in{ opacity:1; transform:translateY(0); }
 .field-frame span{ padding:14px; }
 .field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+.field-frame::before{
+  content: 'Image ' attr(data-num);
+  position:absolute; top:0; left:0; z-index:20;
+  background:rgba(17,17,16,0.78); color:#fff;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.04em;
+  padding:5px 9px; pointer-events:none;
+}
 .field-frame figcaption{
   position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
   background:linear-gradient(0deg, rgba(0,0,0,0.45), transparent);
@@ -275,44 +282,44 @@ body.lb-open{ overflow:hidden; }
 </div>
 
 <div class="field" id="field">
-  <figure class="field-frame w-t1 border-thick" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-label="Image 02" style="left:0.1%; top:11.8vh;"><img src="photos/fashion-02.jpg" alt="Image 02"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1" style="left:68.1%; top:247.6vh;"><span>Image 03</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2" style="left:18.9%; top:247.5vh;"><span>Image 04</span><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" style="left:9.7%; top:459.8vh;"><span>Image 05</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" style="left:67.2%; top:200.8vh;"><span>Image 06</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 08" style="left:24.6%; top:74.4vh;"><img src="photos/personal-08.jpg" alt="Image 08"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l3 border-thick" style="left:41.1%; top:511.7vh;"><span>Image 09</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" style="left:69.9%; top:154.3vh;"><span>Image 10</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t2 border-thin" style="left:50.4%; top:339.0vh;"><span>Image 11</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1" style="left:0.1%; top:256.8vh;"><span>Image 12</span><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" style="left:44.0%; top:300.4vh;"><span>Image 13</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t2 border-thin" style="left:42.6%; top:584.7vh;"><span>Image 14</span><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" style="left:68.0%; top:473.1vh;"><span>Image 15</span><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l2 border-thick" data-label="Image 18" style="left:62.1%; top:0.7vh;"><img src="photos/fashion-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" style="left:10.9%; top:127.2vh;"><span>Image 19</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" style="left:35.0%; top:136.8vh;"><img src="photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l3" style="left:44.2%; top:406.0vh;"><span>Image 21</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l3" style="left:2.8%; top:667.0vh;"><span>Image 23</span><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t2 border-thin" style="left:2.8%; top:336.1vh;"><span>Image 24</span><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" style="left:6.4%; top:78.9vh;"><img src="photos/commercial-25.jpg" alt="Image 25"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-num="01" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:0.1%; top:11.8vh;"><img src="photos/fashion-02.jpg" alt="Image 02"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1" data-num="03" style="left:68.1%; top:247.6vh;"><span>Image 03</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2" data-num="04" style="left:18.9%; top:247.5vh;"><span>Image 04</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-num="05" style="left:9.7%; top:459.8vh;"><span>Image 05</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="06" style="left:67.2%; top:200.8vh;"><span>Image 06</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" style="left:24.6%; top:74.4vh;"><img src="photos/personal-08.jpg" alt="Image 08"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l3 border-thick" data-num="09" style="left:41.1%; top:511.7vh;"><span>Image 09</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="10" style="left:69.9%; top:154.3vh;"><span>Image 10</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" data-num="11" style="left:50.4%; top:339.0vh;"><span>Image 11</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="12" style="left:0.1%; top:256.8vh;"><span>Image 12</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="13" style="left:44.0%; top:300.4vh;"><span>Image 13</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" data-num="14" style="left:42.6%; top:584.7vh;"><span>Image 14</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="15" style="left:68.0%; top:473.1vh;"><span>Image 15</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l2 border-thick" data-label="Image 18" data-num="18" style="left:62.1%; top:0.7vh;"><img src="photos/fashion-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-num="19" style="left:10.9%; top:127.2vh;"><span>Image 19</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" style="left:35.0%; top:136.8vh;"><img src="photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l3" data-num="21" style="left:44.2%; top:406.0vh;"><span>Image 21</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-num="22" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l3" data-num="23" style="left:2.8%; top:667.0vh;"><span>Image 23</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" data-num="24" style="left:2.8%; top:336.1vh;"><span>Image 24</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:6.4%; top:78.9vh;"><img src="photos/commercial-25.jpg" alt="Image 25"><figcaption>Commercial</figcaption></figure>
 
-  <figure class="field-frame w-t1" style="left:2.8%; top:546.9vh;"><span>Image 26</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t2" style="left:72.1%; top:673.1vh;"><span>Image 28</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1" style="left:82.7%; top:347.6vh;"><span>Image 30</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="26" style="left:2.8%; top:546.9vh;"><span>Image 26</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t2" data-num="28" style="left:72.1%; top:673.1vh;"><span>Image 28</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="30" style="left:82.7%; top:347.6vh;"><span>Image 30</span><figcaption>Portrait</figcaption></figure>
 
-  <figure class="field-frame w-t1" style="left:43.9%; top:183.7vh;"><span>Image 07</span><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-label="Image 16" style="left:72.8%; top:69.0vh;"><img src="photos/interiors-16.jpg" alt="Image 16"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-gold" style="left:0.1%; top:194.3vh;"><span>Image 17</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" style="left:4.0%; top:413.2vh;"><span>Image 27</span><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-gold" style="left:0.2%; top:611.4vh;"><span>Image 29</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="07" style="left:43.9%; top:183.7vh;"><span>Image 07</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-label="Image 16" data-num="16" style="left:72.8%; top:69.0vh;"><img src="photos/interiors-16.jpg" alt="Image 16"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-gold" data-num="17" style="left:0.1%; top:194.3vh;"><span>Image 17</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="27" style="left:4.0%; top:413.2vh;"><span>Image 27</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 border-gold" data-num="29" style="left:0.2%; top:611.4vh;"><span>Image 29</span><figcaption>Fashion</figcaption></figure>
 
-  <figure class="field-frame w-t1" style="left:30.3%; top:360.3vh;"><span>Image 31</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 32" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.jpg" alt="Image 32"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.jpg" alt="Image 33"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" style="left:35.4%; top:473.3vh;"><span>Image 34</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t1" style="left:22.0%; top:527.3vh;"><span>Image 35</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="31" style="left:30.3%; top:360.3vh;"><span>Image 31</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.jpg" alt="Image 32"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.jpg" alt="Image 33"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="34" style="left:35.4%; top:473.3vh;"><span>Image 34</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="35" style="left:22.0%; top:527.3vh;"><span>Image 35</span><figcaption>Personal</figcaption></figure>
 </div>
 
 <div class="statement">
