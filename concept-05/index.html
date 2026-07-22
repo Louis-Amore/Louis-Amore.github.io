@@ -2,138 +2,537 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Louis Amore — Photography</title>
-<meta name="description" content="Louis Amore — commercial, fashion, and portrait photography." />
-<meta name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1" />
-<link href="/zine.css" rel="stylesheet" type="text/css" />
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Louis Amore — Concept 05</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg:#efece6;
+  --ink:#111110;
+  --muted:#79766e;
+  --font-display:'Archivo', sans-serif;
+  --font-body:'Public Sans', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+a{ color:inherit; text-decoration:none; }
+
+/* the fixed, unmoving name — always readable via blend-mode, whatever
+   scrolls beneath it */
+.fixed-name{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:5; pointer-events:none;
+}
+.fixed-name h1{
+  font-family:var(--font-display); font-weight:900; color:var(--ink);
+  font-size:clamp(28px, 4.9vw, 67px); text-align:center; letter-spacing:-0.02em;
+  line-height:0.95; margin:0; text-transform:uppercase; white-space:nowrap;
+}
+.fixed-name .role{
+  font-family:var(--font-mono); color:var(--muted); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; text-align:center; margin-top:14px;
+}
+.fixed-name .hero-statement{
+  font-family:var(--font-display); font-weight:600; font-style:italic; color:var(--ink);
+  font-size:clamp(13px,1.4vw,17px); text-align:center; max-width:26ch; margin:16px auto 0;
+  line-height:1.4;
+}
+
+/* fixed corner nav, same blend trick so it's always legible */
+.corner-nav{
+  position:fixed; top:26px; left:0; right:0; z-index:41; pointer-events:none;
+  display:flex; justify-content:space-between; padding:0 28px; mix-blend-mode:difference;
+}
+.corner-nav a, .corner-nav span{ color:#fff; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; pointer-events:auto; }
+.corner-nav .links{ display:flex; gap:18px; }
+
+/* scrolling field of scattered work */
+.field{ position:relative; height:745vh; margin-top:6vh; }
+.field-frame{
+  position:absolute; z-index:10; background:#d8d4cb; overflow:hidden;
+  display:flex; align-items:flex-end;
+  font-family:var(--font-mono); font-size:10px; color:var(--muted); text-transform:uppercase;
+  opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;
+}
+.field-frame.in{ opacity:1; transform:translateY(0); }
+.field-frame span{ padding:14px; }
+.field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+.field-frame figcaption{
+  position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
+  background:linear-gradient(0deg, rgba(0,0,0,0.45), transparent);
+  color:#fff; font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  opacity:0; transition:opacity .2s ease;
+}
+.field-frame:hover figcaption{ opacity:1; }
+
+.row{ display:flex; }
+.gap-a{ margin-bottom:0.1vh; }
+.gap-b{ margin-bottom:0.3vh; }
+.gap-c{ margin-bottom:0.25vh; }
+.gap-d{ margin-bottom:0.5vh; }
+.gap-e{ margin-bottom:0.05vh; }
+.row.left{ justify-content:flex-start; }
+.row.right{ justify-content:flex-end; }
+.row.center{ justify-content:center; }
+.row.split{ justify-content:space-between; align-items:flex-start; padding:0 4vw; }
+
+.w-xs{ width:min(9vw, 110px); aspect-ratio:2/3; }
+.w-sm{ width:min(12vw, 150px); aspect-ratio:2/3; }
+.w-md{ width:min(19vw, 240px); aspect-ratio:3/2; }
+.w-lg{ width:min(25vw, 320px); aspect-ratio:3/2; }
+.w-xl{ width:min(30vw, 380px); aspect-ratio:3/2; }
+.w-tall{ width:min(10vw, 125px); aspect-ratio:2/3; }
+.w-2xs{ width:min(7vw, 90px); aspect-ratio:2/3; }
+.w-2xl{ width:min(34vw, 440px); aspect-ratio:3/2; }
+.w-med2{ width:min(23vw, 290px); aspect-ratio:3/2; }
+.w-t1{ width:min(17vw, 220px); aspect-ratio:2/3; }
+.w-t2{ width:min(24vw, 310px); aspect-ratio:2/3; }
+.w-l1{ width:min(30vw, 390px); aspect-ratio:3/2; }
+.w-l2{ width:min(42vw, 540px); aspect-ratio:3/2; }
+.w-l3{ width:min(54vw, 700px); aspect-ratio:3/2; }
+
+.pad-l{ padding-left:6vw; }
+.pad-r{ padding-right:6vw; }
+
+.field-frame.border-thick{ border:12px solid #111110; }
+.field-frame.border-thin{ border:2px solid #111110; }
+.field-frame.border-gold{ border:6px solid #a9852f; }
+
+.statement{ text-align:center; padding:8vh 28px 20vh; position:relative; z-index:1; }
+.statement p{
+  font-family:var(--font-display); font-weight:800; font-size:clamp(20px,3vw,32px);
+  max-width:20ch; margin:0 auto; text-transform:uppercase; letter-spacing:-0.01em; line-height:1.2;
+}
+
+footer{
+  position:fixed; left:0; right:0; bottom:0; z-index:45;
+  background:rgba(239,236,230,0.92); backdrop-filter:blur(6px);
+  padding:16px 28px; border-top:1px solid rgba(17,17,16,0.14);
+  display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex-wrap:wrap; gap:12px;
+}
+.footer-links{ display:flex; gap:22px; }
+.footer-links a{ color:var(--muted); border-bottom:1px solid transparent; transition:color .15s ease, border-color .15s ease; }
+.footer-links a:hover{ color:var(--ink); border-color:var(--ink); }
+
+/* --------------------------------------------------------------------- */
+/* Lightbox — white rail + main image view                                */
+/* --------------------------------------------------------------------- */
+
+body.lb-open{ overflow:hidden; }
+
+#lightbox{
+  position:fixed; inset:0; z-index:100; background:#fdfcfa;
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+  display:flex; flex-direction:column;
+}
+#lightbox.open{ opacity:1; pointer-events:auto; }
+
+.lb-topbar{
+  display:grid; grid-template-columns:150px 1fr 320px; align-items:center;
+  padding:22px 28px; border-bottom:1px solid rgba(17,17,16,0.12);
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  flex:0 0 auto;
+}
+.lb-topbar #lb-cat{ text-align:left; }
+.lb-topbar .lb-count{ text-align:center; }
+.lb-topbar #lb-close{ justify-self:end; }
+.lb-topbar button{ background:none; border:none; color:var(--ink); font:inherit; cursor:pointer; }
+.lb-topbar button:hover{ color:var(--muted); }
+.lb-count{ color:var(--ink); }
+
+.lb-body{ flex:1 1 auto; display:flex; min-height:0; }
+
+.lb-rail{
+  width:150px; flex:0 0 150px; overflow-y:auto; padding:16px;
+  display:flex; flex-direction:column; gap:12px; border-right:1px solid rgba(17,17,16,0.12);
+}
+.lb-thumb{
+  background:#e7e4dc; cursor:pointer; position:relative;
+  border:2px solid transparent; transition:border-color .15s ease, opacity .15s ease;
+  opacity:.65;
+}
+.lb-thumb:hover{ opacity:1; }
+.lb-thumb.active{ opacity:1; border-color:var(--ink); }
+.lb-thumb .ph{
+  display:flex; align-items:center; justify-content:center; width:100%; height:100%;
+  font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase;
+}
+.lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.lb-thumb.ratio-landscape{ aspect-ratio:3/2; }
+.lb-thumb.ratio-portrait{ aspect-ratio:2/3; }
+
+.lb-stage-wrap{
+  flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:40px; min-width:0;
+}
+.lb-stage{
+  position:relative; max-width:100%; max-height:100%;
+  transform:scale(.97); opacity:0; transition:transform .3s ease, opacity .3s ease;
+}
+#lightbox.open .lb-stage{ transform:scale(1); opacity:1; }
+
+.lb-frame{
+  background:#e7e4dc; display:flex; align-items:flex-end;
+  font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase;
+  max-height:80vh;
+}
+.lb-frame.ratio-landscape{ width:min(70vw, 900px); aspect-ratio:3/2; }
+.lb-frame.ratio-portrait{ width:min(38vw, 480px); aspect-ratio:2/3; }
+.lb-frame span{ padding:16px; }
+.lb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.lb-tags{
+  position:absolute; top:0; left:100%; margin-left:24px; width:290px;
+}
+.lb-tags p{
+  font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
+}
+.lb-tags strong{ display:block; margin-bottom:8px; color:var(--ink); }
+
+@media (min-width:761px) and (max-width:1024px){
+  .lb-topbar{ grid-template-columns:100px 1fr 220px; padding:16px 20px; }
+  .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
+  .lb-stage-wrap{ padding:20px; }
+  .lb-frame.ratio-landscape{ width:min(58vw, 640px); }
+  .lb-frame.ratio-portrait{ width:min(32vw, 340px); }
+  .lb-info{ width:220px; flex:0 0 220px; padding:24px 20px; }
+  .lb-info h3{ font-size:21px; }
+  .lb-info p{ font-size:13px; }
+  .lb-tags{ width:170px; margin-left:16px; }
+}
+
+
+.lb-info{
+  width:320px; flex:0 0 320px; overflow-y:auto; padding:36px 32px;
+  border-left:1px solid rgba(17,17,16,0.12);
+}
+.lb-info .eyebrow{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px;
+}
+.lb-info h3{
+  font-family:var(--font-display); font-weight:800; font-size:26px; letter-spacing:-0.01em; margin:0 0 18px; line-height:1.1;
+}
+.lb-info p{
+  font-size:14px; line-height:1.7; color:#3a3a38; margin:0;
+}
+.lb-info p + p{ margin-top:14px; }
+
+.lb-bottombar{
+  display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
+  flex:0 0 auto;
+}
+.lb-bottombar button{
+  background:none; border:none; cursor:pointer;
+  font-family:var(--font-display); font-weight:800; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink);
+}
+.lb-bottombar button:hover{ color:var(--muted); }
+
+@media (max-width:760px){
+  .lb-topbar{ display:flex; justify-content:space-between; }
+  .lb-body{ flex-direction:column; }
+  .lb-rail{ width:100%; flex:0 0 90px; flex-direction:row; overflow-x:auto; overflow-y:hidden; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
+  .lb-thumb{ flex:0 0 70px; }
+  .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
+  .lb-info{ width:100%; flex:0 0 auto; border-left:none; border-top:1px solid rgba(17,17,16,0.12); padding:24px 28px; }
+}
+
+@media (max-width:760px){
+  .field{ height:auto; }
+  .field-frame{
+    position:static !important; left:auto !important; top:auto !important;
+    width:82vw !important; margin:0 auto 20px; display:flex;
+  }
+  .corner-nav .links{ display:none; }
+}
+</style>
 </head>
 <body>
 
-<div id="menu-container"></div>
+<div class="fixed-name">
+  <h1>Louis Amore</h1>
+  <div class="role">Commercial Photographer</div>
+</div>
 
-<main class="wrap">
-  <div class="grid-frame">
-
-    <section class="masthead-section" style="grid-column:1/-1; display:grid; grid-template-columns:subgrid;">
-      <div class="top-meta">
-        <span>Portfolio — Photography</span>
-        <span>Based available on request</span>
-      </div>
-
-      <div class="masthead-row">
-        <h1>Louis Amore</h1>
-        <div class="sub">Commercial · Fashion · Portrait</div>
-      </div>
-      <div class="issue-col">
-        <span>Categories</span>
-        <b>05</b>
-      </div>
-
-      <div class="hero-row">
-        <div class="hero-art">Cover image goes here</div>
-        <div class="hero-note">
-          <div class="eyebrow">Statement</div>
-          <p>Commercial photographer creating distinctive, authentic imagery
-          that captures the people, places and moments behind the work.
-          Specialising in portraits, workplace, events and brand photography
-          for agencies and global brands.</p>
-          <a href="#contact" class="btn">Get in touch</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="work">
-      <div class="strip-head">
-        <h2>The Work</h2>
-        <span>05 categories</span>
-      </div>
-
-      <div class="work-row">
-        <a class="item" href="/commercial/index.html">
-          <div class="thumb">Cover image</div>
-          <span class="num">01</span>
-          <h3>Commercial</h3>
-        </a>
-        <a class="item" href="/fashion/index.html">
-          <div class="thumb">Cover image</div>
-          <span class="num">02</span>
-          <h3>Fashion</h3>
-        </a>
-        <a class="item" href="/portrait/index.html">
-          <div class="thumb">Cover image</div>
-          <span class="num">03</span>
-          <h3>Corporate Portrait</h3>
-        </a>
-        <a class="item" href="/interiors/index.html">
-          <div class="thumb">Cover image</div>
-          <span class="num">04</span>
-          <h3>Interiors</h3>
-        </a>
-        <a class="item" href="/promotional_portrait/index.html">
-          <div class="thumb">Cover image</div>
-          <span class="num">05</span>
-          <h3>Promotional Portrait</h3>
-        </a>
-      </div>
-
-      <!--
-        TO ADD A NEW CATEGORY LATER:
-        1. Create a new folder at the site root (e.g. /travel/) with its own index.html.
-        2. Copy one <a class="item">…</a> block above, update the href and num/title.
-        3. Add a matching <li> link in menu.html.
-        4. The row auto-divides evenly by however many .item children it has —
-           no manual span math needed.
-      -->
-    </section>
-
-    <section class="section" id="about">
-      <div class="strip-head">
-        <h2>About</h2>
-        <span>The short version</span>
-      </div>
-      <div class="about-row">
-        <div class="about-copy">
-          <p>I'm Louis Amore, a photographer working across commercial, fashion,
-          and portrait work — building images for brands and people who want
-          something considered rather than generic.</p>
-        </div>
-        <div class="about-stats">
-          <div class="stat"><b>05</b><span>Active categories</span></div>
-          <div class="stat"><b>&infin;</b><span>Room to grow</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="strip-head">
-        <h2>Contact</h2>
-        <span>Let's talk</span>
-      </div>
-      <div class="contact-row">
-        <h2>Let's shoot something.</h2>
-        <div class="contact-links">
-          <!-- EDIT: swap in your real email / socials -->
-          <a href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
-          <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <span>&copy; <span id="year"></span> Louis Amore</span>
-      <span>Field Notes edition</span>
-    </footer>
-
+<div class="corner-nav">
+  <span>Work ↓</span>
+  <div class="links">
+    <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/louisamore/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="#contact">Contact</a>
   </div>
-</main>
+</div>
+
+<div class="field" id="field">
+  <figure class="field-frame w-t1 border-thick" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" style="left:0.1%; top:11.8vh;"><span>Image 02</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1" style="left:68.1%; top:247.6vh;"><span>Image 03</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2" style="left:18.9%; top:247.5vh;"><span>Image 04</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" style="left:9.7%; top:459.8vh;"><span>Image 05</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" style="left:67.2%; top:200.8vh;"><span>Image 06</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" style="left:24.6%; top:74.4vh;"><span>Image 08</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l3 border-thick" style="left:41.1%; top:511.7vh;"><span>Image 09</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" style="left:69.9%; top:154.3vh;"><span>Image 10</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" style="left:50.4%; top:339.0vh;"><span>Image 11</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" style="left:0.1%; top:256.8vh;"><span>Image 12</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" style="left:44.0%; top:300.4vh;"><span>Image 13</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" style="left:42.6%; top:584.7vh;"><span>Image 14</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" style="left:68.0%; top:473.1vh;"><span>Image 15</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l2 border-thick" data-label="Image 18" style="left:62.1%; top:0.7vh;"><img src="photos/image-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" style="left:10.9%; top:127.2vh;"><span>Image 19</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" style="left:35.0%; top:136.8vh;"><span>Image 20</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l3" style="left:44.2%; top:406.0vh;"><span>Image 21</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l3" style="left:2.8%; top:667.0vh;"><span>Image 23</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-thin" style="left:2.8%; top:336.1vh;"><span>Image 24</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" style="left:6.4%; top:78.9vh;"><span>Image 25</span><figcaption>Commercial</figcaption></figure>
+
+  <figure class="field-frame w-t1" style="left:2.8%; top:546.9vh;"><span>Image 26</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t2" style="left:72.1%; top:673.1vh;"><span>Image 28</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" style="left:82.7%; top:347.6vh;"><span>Image 30</span><figcaption>Portrait</figcaption></figure>
+
+  <figure class="field-frame w-t1" style="left:43.9%; top:183.7vh;"><span>Image 07</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" style="left:72.8%; top:69.0vh;"><span>Image 16</span><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-gold" style="left:0.1%; top:194.3vh;"><span>Image 17</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" style="left:4.0%; top:413.2vh;"><span>Image 27</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 border-gold" style="left:0.2%; top:611.4vh;"><span>Image 29</span><figcaption>Fashion</figcaption></figure>
+
+  <figure class="field-frame w-t1" style="left:30.3%; top:360.3vh;"><span>Image 31</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 32" style="left:26.3%; top:2.5vh;"><img src="photos/image-32.jpg" alt="Image 32"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1" style="left:54.8%; top:80.6vh;"><span>Image 33</span><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" style="left:35.4%; top:473.3vh;"><span>Image 34</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t1" style="left:22.0%; top:527.3vh;"><span>Image 35</span><figcaption>Personal</figcaption></figure>
+</div>
+
+<div class="statement">
+  <p>Every frame is a decision — the people, places and moments behind the work.</p>
+</div>
+
+<footer id="contact">
+  <span>© Louis Amore</span>
+  <a href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
+  <span>Concept 05 — not yet live</span>
+</footer>
+
+<div id="lightbox" aria-hidden="true">
+  <div class="lb-topbar">
+    <span id="lb-cat">Category</span>
+    <span class="lb-count" id="lb-count">01 / 05</span>
+    <button id="lb-close">Close ✕</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-rail" id="lb-rail"></div>
+    <div class="lb-stage-wrap">
+      <div class="lb-stage">
+        <div class="lb-frame" id="lb-frame"><span id="lb-frame-label">Image</span></div>
+        <div class="lb-tags">
+          <!-- EDIT: a few short words about this specific image — mood,
+               location, lighting, whatever's useful at a glance. -->
+          <p id="lb-tags-text">moody · natural light · editorial</p>
+        </div>
+      </div>
+    </div>
+    <div class="lb-info">
+      <p class="eyebrow" id="lb-info-cat">Category</p>
+      <h3 id="lb-info-title">Unconditional Love</h3>
+      <div id="lb-info-body"></div>
+    </div>
+  </div>
+  <div class="lb-bottombar">
+    <button id="lb-back">Back</button>
+  </div>
+</div>
 
 <script>
-  fetch('/menu.html')
-    .then(response => response.text())
-    .then(data => document.getElementById('menu-container').innerHTML = data);
+  // -------------------- Reveal + Lightbox --------------------
+  const frames = document.querySelectorAll('.field-frame');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in'); });
+  }, { threshold: 0.2 });
+  frames.forEach(f => io.observe(f));
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  // -------------------- Lightbox --------------------
+  const frameList = Array.from(frames);
+  const lightbox = document.getElementById('lightbox');
+  const lbFrame = document.getElementById('lb-frame');
+  const lbCat = document.getElementById('lb-cat');
+  const lbCount = document.getElementById('lb-count');
+  const lbRail = document.getElementById('lb-rail');
+  const lbInfoCat = document.getElementById('lb-info-cat');
+  const lbInfoTitle = document.getElementById('lb-info-title');
+  const lbInfoBody = document.getElementById('lb-info-body');
+  const lbTagsText = document.getElementById('lb-tags-text');
+  let currentCategoryItems = [];
+  let currentPos = 0;
+
+  function frameInfo(frame) {
+    const cat = frame.querySelector('figcaption').textContent;
+    const spanEl = frame.querySelector('span');
+    const imgEl = frame.querySelector('img');
+    const label = frame.dataset.label || (spanEl ? spanEl.textContent : '');
+    const isPortrait = Array.from(frame.classList).some(c => /^w-t/.test(c));
+    return { cat, label, ratio: isPortrait ? 'portrait' : 'landscape', src: imgEl ? imgEl.src : null };
+  }
+
+  // EDIT: photos listed here don't need a spot on the homepage field at
+  // all — they only ever show up in this category's rail when someone
+  // clicks into it. Good for adding more photos to a category without
+  // touching the homepage. Give each one a label (used for project/
+  // caption lookups too) and a ratio ('landscape' or 'portrait').
+  const extraCategoryPhotos = {
+    'Portrait': [
+      { label: 'Extra Portrait 1', ratio: 'portrait' },
+      { label: 'Extra Portrait 2', ratio: 'landscape' },
+      { label: 'Extra Portrait 3', ratio: 'portrait' },
+    ],
+  };
+
+  function openLightbox(index) {
+    const info = frameInfo(frameList[index]);
+    // build the set of every photo in this same category, in page order
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.cat === info.cat);
+
+    // add any rail-only extras for this category (not on the homepage field)
+    const extras = (extraCategoryPhotos[info.cat] || []).map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    currentPos = currentCategoryItems.findIndex(x => x.i === index);
+
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lb-open');
+  }
+
+  function buildRail() {
+    lbRail.innerHTML = '';
+    currentCategoryItems.forEach((item, pos) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'lb-thumb ratio-' + item.info.ratio;
+      const localNum = String(pos + 1).padStart(2, '0');
+      if (item.info.src) {
+        thumb.innerHTML = `<img src="${item.info.src}" alt="Image ${localNum}">`;
+      } else {
+        thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
+      }
+      thumb.addEventListener('click', () => { currentPos = pos; render(); });
+      lbRail.appendChild(thumb);
+    });
+  }
+
+  // EDIT: a "project" is a story that can span several photos — its title
+  // and write-up always show in the info panel for every image listed
+  // under it. Add more image labels to "images" as you tag more photos
+  // into the same project.
+  const projects = {
+    'unconditional-love': {
+      title: 'Unconditional Love',
+      body: [
+        "In October 2017 I visited a good friend in Seattle, Washington who runs an international animal rescue organisation. Animals can have a positive impact on people's lives. Unfortunately, I also saw and learned how much animals suffer abuse around the world.",
+        "During my visit I saw that many homeless people kept animals with them and it gave me an idea to document their connection and dependence on each other. I approached and sought permission to photograph in Tent City 3 — a non-sanctioned temporary homeless encampment — and also other homeless people throughout the area.",
+        "Animals accept us as we are. They love unconditionally and without reserve. They bring joy, love and reassurance during our best and worst times. I felt compelled to use this connection; the unwavering bond between human and animal as the basis for this series — \"Unconditional Love\"."
+      ],
+      images: ['Image 04', 'Image 18']
+    }
+  };
+
+  // Build a quick lookup: image label -> project
+  const imageToProject = {};
+  Object.values(projects).forEach(p => {
+    p.images.forEach(label => { imageToProject[label] = p; });
+  });
+
+  // EDIT: a short per-photo caption for the small box beside the image —
+  // who's in it, a name, a detail, and optionally a bit more text below
+  // it. Falls back to generic mood words if a photo doesn't have one yet.
+  const photoCaptions = {
+    'Image 18': {
+      name: 'Sonny & Houdini',
+      text: "Sonny has been living in Tent City 3 for 9 months. Houdini is Sonny's companion. He says, \u201che calms me down when I get my panic and anxiety attacks. I can get to my medicine because of Houdini. He calms me down when I get excited. Houdini gives me responsibility and pride.\u201d"
+    },
+  };
+
+  const defaultStory = {
+    title: null, // falls back to "Category — Image N"
+    body: [
+      "A short paragraph about this project — the brief, the location, who it was for, or anything you want visitors to know.",
+      "A second paragraph if you need more room to talk through the shoot, the client, or the story behind it."
+    ]
+  };
+
+  function render() {
+    const active = currentCategoryItems[currentPos];
+    const info = active.info;
+    lbFrame.className = 'lb-frame ratio-' + info.ratio;
+    const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
+    if (info.src) {
+      lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}">`;
+    } else {
+      lbFrame.innerHTML = `<span>${localLabel}</span>`;
+    }
+    lbCat.textContent = info.cat;
+    lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
+    lbInfoCat.textContent = info.cat;
+
+    const story = imageToProject[info.label] || defaultStory;
+    const titleText = story.title || info.cat;
+    lbInfoTitle.textContent = titleText + ' — Image ' + String(currentPos + 1).padStart(2, '0');
+    lbInfoBody.innerHTML = story.body.map(p => `<p>${p}</p>`).join('');
+
+    const caption = photoCaptions[info.label];
+    if (caption) {
+      lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
+    } else {
+      lbTagsText.innerHTML = 'moody · natural light · editorial';
+    }
+
+    Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
+    const activeThumb = lbRail.children[currentPos];
+    if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function step(delta) {
+    currentPos = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
+    render();
+  }
+
+  frameList.forEach((frame, i) => {
+    frame.style.cursor = 'pointer';
+    frame.addEventListener('click', () => openLightbox(i));
+  });
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-back').addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
 </script>
 
 </body>
