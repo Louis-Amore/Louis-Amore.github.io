@@ -169,6 +169,7 @@ body.lb-open{ overflow:hidden; }
   display:flex; align-items:center; justify-content:center; width:100%; height:100%;
   font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase;
 }
+.lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .lb-thumb.ratio-landscape{ aspect-ratio:3/2; }
 .lb-thumb.ratio-portrait{ aspect-ratio:2/3; }
 
@@ -189,6 +190,7 @@ body.lb-open{ overflow:hidden; }
 .lb-frame.ratio-landscape{ width:min(70vw, 900px); aspect-ratio:3/2; }
 .lb-frame.ratio-portrait{ width:min(38vw, 480px); aspect-ratio:2/3; }
 .lb-frame span{ padding:16px; }
+.lb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .lb-tags{
   position:absolute; top:0; left:100%; margin-left:24px; width:290px;
@@ -363,7 +365,6 @@ body.lb-open{ overflow:hidden; }
   const frameList = Array.from(frames);
   const lightbox = document.getElementById('lightbox');
   const lbFrame = document.getElementById('lb-frame');
-  const lbFrameLabel = document.getElementById('lb-frame-label');
   const lbCat = document.getElementById('lb-cat');
   const lbCount = document.getElementById('lb-count');
   const lbRail = document.getElementById('lb-rail');
@@ -377,9 +378,10 @@ body.lb-open{ overflow:hidden; }
   function frameInfo(frame) {
     const cat = frame.querySelector('figcaption').textContent;
     const spanEl = frame.querySelector('span');
+    const imgEl = frame.querySelector('img');
     const label = frame.dataset.label || (spanEl ? spanEl.textContent : '');
     const isPortrait = Array.from(frame.classList).some(c => /^w-t/.test(c));
-    return { cat, label, ratio: isPortrait ? 'portrait' : 'landscape' };
+    return { cat, label, ratio: isPortrait ? 'portrait' : 'landscape', src: imgEl ? imgEl.src : null };
   }
 
   // EDIT: photos listed here don't need a spot on the homepage field at
@@ -427,7 +429,11 @@ body.lb-open{ overflow:hidden; }
       const thumb = document.createElement('div');
       thumb.className = 'lb-thumb ratio-' + item.info.ratio;
       const localNum = String(pos + 1).padStart(2, '0');
-      thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
+      if (item.info.src) {
+        thumb.innerHTML = `<img src="${item.info.src}" alt="Image ${localNum}">`;
+      } else {
+        thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
+      }
       thumb.addEventListener('click', () => { currentPos = pos; render(); });
       lbRail.appendChild(thumb);
     });
@@ -477,7 +483,12 @@ body.lb-open{ overflow:hidden; }
     const active = currentCategoryItems[currentPos];
     const info = active.info;
     lbFrame.className = 'lb-frame ratio-' + info.ratio;
-    lbFrameLabel.textContent = 'Image ' + String(currentPos + 1).padStart(2, '0');
+    const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
+    if (info.src) {
+      lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}">`;
+    } else {
+      lbFrame.innerHTML = `<span>${localLabel}</span>`;
+    }
     lbCat.textContent = info.cat;
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
     lbInfoCat.textContent = info.cat;
