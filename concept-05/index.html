@@ -68,6 +68,18 @@ a{ color:inherit; text-decoration:none; }
 }
 .quick-cats button:hover{ color:var(--ink); }
 
+.quick-cats-row{ display:flex; align-items:center; gap:6px; }
+.quick-cats-toggle{
+  font-size:9px !important; color:var(--muted); transition:transform .15s ease, color .15s ease;
+}
+.quick-cats-toggle.open{ transform:rotate(90deg); }
+.quick-subcats{
+  display:none; flex-direction:column; gap:5px; margin:5px 0 0 10px;
+  border-left:1px solid rgba(17,17,16,0.15); padding-left:8px;
+}
+.quick-subcats.open{ display:flex; }
+.quick-subcats button{ font-size:9px; }
+
 /* scrolling field of scattered work */
 .field{ position:relative; height:745vh; margin-top:6vh; }
 .field-frame{
@@ -297,7 +309,15 @@ body.lb-open{ overflow:hidden; }
   <button data-cat="Fashion">Fashion</button>
   <button data-cat="Portrait">Portrait</button>
   <button data-cat="Interiors">Interiors</button>
-  <button data-cat="Personal">Personal</button>
+  <div class="quick-cats-group">
+    <div class="quick-cats-row">
+      <button data-cat="Personal">Personal</button>
+      <button class="quick-cats-toggle" aria-label="Show Personal subcategories">▸</button>
+    </div>
+    <div class="quick-subcats" id="quick-subcats-personal">
+      <button data-subcat="UL">Unconditional Love</button>
+    </div>
+  </div>
 </div>
 
 <div class="field" id="field">
@@ -317,7 +337,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-l1 border-thick" data-num="15" style="left:68.0%; top:473.1vh;"><span>Image 15</span><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l2 border-thick" data-label="Image 18" data-num="18" style="left:62.1%; top:0.7vh;"><img src="photos/fashion-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="19" style="left:8.9%; top:127.2vh;"><span>Image 19</span><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l3" data-num="21" style="left:44.2%; top:406.0vh;"><span>Image 21</span><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="22" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l3" data-num="23" style="left:2.8%; top:667.0vh;"><span>Image 23</span><figcaption>Personal</figcaption></figure>
@@ -407,8 +427,9 @@ body.lb-open{ overflow:hidden; }
     const spanEl = frame.querySelector('span');
     const imgEl = frame.querySelector('img');
     const label = frame.dataset.label || (spanEl ? spanEl.textContent : '');
+    const subcat = frame.dataset.subcat || null;
     const isPortrait = Array.from(frame.classList).some(c => /^w-t/.test(c));
-    return { cat, label, ratio: isPortrait ? 'portrait' : 'landscape', src: imgEl ? imgEl.src : null };
+    return { cat, label, subcat, ratio: isPortrait ? 'portrait' : 'landscape', src: imgEl ? imgEl.src : null };
   }
 
   // EDIT: photos listed here don't need a spot on the homepage field at
@@ -424,8 +445,23 @@ body.lb-open{ overflow:hidden; }
     ],
   };
 
+  // EDIT: same idea as extraCategoryPhotos, but for a subcategory's rail —
+  // add a "cat" so the info panel still knows the main category too.
+  const extraSubcatPhotos = {
+    // 'UL': [ { label: 'Extra UL 1', cat: 'Personal', ratio: 'landscape' } ],
+  };
+
+  // EDIT: full display names for subcategory abbreviations used in data-subcat.
+  const subcatNames = {
+    'UL': 'Unconditional Love',
+  };
+
   function openLightbox(index) {
     const info = frameInfo(frameList[index]);
+    if (info.subcat) {
+      openLightboxBySubcat(info.subcat, index);
+      return;
+    }
     // build the set of every photo in this same category, in page order
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
@@ -436,6 +472,29 @@ body.lb-open{ overflow:hidden; }
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     currentPos = currentCategoryItems.findIndex(x => x.i === index);
+
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+  }
+
+  // Open the lightbox filtered to a subcategory (e.g. "UL"). If startIndex is
+  // given (a real field photo was clicked), open on that photo; otherwise
+  // open on the first photo found in the subcategory.
+  function openLightboxBySubcat(subcat, startIndex) {
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.subcat === subcat);
+
+    const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    currentPos = startIndex !== undefined
+      ? currentCategoryItems.findIndex(x => x.i === startIndex)
+      : 0;
+    if (currentPos === -1) currentPos = 0;
 
     buildRail();
     render();
@@ -516,9 +575,10 @@ body.lb-open{ overflow:hidden; }
     } else {
       lbFrame.innerHTML = `<span>${localLabel}</span>`;
     }
-    lbCat.textContent = info.cat;
+    const displayCat = info.subcat ? (subcatNames[info.subcat] || info.subcat) : info.cat;
+    lbCat.textContent = displayCat;
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
-    lbInfoCat.textContent = info.cat;
+    lbInfoCat.textContent = displayCat;
 
     const story = imageToProject[info.label] || defaultStory;
     const titleText = story.title || info.cat;
@@ -547,11 +607,25 @@ body.lb-open{ overflow:hidden; }
     frame.addEventListener('click', () => openLightbox(i));
   });
 
-  document.querySelectorAll('.quick-cats button').forEach(btn => {
+  document.querySelectorAll('.quick-cats > button[data-cat], .quick-cats-row button[data-cat]').forEach(btn => {
     btn.addEventListener('click', () => {
       const cat = btn.dataset.cat;
       const index = frameList.findIndex(f => frameInfo(f).cat === cat);
       if (index !== -1) openLightbox(index);
+    });
+  });
+
+  document.querySelectorAll('.quick-cats-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const sublist = toggle.closest('.quick-cats-group').querySelector('.quick-subcats');
+      toggle.classList.toggle('open');
+      sublist.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.quick-subcats button[data-subcat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openLightboxBySubcat(btn.dataset.subcat);
     });
   });
 
