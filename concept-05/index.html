@@ -317,6 +317,7 @@ body.lb-open{ overflow:hidden; }
     </div>
     <div class="quick-subcats" id="quick-subcats-personal">
       <button data-subcat="UL">Unconditional Love</button>
+      <button data-subcat="Bali">Bali</button>
     </div>
   </div>
 </div>
@@ -325,7 +326,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t1 border-thick" data-num="01" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-02.jpg" alt="Image 02"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1" data-num="03" style="left:68.1%; top:247.6vh;"><span>Image 03</span><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2" data-num="04" style="left:18.9%; top:247.5vh;"><span>Image 04</span><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="photos/bali-04.jpg" alt="Image 04"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" style="left:9.7%; top:459.8vh;"><span>Image 05</span><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l1 border-thick" data-num="06" data-label="Image 06" style="left:67.2%; top:200.8vh;"><img src="photos/fashion-06.jpg" alt="Image 06"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" style="left:24.6%; top:84.4vh;"><img src="photos/personal-08.jpg" alt="Image 08"><figcaption>Personal</figcaption></figure>
@@ -477,6 +478,7 @@ body.lb-open{ overflow:hidden; }
   // EDIT: full display names for subcategory abbreviations used in data-subcat.
   const subcatNames = {
     'UL': 'Unconditional Love',
+    'Bali': 'Bali',
   };
 
   function openLightbox(index) {
@@ -560,7 +562,7 @@ body.lb-open{ overflow:hidden; }
         "During my visit I saw that many homeless people kept animals with them and it gave me an idea to document their connection and dependence on each other. I approached and sought permission to photograph in Tent City 3 — a non-sanctioned temporary homeless encampment — and also other homeless people throughout the area.",
         "Animals accept us as we are. They love unconditionally and without reserve. They bring joy, love and reassurance during our best and worst times. I felt compelled to use this connection; the unwavering bond between human and animal as the basis for this series — \"Unconditional Love\"."
       ],
-      images: ['Image 04', 'Image 18', 'Image 20', 'UL 02', 'UL 03', 'UL 04', 'UL 05', 'UL 09', 'UL 12']
+      images: ['Image 18', 'Image 20', 'UL 02', 'UL 03', 'UL 04', 'UL 05', 'UL 09', 'UL 12']
     }
   };
 
