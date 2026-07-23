@@ -252,6 +252,9 @@ body.lb-open{ overflow:hidden; }
      windows instead of sliding over other text */
   flex:0 1 290px; min-width:140px;
 }
+/* EDIT: invisible spacer mirroring the tags box on the left, so the photo
+   sits dead centre (counter above it) instead of being pushed left */
+.lb-stage::before{ content:''; flex:0 1 290px; min-width:140px; }
 .lb-tags p{
   font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
 }
@@ -267,6 +270,7 @@ body.lb-open{ overflow:hidden; }
   .lb-info h3{ font-size:21px; }
   .lb-info p{ font-size:13px; }
   .lb-tags{ flex-basis:170px; min-width:120px; }
+  .lb-stage::before{ flex-basis:170px; min-width:120px; }
 }
 
 
@@ -303,6 +307,7 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
   /* EDIT: on phones the tags stack under the photo instead of beside it */
   .lb-stage{ flex-direction:column; gap:14px; }
+  .lb-stage::before{ display:none; }
   .lb-tags{ flex:0 0 auto; width:100%; min-width:0; }
   .lb-info{ width:100%; flex:0 0 auto; border-left:none; border-top:1px solid rgba(17,17,16,0.12); padding:24px 28px; }
 }
@@ -672,6 +677,14 @@ body.lb-open{ overflow:hidden; }
         "The series was shot at Prohibition Vapes on Old Street, London \u2014 part shop, part hangout, where the regulars let me photograph them in their own haze."
       ],
       images: ['Vape 01', 'Vape 02', 'Vape 03', 'Vape 04', 'Vape 05', 'Vape 06', 'Vape 07', 'Vape 08']
+    },
+    'we-shall-remember': {
+      title: 'We Shall Remember',
+      body: [
+        "A few years ago I was watching the Remembrance parade at the Cenotaph on television. The faces of the men and women who had gone through so much stopped me \u2014 they made me question what I had done with my own life. I jumped up, grabbed my camera and a light, and got on the train into London.",
+        "I felt I had to record these men and women for posterity. It was my way of saying thank you \u2014 the only way I could, through my camera. I wanted to preserve them digitally, for what they had done for this country and for many others."
+      ],
+      images: ['WSR 01', 'WSR 02', 'WSR 03', 'WSR 04', 'WSR 05', 'WSR 06', 'WSR 07', 'WSR 08', 'WSR 09', 'WSR 10', 'WSR 11', 'WSR 12', 'WSR 13', 'WSR 14', 'WSR 15', 'WSR 16', 'WSR 17', 'WSR 18', 'WSR 19', 'WSR 20', 'WSR 21', 'WSR 22', 'WSR 23', 'WSR 24', 'WSR 25']
     }
   };
 
@@ -717,6 +730,31 @@ body.lb-open{ overflow:hidden; }
       name: 'The Throne',
       text: "Stretched out on the chesterfield, cloud drifting to the ceiling."
     },
+    'WSR 01': { name: 'We Shall Remember', text: "Wreaths and small wooden crosses at the memorial \u2014 where the series takes its name." },
+    'WSR 02': { name: 'A18', text: "Waiting for the parade to begin, medals worn on the fleece." },
+    'WSR 03': { name: 'Never Surrender', text: "Head up, moustache immaculate, ready to march." },
+    'WSR 04': { name: "We'll Meet Again", text: "A hand over the medals, and a song everyone of his generation knows." },
+    'WSR 05': { name: 'Scarlet', text: "The unmistakable coat and tricorn of the Royal Hospital Chelsea." },
+    'WSR 06': { name: 'Gunner', text: "Royal Artillery beret, blanket over the knees, poppy at the collar." },
+    'WSR 07': { name: 'Best Suit', text: "Bowler on his lap, medals polished, waiting on the stone." },
+    'WSR 08': { name: "The Mothers' Sons", text: "Beneath the memorial, in remembrance red." },
+    'WSR 09': { name: 'Three Medals and a Poppy', text: "The detail says it all \u2014 no face needed." },
+    'WSR 10': { name: 'Two Poppies', text: "Ninety-something and standing unaided for the photograph." },
+    'WSR 11': { name: 'Still Standing', text: "Grey suit, gold medals, and a smile that's seen everything." },
+    'WSR 12': { name: 'Let Us Pray for Peace', text: "In the sunshine at the memorial, campaigns carved in stone behind him." },
+    'WSR 13': { name: 'Green Beret', text: "Commando bearing, hands folded, quietly proud." },
+    'WSR 14': { name: 'Whitehall', text: "Korea on his chest, the Cenotaph over his shoulder." },
+    'WSR 15': { name: 'At the Gates', text: "Gloved hands folded, medals catching the morning light." },
+    'WSR 16': { name: "Two Nations' Thanks", text: "British and Soviet decorations worn together on a winter coat." },
+    'WSR 17': { name: 'Pennant Flying', text: "Regimental colours mounted proudly on the scooter." },
+    'WSR 18': { name: 'A Debt Never Fully Repaid', text: "A pointed look from a man who was there." },
+    'WSR 19': { name: 'Tweed and Bronze', text: "Stars from three campaigns, worn to the Cenotaph one more time." },
+    'WSR 20': { name: 'Still Serving', text: "The next generation, in uniform among the veterans." },
+    'WSR 21': { name: 'Desert Colours', text: "Two comrades in shemaghs, regimental ties beneath." },
+    'WSR 22': { name: 'The Young Veteran', text: "Green beret, sharp suit \u2014 service isn't only history." },
+    'WSR 23': { name: 'Watch Chain', text: "Sunday best and steady eyes against the old stone wall." },
+    'WSR 24': { name: 'The Marks of War', text: "He carries his service on his face, and stands tall with it." },
+    'WSR 25': { name: 'By the Railings', text: "Wrapped up against the cold, medals still on the outside." },
     'UL 04': {
       name: 'Candi & Calli',
       text: "Calli was rescued by Candi two and a half years ago from an abusive home. She nurtured her back to health and the bond between the two of them has grown very strong. Calli, a great support to Candi, has been trained to be her seizure dog. Originally from New Orleans, Candi and her husband moved to Tent City 3 eight months ago. Candi was the first person we met at the site, advocating for us to be allowed into the camp."
