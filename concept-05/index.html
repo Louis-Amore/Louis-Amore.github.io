@@ -225,6 +225,7 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-stage{
   position:relative; max-width:100%; max-height:100%;
+  display:flex; align-items:flex-start; gap:24px;
   transform:scale(.97); opacity:0; transition:transform .3s ease, opacity .3s ease;
 }
 #lightbox.open .lb-stage{ transform:scale(1); opacity:1; }
@@ -233,14 +234,23 @@ body.lb-open{ overflow:hidden; }
   background:#e7e4dc; display:flex; align-items:flex-end;
   font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase;
   max-height:80vh;
+  /* EDIT: the frame now flexes to the space left over next to the tags and
+     between the rail and info panel, resizing smoothly at any window size.
+     --ar is the photo's width/height ratio (set from the real image by JS);
+     the max-width cap keeps the whole photo on screen without cropping. */
+  flex:0 1 auto; min-width:0;
+  max-width:min(100%, calc(80vh * var(--ar, 1.5)));
 }
-.lb-frame.ratio-landscape{ width:min(70vw, 900px); aspect-ratio:3/2; }
-.lb-frame.ratio-portrait{ width:min(38vw, 480px); aspect-ratio:2/3; }
+.lb-frame.ratio-landscape{ width:min(70vw, 900px); aspect-ratio:3/2; --ar:1.5; }
+.lb-frame.ratio-portrait{ width:min(38vw, 480px); aspect-ratio:2/3; --ar:0.667; }
 .lb-frame span{ padding:16px; }
 .lb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .lb-tags{
-  position:absolute; top:0; left:100%; margin-left:24px; width:290px;
+  /* EDIT: in normal flow beside the image (not absolutely positioned), so
+     it can never overlap the info panel; it shrinks and wraps on narrow
+     windows instead of sliding over other text */
+  flex:0 1 290px; min-width:140px;
 }
 .lb-tags p{
   font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
@@ -256,7 +266,7 @@ body.lb-open{ overflow:hidden; }
   .lb-info{ width:220px; flex:0 0 220px; padding:24px 20px; }
   .lb-info h3{ font-size:21px; }
   .lb-info p{ font-size:13px; }
-  .lb-tags{ width:170px; margin-left:16px; }
+  .lb-tags{ flex-basis:170px; min-width:120px; }
 }
 
 
@@ -291,6 +301,9 @@ body.lb-open{ overflow:hidden; }
   .lb-rail{ width:100%; flex:0 0 90px; flex-direction:row; overflow-x:auto; overflow-y:hidden; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
   .lb-thumb{ flex:0 0 70px; }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
+  /* EDIT: on phones the tags stack under the photo instead of beside it */
+  .lb-stage{ flex-direction:column; gap:14px; }
+  .lb-tags{ flex:0 0 auto; width:100%; min-width:0; }
   .lb-info{ width:100%; flex:0 0 auto; border-left:none; border-top:1px solid rgba(17,17,16,0.12); padding:24px 28px; }
 }
 
@@ -747,6 +760,7 @@ body.lb-open{ overflow:hidden; }
     const info = active.info;
     lbFrame.className = 'lb-frame ratio-' + info.ratio;
     lbFrame.style.aspectRatio = '';
+    lbFrame.style.removeProperty('--ar');
     const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
     if (info.src) {
       lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}">`;
@@ -754,7 +768,11 @@ body.lb-open{ overflow:hidden; }
       // loaded, so wider "movie-style" crops are never cut off. Placeholders
       // keep the standard ratio-landscape / ratio-portrait shapes.
       const stageImg = lbFrame.querySelector('img');
-      const fitStage = () => { if (stageImg.naturalWidth) lbFrame.style.aspectRatio = stageImg.naturalWidth + ' / ' + stageImg.naturalHeight; };
+      const fitStage = () => {
+        if (!stageImg.naturalWidth) return;
+        lbFrame.style.aspectRatio = stageImg.naturalWidth + ' / ' + stageImg.naturalHeight;
+        lbFrame.style.setProperty('--ar', (stageImg.naturalWidth / stageImg.naturalHeight).toFixed(4));
+      };
       if (stageImg.complete) fitStage(); else stageImg.addEventListener('load', fitStage);
     } else {
       lbFrame.innerHTML = `<span>${localLabel}</span>`;
