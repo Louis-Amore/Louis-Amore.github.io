@@ -334,6 +334,9 @@ body.lb-open{ overflow:hidden; }
     <div class="quick-subcats" id="quick-subcats-personal">
       <button data-subcat="UL">Unconditional Love</button>
       <button data-subcat="Bali">Bali</button>
+      <button data-subcat="Landscape">Landscape</button>
+      <button data-subcat="WSR">We Shall Remember</button>
+      <button data-subcat="Vape">Vape</button>
     </div>
   </div>
 </div>
@@ -494,6 +497,9 @@ body.lb-open{ overflow:hidden; }
   const subcatNames = {
     'UL': 'Unconditional Love',
     'Bali': 'Bali',
+    'Landscape': 'Landscape',
+    'WSR': 'We Shall Remember',
+    'Vape': 'Vape',
   };
 
   function openLightbox(index) {
@@ -530,6 +536,8 @@ body.lb-open{ overflow:hidden; }
 
     const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
+
+    if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
 
     currentPos = startIndex !== undefined
       ? currentCategoryItems.findIndex(x => x.i === startIndex)
