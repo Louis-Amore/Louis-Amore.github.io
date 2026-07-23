@@ -703,17 +703,33 @@ body.lb-open{ overflow:hidden; }
     frame.addEventListener('click', () => openLightbox(i));
   });
 
-  document.querySelectorAll('.quick-cats > button[data-cat], .quick-cats-row button[data-cat]').forEach(btn => {
+  function toggleSubcatList(triggerEl) {
+    const group = triggerEl.closest('.quick-cats-group');
+    const sublist = group.querySelector('.quick-subcats');
+    const toggleArrow = group.querySelector('.quick-cats-toggle');
+    toggleArrow.classList.toggle('open');
+    sublist.classList.toggle('open');
+  }
+
+  // Top-level categories (no subcategories) open their gallery directly.
+  document.querySelectorAll('.quick-cats > button[data-cat]').forEach(btn => {
     btn.addEventListener('click', () => {
       openLightboxByCategory(btn.dataset.cat);
     });
   });
 
+  // A category with subcategories (e.g. Personal): clicking its label just
+  // reveals the subcategory choices, same as clicking the arrow — it never
+  // opens an unfiltered gallery on its own.
+  document.querySelectorAll('.quick-cats-row button[data-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleSubcatList(btn);
+    });
+  });
+
   document.querySelectorAll('.quick-cats-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
-      const sublist = toggle.closest('.quick-cats-group').querySelector('.quick-subcats');
-      toggle.classList.toggle('open');
-      sublist.classList.toggle('open');
+      toggleSubcatList(toggle);
     });
   });
 
