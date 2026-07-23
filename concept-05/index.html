@@ -442,6 +442,7 @@ body.lb-open{ overflow:hidden; }
   const lbTagsText = document.getElementById('lb-tags-text');
   let currentCategoryItems = [];
   let currentPos = 0;
+  let currentBrowseSubcat = null; // set only when actually browsing a subcategory, not just because one photo has one
 
   function frameInfo(frame) {
     const cat = frame.querySelector('figcaption').textContent;
@@ -507,6 +508,7 @@ body.lb-open{ overflow:hidden; }
       openLightboxBySubcat(info.subcat, index);
       return;
     }
+    currentBrowseSubcat = null;
     // build the set of every photo in this same category, in page order
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
@@ -525,10 +527,33 @@ body.lb-open{ overflow:hidden; }
     document.body.classList.add('lb-open');
   }
 
+  // Open a full category from the quick-cats menu — always shows every photo
+  // in that category, regardless of whether the first one happens to have
+  // its own subcategory tag (that redirect only applies to direct photo clicks).
+  function openLightboxByCategory(cat) {
+    currentBrowseSubcat = null;
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.cat === cat);
+
+    const extras = (extraCategoryPhotos[cat] || []).map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    if (currentCategoryItems.length === 0) return;
+
+    currentPos = 0;
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+  }
+
   // Open the lightbox filtered to a subcategory (e.g. "UL"). If startIndex is
   // given (a real field photo was clicked), open on that photo; otherwise
   // open on the first photo found in the subcategory.
   function openLightboxBySubcat(subcat, startIndex) {
+    currentBrowseSubcat = subcat;
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.subcat === subcat);
@@ -646,7 +671,7 @@ body.lb-open{ overflow:hidden; }
     } else {
       lbFrame.innerHTML = `<span>${localLabel}</span>`;
     }
-    const displayCat = info.subcat ? (subcatNames[info.subcat] || info.subcat) : info.cat;
+    const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
     lbCat.textContent = displayCat;
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
     lbInfoCat.textContent = displayCat;
@@ -680,9 +705,7 @@ body.lb-open{ overflow:hidden; }
 
   document.querySelectorAll('.quick-cats > button[data-cat], .quick-cats-row button[data-cat]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const cat = btn.dataset.cat;
-      const index = frameList.findIndex(f => frameInfo(f).cat === cat);
-      if (index !== -1) openLightbox(index);
+      openLightboxByCategory(btn.dataset.cat);
     });
   });
 
