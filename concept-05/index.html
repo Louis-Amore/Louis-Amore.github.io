@@ -626,6 +626,10 @@ body.lb-open{ overflow:hidden; }
       const localNum = String(pos + 1).padStart(2, '0');
       if (item.info.src) {
         thumb.innerHTML = `<img src="${item.info.src}" alt="Image ${localNum}">`;
+        // EDIT: thumbs also take the photo's true ratio so nothing is cropped
+        const tImg = thumb.querySelector('img');
+        const fitThumb = () => { if (tImg.naturalWidth) thumb.style.aspectRatio = tImg.naturalWidth + ' / ' + tImg.naturalHeight; };
+        if (tImg.complete) fitThumb(); else tImg.addEventListener('load', fitThumb);
       } else {
         thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
       }
@@ -702,9 +706,16 @@ body.lb-open{ overflow:hidden; }
     const active = currentCategoryItems[currentPos];
     const info = active.info;
     lbFrame.className = 'lb-frame ratio-' + info.ratio;
+    lbFrame.style.aspectRatio = '';
     const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
     if (info.src) {
       lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}">`;
+      // EDIT: real photos set the stage to their true aspect ratio once
+      // loaded, so wider "movie-style" crops are never cut off. Placeholders
+      // keep the standard ratio-landscape / ratio-portrait shapes.
+      const stageImg = lbFrame.querySelector('img');
+      const fitStage = () => { if (stageImg.naturalWidth) lbFrame.style.aspectRatio = stageImg.naturalWidth + ' / ' + stageImg.naturalHeight; };
+      if (stageImg.complete) fitStage(); else stageImg.addEventListener('load', fitStage);
     } else {
       lbFrame.innerHTML = `<span>${localLabel}</span>`;
     }
