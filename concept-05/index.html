@@ -251,12 +251,14 @@ body.lb-open{ overflow:hidden; }
      portrait and standard photos no longer balloon to full width, and every
      ratio stays centred over the counter. The mat adds 60px on every side. */
   border:60px solid #ffffff; box-sizing:content-box;
-  height:auto; max-height:calc(64.26vh);
+  height:auto; max-height:calc(61.05vh);
   max-width:calc(100% - 120px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
 /* the image itself carries the height cap; width follows naturally */
-.lb-frame.has-photo img{ max-height:calc(64.26vh - 120px); width:auto; height:auto; max-width:100%; display:block; }
+.lb-frame.has-photo img{ max-height:calc(61.05vh - 120px); width:auto; height:auto; max-width:100%; display:block; }
+/* EDIT: We Shall Remember sized 7% smaller than the other categories */
+.lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 120px); }
 .lb-frame.ratio-landscape:not(.has-photo){ width:min(70vw, 900px); aspect-ratio:3/2; }
 .lb-frame.ratio-portrait:not(.has-photo){ width:min(38vw, 480px); aspect-ratio:2/3; }
 .lb-frame.has-photo{ width:auto; aspect-ratio:auto; }
@@ -294,7 +296,8 @@ body.lb-open{ overflow:hidden; }
   .lb-info h3{ font-size:21px; }
   .lb-info p{ font-size:13px; }
   .lb-frame{ border-width:40px; }
-  .lb-frame.has-photo img{ max-height:calc(64.26vh - 80px); }
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); }
+  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
   .lb-tags{ flex-basis:170px; min-width:120px; }
   .lb-stage::before{ flex-basis:170px; min-width:120px; }
 }
@@ -331,7 +334,8 @@ body.lb-open{ overflow:hidden; }
   .lb-rail{ width:100%; flex:0 0 90px; flex-direction:row; overflow-x:auto; overflow-y:hidden; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
   .lb-thumb{ flex:0 0 70px; padding:7%; }
   .lb-frame{ border-width:22px; }
-  .lb-frame.has-photo img{ max-height:calc(64.26vh - 44px); }
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); }
+  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 44px); }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
   /* EDIT: on phones the tags stack under the photo instead of beside it */
   .lb-stage{ flex-direction:column; gap:14px; }
@@ -825,6 +829,9 @@ body.lb-open{ overflow:hidden; }
     const active = currentCategoryItems[currentPos];
     const info = active.info;
     lbFrame.className = 'lb-frame ratio-' + info.ratio;
+    // EDIT: tag the frame with the current subcategory so specific series
+    // (e.g. WSR) can carry their own size cap
+    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
     lbFrame.style.aspectRatio = '';
     lbFrame.style.removeProperty('--ar');
     const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
