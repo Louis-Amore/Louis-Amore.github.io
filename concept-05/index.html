@@ -259,6 +259,10 @@ body.lb-open{ overflow:hidden; }
 /* EDIT: invisible spacer mirroring the tags box on the left, so the photo
    sits dead centre (counter above it) instead of being pushed left */
 .lb-stage::before{ content:''; flex:0 1 290px; min-width:140px; }
+/* EDIT: photos with no assigned caption show no tags box at all; the spacer
+   hides with it so the photo stays dead centre */
+.lb-stage.no-tags .lb-tags{ display:none; }
+.lb-stage.no-tags::before{ display:none; }
 .lb-tags p{
   font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
 }
@@ -428,7 +432,7 @@ body.lb-open{ overflow:hidden; }
         <div class="lb-tags">
           <!-- EDIT: a few short words about this specific image — mood,
                location, lighting, whatever's useful at a glance. -->
-          <p id="lb-tags-text">moody · natural light · editorial</p>
+          <p id="lb-tags-text"></p>
         </div>
       </div>
     </div>
@@ -824,16 +828,24 @@ body.lb-open{ overflow:hidden; }
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
     lbInfoCat.textContent = displayCat;
 
-    const story = imageToProject[info.label] || defaultStory;
-    const titleText = story.title || info.cat;
-    lbInfoTitle.textContent = titleText + ' — Image ' + String(currentPos + 1).padStart(2, '0');
-    lbInfoBody.innerHTML = story.body.map(p => `<p>${p}</p>`).join('');
+    const story = imageToProject[info.label];
+    // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
+    // no default text, no category eyebrow; single hyphen separator throughout
+    const titleText = (story && story.title) || displayCat;
+    lbInfoTitle.textContent = titleText + ' - Image ' + String(currentPos + 1).padStart(2, '0');
+    lbInfoCat.style.display = story ? '' : 'none';
+    lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
 
     const caption = photoCaptions[info.label];
+    const stageEl = lbFrame.closest('.lb-stage');
+    // EDIT: no caption assigned -> hide the tags box entirely (and its
+    // centring spacer via the no-tags class) instead of showing filler words
     if (caption) {
+      stageEl.classList.remove('no-tags');
       lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
     } else {
-      lbTagsText.innerHTML = 'moody · natural light · editorial';
+      stageEl.classList.add('no-tags');
+      lbTagsText.innerHTML = '';
     }
 
     Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
