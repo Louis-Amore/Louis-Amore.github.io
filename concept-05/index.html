@@ -236,31 +236,32 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-stage{
   position:relative; max-width:100%; max-height:100%;
-  display:flex; align-items:flex-start; gap:24px;
+  display:flex; align-items:center; justify-content:center; gap:24px;
   transform:scale(.97); opacity:0; transition:transform .3s ease, opacity .3s ease;
 }
 #lightbox.open .lb-stage{ transform:scale(1); opacity:1; }
 
 .lb-frame{
-  background:#e7e4dc; display:flex; align-items:flex-end;
+  background:#e7e4dc; display:flex; align-items:center; justify-content:center;
   font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase;
-  max-height:calc(80vh + 120px);
-  /* EDIT: the frame now flexes to the space left over next to the tags and
-     between the rail and info panel, resizing smoothly at any window size.
-     --ar is the photo's width/height ratio (set from the real image by JS);
-     the max-width cap keeps the whole photo on screen without cropping. */
-  flex:0 1 auto; min-width:0;
+  flex:0 0 auto; min-width:0;
   /* EDIT: bold white mat that expands AROUND the photo (content-box), so the
-     border never crops into the image. The photo area itself is what's capped
-     by width/height; the 120px of mat is added outside that. */
+     border never crops into the image. Sizing is HEIGHT-driven: the frame
+     height-caps the photo and its width follows the photo's own ratio — so
+     portrait and standard photos no longer balloon to full width, and every
+     ratio stays centred over the counter. The mat adds 60px on every side. */
   border:60px solid #ffffff; box-sizing:content-box;
-  max-width:min(calc(100% - 120px), calc((80vh - 120px) * var(--ar, 1.5)));
+  height:auto; max-height:calc(84vh);
+  max-width:calc(100% - 120px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
-.lb-frame.ratio-landscape{ aspect-ratio:3/2; --ar:1.5; }
-.lb-frame.ratio-portrait{ aspect-ratio:2/3; --ar:0.667; }
+/* the image itself carries the height cap; width follows naturally */
+.lb-frame.has-photo img{ max-height:calc(84vh - 120px); width:auto; height:auto; max-width:100%; display:block; }
+.lb-frame.ratio-landscape:not(.has-photo){ width:min(70vw, 900px); aspect-ratio:3/2; }
+.lb-frame.ratio-portrait:not(.has-photo){ width:min(38vw, 480px); aspect-ratio:2/3; }
+.lb-frame.has-photo{ width:auto; aspect-ratio:auto; }
 .lb-frame span{ padding:16px; }
-.lb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+.lb-frame:not(.has-photo) img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .lb-tags{
   /* EDIT: in normal flow beside the image (not absolutely positioned), so
@@ -290,6 +291,7 @@ body.lb-open{ overflow:hidden; }
   .lb-info h3{ font-size:21px; }
   .lb-info p{ font-size:13px; }
   .lb-frame{ border-width:40px; }
+  .lb-frame.has-photo img{ max-height:calc(84vh - 80px); }
   .lb-tags{ flex-basis:170px; min-width:120px; }
   .lb-stage::before{ flex-basis:170px; min-width:120px; }
 }
@@ -326,6 +328,7 @@ body.lb-open{ overflow:hidden; }
   .lb-rail{ width:100%; flex:0 0 90px; flex-direction:row; overflow-x:auto; overflow-y:hidden; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
   .lb-thumb{ flex:0 0 70px; padding:7%; }
   .lb-frame{ border-width:22px; }
+  .lb-frame.has-photo img{ max-height:calc(84vh - 44px); }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
   /* EDIT: on phones the tags stack under the photo instead of beside it */
   .lb-stage{ flex-direction:column; gap:14px; }
@@ -823,18 +826,13 @@ body.lb-open{ overflow:hidden; }
     lbFrame.style.removeProperty('--ar');
     const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
     if (info.src) {
+      lbFrame.classList.add('has-photo');
       lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}">`;
-      // EDIT: real photos set the stage to their true aspect ratio once
-      // loaded, so wider "movie-style" crops are never cut off. Placeholders
-      // keep the standard ratio-landscape / ratio-portrait shapes.
-      const stageImg = lbFrame.querySelector('img');
-      const fitStage = () => {
-        if (!stageImg.naturalWidth) return;
-        lbFrame.style.aspectRatio = stageImg.naturalWidth + ' / ' + stageImg.naturalHeight;
-        lbFrame.style.setProperty('--ar', (stageImg.naturalWidth / stageImg.naturalHeight).toFixed(4));
-      };
-      if (stageImg.complete) fitStage(); else stageImg.addEventListener('load', fitStage);
+      // EDIT: real photos size the frame by their own height (max-height on the
+      // img), so any ratio — landscape, portrait, cinematic — displays fully and
+      // stays centred. No forced aspect-ratio on the frame.
     } else {
+      lbFrame.classList.remove('has-photo');
       lbFrame.innerHTML = `<span>${localLabel}</span>`;
     }
     const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
