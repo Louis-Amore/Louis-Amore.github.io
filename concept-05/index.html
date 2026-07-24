@@ -226,8 +226,8 @@ body.lb-open{ overflow:hidden; }
   font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase;
 }
 .lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-/* EDIT: keep each thumb's overall box at its ratio; the inner image area
-   carries the padding mat around it */
+/* EDIT: content-box (default) means the 11% padding forms a white mat that
+   expands around the image rather than cropping into it */
 .lb-thumb.ratio-landscape{ aspect-ratio:3/2; }
 .lb-thumb.ratio-portrait{ aspect-ratio:2/3; }
 
@@ -244,22 +244,21 @@ body.lb-open{ overflow:hidden; }
 .lb-frame{
   background:#e7e4dc; display:flex; align-items:flex-end;
   font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase;
-  max-height:80vh;
+  max-height:calc(80vh + 120px);
   /* EDIT: the frame now flexes to the space left over next to the tags and
      between the rail and info panel, resizing smoothly at any window size.
      --ar is the photo's width/height ratio (set from the real image by JS);
      the max-width cap keeps the whole photo on screen without cropping. */
   flex:0 1 auto; min-width:0;
-  max-width:min(100%, calc(80vh * var(--ar, 1.5)));
-  /* EDIT: bold white mat around the stage photo only (not the rail thumbs).
-     box-sizing keeps the border inside the sizing cap so nothing overflows;
-     the 120px of border is subtracted from the height cap via the ar calc. */
-  border:60px solid #ffffff; box-sizing:border-box;
-  max-width:min(100%, calc((80vh - 120px) * var(--ar, 1.5) + 120px));
+  /* EDIT: bold white mat that expands AROUND the photo (content-box), so the
+     border never crops into the image. The photo area itself is what's capped
+     by width/height; the 120px of mat is added outside that. */
+  border:60px solid #ffffff; box-sizing:content-box;
+  max-width:min(calc(100% - 120px), calc((80vh - 120px) * var(--ar, 1.5)));
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
-.lb-frame.ratio-landscape{ width:min(70vw, 900px); aspect-ratio:3/2; --ar:1.5; }
-.lb-frame.ratio-portrait{ width:min(38vw, 480px); aspect-ratio:2/3; --ar:0.667; }
+.lb-frame.ratio-landscape{ aspect-ratio:3/2; --ar:1.5; }
+.lb-frame.ratio-portrait{ aspect-ratio:2/3; --ar:0.667; }
 .lb-frame span{ padding:16px; }
 .lb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
 
