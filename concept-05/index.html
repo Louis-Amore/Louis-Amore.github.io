@@ -381,11 +381,11 @@ body.lb-open{ overflow:hidden; }
       <button class="quick-cats-toggle" aria-label="Show Personal subcategories">▸</button>
     </div>
     <div class="quick-subcats" id="quick-subcats-personal">
-      <button data-subcat="Vape">Vape</button>
+      <button data-subcat="UL">Unconditional Love</button>
       <button data-subcat="Bali">Bali</button>
       <button data-subcat="Landscape">Landscape</button>
       <button data-subcat="WSR">We Shall Remember</button>
-      <button data-subcat="UL">Unconditional Love</button>
+      <button data-subcat="Vape">Vape</button>
     </div>
   </div>
 </div>
@@ -532,6 +532,17 @@ body.lb-open{ overflow:hidden; }
   // EDIT: same idea as extraCategoryPhotos, but for a subcategory's rail —
   // add a "cat" so the info panel still knows the main category too.
   const extraSubcatPhotos = {
+    'Bali': [
+      { label: 'Bali 05', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-05.jpg' },
+      { label: 'Bali 06', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-06.jpg' },
+      { label: 'Bali 07', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-07.jpg' },
+      { label: 'Bali 10', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-10.jpg' },
+      { label: 'Bali 11', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-11.jpg' },
+      { label: 'Bali 12', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-12.jpg' },
+      { label: 'Bali 13', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-13.jpg' },
+      { label: 'Bali 14', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-14.jpg' },
+      { label: 'Bali 15', cat: 'Personal', ratio: 'landscape', src: 'photos/bali-15.jpg' },
+    ],
     'UL': [
       { label: 'UL 02', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-02.jpg' },
       { label: 'UL 03', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-03.jpg' },
@@ -581,11 +592,11 @@ body.lb-open{ overflow:hidden; }
 
   // EDIT: full display names for subcategory abbreviations used in data-subcat.
   const subcatNames = {
-    'Vape': 'Vape',
-	'Bali': 'Bali',
+    'UL': 'Unconditional Love',
+    'Bali': 'Bali',
     'Landscape': 'Landscape',
     'WSR': 'We Shall Remember',
-    'UL': 'Unconditional Love',
+    'Vape': 'Vape',
   };
 
   function openLightbox(index) {
