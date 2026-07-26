@@ -191,7 +191,8 @@ body.lb-open{ overflow:hidden; }
 #lightbox.open{ opacity:1; pointer-events:auto; }
 
 .lb-topbar{
-  display:grid; grid-template-columns:30vw 1fr 320px; align-items:center;
+  display:grid; grid-template-columns:150px 1fr 150px; align-items:center;
+  position:relative; z-index:5;
   padding:22px 28px; border-bottom:1px solid rgba(17,17,16,0.12);
   font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
   flex:0 0 auto;
@@ -223,12 +224,15 @@ body.lb-open{ overflow:hidden; }
 .lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .lb-stage-wrap{
-  flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:40px; min-width:0;
+  /* pin to the whole viewport so the photo is dead-centre of the SCREEN
+     (matching the approved layout); click-through except on the photo */
+  position:fixed; inset:0; z-index:3; pointer-events:none;
+  display:flex; align-items:center; justify-content:center; padding:40px;
 }
-/* the per-photo words live in the right info panel now, so hide the small
-   side-tags box and its mirror spacer to keep the photo centred */
-.lb-tags, .lb-stage::before{ display:none !important; }
-.lb-stage{ gap:0 !important; }
+.lb-stage-wrap .lb-stage, .lb-stage-wrap .lb-frame, .lb-stage-wrap .lb-tags{ pointer-events:auto; }
+/* keep the centring spacer hidden but SHOW the small tags box again, pinned
+   to the top beside the photo */
+.lb-stage::before{ display:none !important; }
 .lb-stage{
   position:relative; max-width:100%; max-height:100%;
   display:flex; align-items:center; justify-content:center; gap:24px;
@@ -261,28 +265,20 @@ body.lb-open{ overflow:hidden; }
 .lb-frame:not(.has-photo) img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .lb-tags{
-  /* EDIT: in normal flow beside the image (not absolutely positioned), so
-     it can never overlap the info panel; it shrinks and wraps on narrow
-     windows instead of sliding over other text */
-  flex:0 1 290px; min-width:140px;
-  /* EDIT: keep the tags pinned to the top even though the stage centres the
-     photo vertically */
-  align-self:flex-start;
+  /* float to the right of the centred photo without pushing it off-centre */
+  position:absolute; left:100%; top:0; margin-left:28px; width:220px;
 }
-/* EDIT: invisible spacer mirroring the tags box on the left, so the photo
-   sits dead centre (counter above it) instead of being pushed left */
-.lb-stage::before{ content:''; flex:0 1 290px; min-width:140px; align-self:flex-start; }
-/* EDIT: photos with no assigned caption show no tags box at all; the spacer
-   hides with it so the photo stays dead centre */
+/* no left spacer needed now the photo is screen-centred */
+.lb-stage::before{ display:none; }
+/* photos with no assigned caption simply show no tags box */
 .lb-stage.no-tags .lb-tags{ display:none; }
-.lb-stage.no-tags::before{ display:none; }
 .lb-tags p{
   font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
 }
 .lb-tags strong{ display:block; margin-bottom:8px; color:var(--ink); }
 
 @media (min-width:761px) and (max-width:1024px){
-  .lb-topbar{ grid-template-columns:100px 1fr 220px; padding:16px 20px; }
+  .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
   .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
   .lb-stage-wrap{ padding:20px; }
   .lb-frame.ratio-landscape{ width:min(58vw, 640px); }
@@ -315,9 +311,7 @@ body.lb-open{ overflow:hidden; }
 
 .lb-bottombar{
   display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
-  flex:0 0 auto;
-  /* centre Back over the stage area (between the 30vw collage and 320px info) */
-  padding-left:30vw; padding-right:320px;
+  flex:0 0 auto; position:relative; z-index:5;
 }
 .lb-bottombar button{
   background:none; border:none; cursor:pointer;
@@ -335,10 +329,10 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); }
   .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 44px); }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
-  /* EDIT: on phones the tags stack under the photo instead of beside it */
+  /* EDIT: on phones un-pin the stage and stack tags below the photo */
+  .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
   .lb-stage{ flex-direction:column; gap:14px; }
-  .lb-stage::before{ display:none; }
-  .lb-tags{ flex:0 0 auto; width:100%; min-width:0; }
+  .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
   .lb-info{ width:100%; flex:0 0 auto; border-left:none; border-top:1px solid rgba(17,17,16,0.12); padding:24px 28px; }
 }
 
