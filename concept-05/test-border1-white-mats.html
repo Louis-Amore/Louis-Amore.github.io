@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Louis Amore — FX3: Parallax Depth (strong)</title>
+<title>Border Test 1 — Random White Mats</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
@@ -354,10 +354,14 @@ body.lb-open{ overflow:hidden; }
   .corner-nav a, .corner-nav span{ font-size:9px; }
 }
 </style>
-<style id="fx-override">
+<style id="fx-border">
 
-.field-frame{ transition:box-shadow .3s ease; will-change:transform; }
-.field-frame:hover{ box-shadow:0 24px 54px rgba(20,19,16,.3); z-index:40; }
+.field-frame.border-thick, .field-frame.border-thin, .field-frame.border-gold,
+.field-frame.border-white, .field-frame.border-white-thin, .field-frame.border-white-thick{ border:none; }
+.field-frame.double-border{ border:none; padding:0; background:none; }
+.field-frame.double-border .db-inner{ border:none; }
+
+.field-frame{ background:#fff; box-sizing:content-box; box-shadow:0 12px 30px rgba(20,19,16,.16); }
 
 </style>
 </head>
@@ -945,21 +949,11 @@ body.lb-open{ overflow:hidden; }
 <script>
 
 (function(){
-  let ticking=false;
-  function parallax(){
-    const vh=innerHeight;
-    document.querySelectorAll('.field-frame').forEach(function(f){
-      // exaggerated depths so the layering is unmistakable
-      let depth=0.14;
-      if(f.classList.contains('w-l2')||f.classList.contains('w-t2')) depth=0.26;
-      if(f.classList.contains('w-l3')||f.classList.contains('w-t3')) depth=0.40;
-      const r=f.getBoundingClientRect(); const mid=r.top+r.height/2-vh/2;
-      f.style.transform='translateY('+(-mid*depth)+'px)';
-    });
-    ticking=false;
-  }
-  addEventListener('scroll',function(){ if(!ticking){requestAnimationFrame(parallax);ticking=true;} },{passive:true});
-  addEventListener('load',parallax); addEventListener('resize',parallax);
+  const widths=[3,6,10,10,18,18,26,40,60];
+  document.querySelectorAll('.field-frame').forEach(function(f,i){
+    const w=widths[(i*7+3)%widths.length];
+    f.style.border=w+'px solid #fff';
+  });
 })();
 
 </script>
