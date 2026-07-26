@@ -200,7 +200,7 @@ body.lb-open{ overflow:hidden; }
 .lb-topbar .lb-count{ text-align:center; }
 /* EDIT: make the topbar's left column match the collage rail width, so the
    middle (counter) column centres over the stage area, and Close stays right */
-.lb-topbar{ grid-template-columns:calc(32vw + 28px) 1fr 150px; }
+.lb-topbar{ grid-template-columns:150px 1fr 150px; position:relative; z-index:5; }
 @media (max-width:900px){
   .lb-topbar{ grid-template-columns:150px 1fr 150px; }
   .lb-bottombar{ padding-left:28px; }
@@ -330,9 +330,7 @@ body.lb-open{ overflow:hidden; }
 
 .lb-bottombar{
   display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
-  flex:0 0 auto;
-  /* EDIT: shift Back to centre over the stage area (right of the collage) */
-  padding-left:calc(32vw + 28px);
+  flex:0 0 auto; position:relative; z-index:5;
 }
 .lb-bottombar button{
   background:none; border:none; cursor:pointer;
@@ -371,11 +369,13 @@ body.lb-open{ overflow:hidden; }
 /* ---- COLLAGE RAIL TEST ---- */
 .lb-body{ gap:0; align-items:stretch; position:relative; }
 .lb-rail{ height:100%; overflow-y:auto; }
-/* stage sits in the flow, filling the space right of the collage, photo centred */
+/* stage pinned to the whole viewport, photo dead-centre of the SCREEN
+   regardless of the collage; click-through except on the photo itself */
 .lb-stage-wrap{
-  flex:1 1 auto; display:flex; align-items:center; justify-content:center;
-  padding:40px; min-width:0; height:100%;
+  position:fixed; inset:0; z-index:3; pointer-events:none;
+  display:flex; align-items:center; justify-content:center; padding:40px;
 }
+.lb-stage-wrap .lb-stage, .lb-stage-wrap .lb-frame{ pointer-events:auto; }
 /* hide the right info panel and side tags in this collage view so the photo
    centres cleanly in the space beside the collage */
 .lb-info{ display:none !important; }
