@@ -297,6 +297,9 @@ body.lb-open{ overflow:hidden; }
 .lb-info{
   width:320px; flex:0 0 320px; overflow-y:auto; padding:36px 32px;
   border-left:1px solid rgba(17,17,16,0.12);
+  /* the stage-wrap is position:fixed (out of flow), so without this the info
+     panel would slide left next to the collage — pin it to the far right */
+  margin-left:auto;
 }
 .lb-info .eyebrow{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px;
@@ -308,16 +311,6 @@ body.lb-open{ overflow:hidden; }
   font-size:14px; line-height:1.7; color:#3a3a38; margin:0;
 }
 .lb-info p + p{ margin-top:14px; }
-/* per-photo caption block at the bottom of the info panel */
-#lb-info-caption:not(:empty){
-  margin-top:26px; padding-top:20px; border-top:1px solid rgba(17,17,16,0.15);
-}
-#lb-info-caption .cap-name{
-  font-family:var(--font-display); font-weight:800; font-size:15px; color:var(--ink); margin:0 0 8px;
-}
-#lb-info-caption .cap-text{
-  font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
-}
 
 .lb-bottombar{
   display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
@@ -466,7 +459,6 @@ body.lb-open{ overflow:hidden; }
       <p class="eyebrow" id="lb-info-cat">Category</p>
       <h3 id="lb-info-title">Unconditional Love</h3>
       <div id="lb-info-body"></div>
-      <div id="lb-info-caption"></div>
     </div>
   </div>
   <div class="lb-bottombar">
@@ -896,14 +888,14 @@ body.lb-open{ overflow:hidden; }
 
     const caption = photoCaptions[info.label];
     const stageEl = lbFrame.closest('.lb-stage');
-    // per-photo caption now lives at the bottom of the right info panel
-    const lbInfoCaption = document.getElementById('lb-info-caption');
+    // small per-photo caption floats beside the photo (info panel keeps the
+    // big series write-up on the far right)
     if (caption) {
-      stageEl.classList.add('no-tags');
-      if (lbInfoCaption) lbInfoCaption.innerHTML = `<p class="cap-name">${caption.name}</p><p class="cap-text">${caption.text}</p>`;
+      stageEl.classList.remove('no-tags');
+      lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
     } else {
       stageEl.classList.add('no-tags');
-      if (lbInfoCaption) lbInfoCaption.innerHTML = '';
+      lbTagsText.innerHTML = '';
     }
 
     Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
