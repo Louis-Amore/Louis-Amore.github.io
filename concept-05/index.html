@@ -209,6 +209,7 @@ body.lb-open{ overflow:hidden; }
 .lb-rail{
   width:30vw; max-width:440px; flex:0 0 30vw; overflow-y:auto; padding:20px;
   display:block; position:relative; border-right:1px solid rgba(17,17,16,0.12);
+  height:100%; min-height:0;
 }
 .lb-thumb{
   position:absolute; margin:0; padding:0; background:#fff; cursor:pointer;
@@ -708,7 +709,13 @@ body.lb-open{ overflow:hidden; }
       t.style.top = colH[c] + 'px';
       colH[c] += h + gap;
     });
-    lbRail.style.minHeight = (Math.max(...colH) + pad) + 'px';
+    // give the rail a scrollable inner height via a spacer, and bound the rail
+    // itself to the body height so overflow-y:auto actually scrolls
+    let spacer = lbRail.querySelector('.rail-spacer');
+    if (!spacer) { spacer = document.createElement('div'); spacer.className = 'rail-spacer'; lbRail.appendChild(spacer); }
+    spacer.style.cssText = 'position:absolute; left:0; top:0; width:1px; pointer-events:none;';
+    spacer.style.height = (Math.max(...colH) + pad) + 'px';
+    lbRail.style.minHeight = '';
   }
   // relayout when images finish loading (ratios become known) and on resize
   window.addEventListener('resize', () => setTimeout(layoutCollageRail, 120));
@@ -907,6 +914,10 @@ body.lb-open{ overflow:hidden; }
     currentPos = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
     render();
   }
+
+  // clicking the stage photo advances to the next image in the category
+  lbFrame.style.cursor = 'pointer';
+  lbFrame.addEventListener('click', () => step(1));
 
   frameList.forEach((frame, i) => {
     frame.style.cursor = 'pointer';
