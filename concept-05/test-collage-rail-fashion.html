@@ -198,6 +198,13 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-topbar #lb-cat{ text-align:left; }
 .lb-topbar .lb-count{ text-align:center; }
+/* EDIT: make the topbar's left column match the collage rail width, so the
+   middle (counter) column centres over the stage area, and Close stays right */
+.lb-topbar{ grid-template-columns:calc(32vw + 28px) 1fr 150px; }
+@media (max-width:900px){
+  .lb-topbar{ grid-template-columns:150px 1fr 150px; }
+  .lb-bottombar{ padding-left:28px; }
+}
 .lb-topbar #lb-close{ justify-self:end; }
 .lb-topbar button{ background:none; border:none; color:var(--ink); font:inherit; cursor:pointer; }
 .lb-topbar button:hover{ color:var(--muted); }
@@ -324,6 +331,8 @@ body.lb-open{ overflow:hidden; }
 .lb-bottombar{
   display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
   flex:0 0 auto;
+  /* EDIT: shift Back to centre over the stage area (right of the collage) */
+  padding-left:calc(32vw + 28px);
 }
 .lb-bottombar button{
   background:none; border:none; cursor:pointer;
@@ -361,18 +370,15 @@ body.lb-open{ overflow:hidden; }
 
 /* ---- COLLAGE RAIL TEST ---- */
 .lb-body{ gap:0; align-items:stretch; position:relative; }
-/* collage rail: slightly narrower fixed slice, scrolls internally */
 .lb-rail{ height:100%; overflow-y:auto; }
-/* EDIT: the stage is pinned to the whole viewport and centred, so the photo is
-   ALWAYS dead-centre of the screen no matter the collage height. The collage
-   sits on the left underneath; the stage's own area is click-through except on
-   the photo itself so collage tiles stay clickable. */
+/* stage sits in the flow, filling the space right of the collage, photo centred */
 .lb-stage-wrap{
-  position:fixed; inset:0; z-index:2; pointer-events:none;
-  display:flex; align-items:center; justify-content:center; padding:40px;
+  flex:1 1 auto; display:flex; align-items:center; justify-content:center;
+  padding:40px; min-width:0; height:100%;
 }
-.lb-stage-wrap .lb-stage,
-.lb-stage-wrap .lb-frame{ pointer-events:auto; }
+/* hide the right info panel and side tags in this collage view so the photo
+   centres cleanly in the space beside the collage */
+.lb-info{ display:none !important; }
 .lb-stage-wrap .lb-tags,
 .lb-stage-wrap .lb-stage::before{ display:none !important; }
 .lb-stage-wrap .lb-stage{ gap:0; }
@@ -392,7 +398,6 @@ body.lb-open{ overflow:hidden; }
 .lb-rail .lb-thumb:hover{ transform:scale(1.03); box-shadow:0 14px 30px rgba(20,19,16,.26); z-index:5; }
 .lb-rail .lb-thumb.active{ outline:none; }
 .lb-rail .lb-thumb{ opacity:1; }
-.lb-rail .lb-thumb:not(.active){ opacity:.82; }
 .lb-rail .lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .lb-rail .lb-thumb .ph{ display:flex; align-items:center; justify-content:center; width:100%; height:100%;
   font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; background:#e7e4dc; }
