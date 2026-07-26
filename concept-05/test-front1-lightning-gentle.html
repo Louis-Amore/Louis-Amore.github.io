@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Front 1 — Lightning (gentle)</title>
+<title>Front 1 — Lightning (dense 2-col)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
@@ -981,29 +981,23 @@ body.lb-open{ overflow:hidden; }
   const field=document.querySelector('.field');
   const frames=[...document.querySelectorAll('.field-frame')];
   frames.forEach(f=>f.classList.add('in'));
-  const MAXLEFT=40;   // never past this % (keeps to left half)
-  const AMP=18;           // zig-zag amplitude in %
+  const COLS=[4,26];      // two column left% anchors
+  const GAPV=1.5;               // vertical gap in vh
   function layout(){
-    const vh=innerHeight, vw=innerWidth;
-    let top=6;                   // running vertical position (vh)
-    let dir=1, phase=0;
+    const vh=innerHeight;
+    const colTop=[6,6];            // running top per column (vh)
     frames.forEach(function(f,i){
-      // zig-zag horizontal: sine-like bounce between ~2% and MAXLEFT
-      phase+=1;
-      const t=(Math.sin(phase*0.7)+1)/2;        // 0..1 oscillation
-      const leftPct=2 + t*(MAXLEFT-2);
+      // pick the SHORTER column so they stay balanced & dense (masonry)
+      let c = colTop[0]<=colTop[1] ? 0 : 1;
+      // small zig jitter around the column anchor for the hand-placed look
+      const jitter=((i*37)%9)-4;   // -4..+4 %
       f.style.position='absolute';
-      f.style.left=leftPct+'%';
-      f.style.top=top+'vh';
-      // measure real height in vh to advance; tight runs vs gaps
-      const hpx=f.getBoundingClientRect().height;
-      const hvh=(hpx/vh)*100;
-      // mix: every 3th frame is tight to the previous, others get a gap
-      const tight = (i % 3 !== 0);
-      const gap = tight ? 3 : (3 + Math.random()*7);
-      top += hvh + gap;      // 0.62 overlap-in-flow feel but not overlapping visually
+      f.style.left=Math.max(1,COLS[c]+jitter)+'%';
+      f.style.top=colTop[c]+'vh';
+      const hvh=(f.getBoundingClientRect().height/vh)*100;
+      colTop[c]+=hvh+GAPV;
     });
-    field.style.height=(top+10)+'vh';
+    field.style.height=(Math.max(colTop[0],colTop[1])+8)+'vh';
   }
   function run(){ requestAnimationFrame(()=>requestAnimationFrame(layout)); }
   if(document.readyState==='complete') run(); else addEventListener('load',run);
