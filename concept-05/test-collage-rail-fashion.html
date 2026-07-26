@@ -233,6 +233,9 @@ body.lb-open{ overflow:hidden; }
 
 .lb-stage-wrap{
   flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:40px; min-width:0;
+  /* EDIT: fill the body height and clip, so the centred photo sits dead-centre
+     between the top counter and the Back bar regardless of collage height */
+  height:100%; overflow:hidden; align-self:stretch;
 }
 .lb-stage{
   position:relative; max-width:100%; max-height:100%;
@@ -357,7 +360,11 @@ body.lb-open{ overflow:hidden; }
 <style id="collage-rail">
 
 /* ---- COLLAGE RAIL TEST ---- */
-.lb-body{ gap:0; }
+.lb-body{ gap:0; align-items:stretch; }
+/* EDIT: collage rail scrolls within its own height instead of stretching the
+   whole body, so the stage column keeps full viewport height and its photo
+   stays vertically centred between the counter and the Back button */
+.lb-rail{ height:100%; overflow-y:auto; }
 .lb-rail{
   width:38vw; max-width:560px; flex:0 0 38vw;
   overflow-y:auto; padding:20px;
@@ -372,7 +379,9 @@ body.lb-open{ overflow:hidden; }
   opacity:1; border:none; transition:transform .25s ease, box-shadow .25s ease;
 }
 .lb-rail .lb-thumb:hover{ transform:scale(1.03); box-shadow:0 14px 30px rgba(20,19,16,.26); z-index:5; }
-.lb-rail .lb-thumb.active{ outline:3px solid var(--ink); outline-offset:2px; }
+.lb-rail .lb-thumb.active{ outline:none; }
+.lb-rail .lb-thumb{ opacity:1; }
+.lb-rail .lb-thumb:not(.active){ opacity:.82; }
 .lb-rail .lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .lb-rail .lb-thumb .ph{ display:flex; align-items:center; justify-content:center; width:100%; height:100%;
   font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; background:#e7e4dc; }
@@ -984,9 +993,8 @@ body.lb-open{ overflow:hidden; }
     const NCOLS = railW>420 ? 2 : (railW>240?2:1);
     const colW=(railW-gap*(NCOLS-1))/NCOLS;
     const colH=new Array(NCOLS).fill(0);
-    // account for the sticky heading height
-    const head=rail.querySelector('.collage-head');
-    const headH=head?head.offsetHeight+6:0;
+    // start columns at the top (no heading offset)
+    const headH=0;
     for(let i=0;i<NCOLS;i++) colH[i]=headH;
     tiles.forEach(function(t){
       // keep the tile's natural ratio: derive height from its ratio class/img
@@ -1012,10 +1020,6 @@ body.lb-open{ overflow:hidden; }
   // hook: whenever the rail is (re)built, add heading + relayout.
   const rail=document.getElementById('lb-rail');
   const mo=new MutationObserver(function(){
-    if(!rail.querySelector('.collage-head')){
-      const h=document.createElement('div'); h.className='collage-head'; h.textContent='Choose a photo';
-      rail.insertBefore(h, rail.firstChild);
-    }
     // relayout once images have size
     const imgs=[...rail.querySelectorAll('img')];
     let left=imgs.length;
