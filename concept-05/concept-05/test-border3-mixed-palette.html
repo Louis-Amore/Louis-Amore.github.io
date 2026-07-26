@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Louis Amore — Concept 05</title>
+<title>Border Test 3 — Mixed Palette</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
@@ -354,6 +354,16 @@ body.lb-open{ overflow:hidden; }
   .corner-nav a, .corner-nav span{ font-size:9px; }
 }
 </style>
+<style id="fx-border">
+
+.field-frame.border-thick, .field-frame.border-thin, .field-frame.border-gold,
+.field-frame.border-white, .field-frame.border-white-thin, .field-frame.border-white-thick{ border:none; }
+.field-frame.double-border{ border:none; padding:0; background:none; }
+.field-frame.double-border .db-inner{ border:none; }
+
+.field-frame{ box-sizing:content-box; box-shadow:0 10px 26px rgba(20,19,16,.14); }
+
+</style>
 </head>
 <body>
 
@@ -393,43 +403,43 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
   <figure class="field-frame w-t1 border-thick" data-num="01" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-02.jpg" alt="Image 02"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-white-thin" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh;"><img src="photos/interiors-03.jpg" alt="Image 03"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="photos/bali-04.jpg" alt="Image 04"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" style="left:9.7%; top:459.8vh;"><img src="photos/interiors-05.jpg" alt="Image 05"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" data-num="06" data-label="Image 06" style="left:67.2%; top:200.8vh;"><img src="photos/fashion-06.jpg" alt="Image 06"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Bali" style="left:24.6%; top:84.4vh;"><img src="photos/personal-08.jpg" alt="Image 08"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l3 border-thick" data-num="09" data-label="Image 09" data-subcat="Bali" style="left:41.1%; top:511.7vh;"><img src="photos/personal-image09.jpg" alt="Image 09"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 double-border" data-num="10" data-label="Image 10" style="left:65.9%; top:147.2vh; --db-outer:48px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/interiors-10.jpg" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="11" data-label="Image 11" style="left:47.4%; top:353.2vh;"><img src="photos/interiors-11.jpg" alt="Image 11"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.jpg" alt="Image 12"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.jpg" alt="Image 13"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="14" data-label="Image 14" style="left:42.6%; top:584.7vh;"><img src="photos/portrait-14.jpg" alt="Image 14"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" data-num="15" data-label="Image 15" style="left:68.0%; top:473.1vh;"><img src="photos/portrait-15.jpg" alt="Image 15"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l2 border-thick" data-label="Image 18" data-num="18" style="left:62.1%; top:0.7vh;"><img src="photos/fashion-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.jpg" alt="Image 19"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t2" data-num="21" data-label="Image 21" style="left:59.2%; top:406.0vh;"><img src="photos/fashion-17.jpg" alt="Image 21"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-02.jpg" alt="Image 02"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-white-thin" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh;"><img src="https://louis-amore.github.io/concept-05/photos/interiors-03.jpg" alt="Image 03"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="https://louis-amore.github.io/concept-05/photos/bali-04.jpg" alt="Image 04"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" style="left:9.7%; top:459.8vh;"><img src="https://louis-amore.github.io/concept-05/photos/interiors-05.jpg" alt="Image 05"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="06" data-label="Image 06" style="left:67.2%; top:200.8vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-06.jpg" alt="Image 06"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Bali" style="left:24.6%; top:84.4vh;"><img src="https://louis-amore.github.io/concept-05/photos/personal-08.jpg" alt="Image 08"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l3 border-thick" data-num="09" data-label="Image 09" data-subcat="Bali" style="left:41.1%; top:511.7vh;"><img src="https://louis-amore.github.io/concept-05/photos/personal-image09.jpg" alt="Image 09"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 double-border" data-num="10" data-label="Image 10" style="left:65.9%; top:147.2vh; --db-outer:48px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="https://louis-amore.github.io/concept-05/photos/interiors-10.jpg" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="11" data-label="Image 11" style="left:47.4%; top:353.2vh;"><img src="https://louis-amore.github.io/concept-05/photos/interiors-11.jpg" alt="Image 11"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="https://louis-amore.github.io/concept-05/photos/portrait-12.jpg" alt="Image 12"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-image13.jpg" alt="Image 13"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="14" data-label="Image 14" style="left:42.6%; top:584.7vh;"><img src="https://louis-amore.github.io/concept-05/photos/portrait-14.jpg" alt="Image 14"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="15" data-label="Image 15" style="left:68.0%; top:473.1vh;"><img src="https://louis-amore.github.io/concept-05/photos/portrait-15.jpg" alt="Image 15"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l2 border-thick" data-label="Image 18" data-num="18" style="left:62.1%; top:0.7vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg" alt="Image 18"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-16.jpg" alt="Image 19"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="https://louis-amore.github.io/concept-05/photos/personal-20.jpg" alt="Image 20"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2" data-num="21" data-label="Image 21" style="left:59.2%; top:406.0vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-17.jpg" alt="Image 21"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="22" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l3" data-num="23" data-label="Image 23" data-subcat="Landscape" style="left:2.8%; top:667.0vh;"><img src="photos/landscape-23.jpg" alt="Image 23"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" data-subcat="Landscape" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.jpg" alt="Image 24"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:26.2%; top:38.9vh;"><img src="photos/fashion-25.jpg" alt="Image 25"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l3" data-num="23" data-label="Image 23" data-subcat="Landscape" style="left:2.8%; top:667.0vh;"><img src="https://louis-amore.github.io/concept-05/photos/landscape-23.jpg" alt="Image 23"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" data-subcat="Landscape" style="left:2.0%; top:314.0vh;"><img src="https://louis-amore.github.io/concept-05/photos/personal-24.jpg" alt="Image 24"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:26.2%; top:38.9vh;"><img src="https://louis-amore.github.io/concept-05/photos/fashion-25.jpg" alt="Image 25"><figcaption>Fashion</figcaption></figure>
 
-  <figure class="field-frame w-t1" data-num="26" data-label="Image 26" style="left:2.8%; top:546.9vh;"><img src="photos/interiors-26.jpg" alt="Image 26"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" data-num="26" data-label="Image 26" style="left:2.8%; top:546.9vh;"><img src="https://louis-amore.github.io/concept-05/photos/interiors-26.jpg" alt="Image 26"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t2" data-num="28" style="left:72.1%; top:673.1vh;"><span>Image 28</span><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1" data-num="30" style="left:82.7%; top:347.6vh;"><span>Image 30</span><figcaption>Portrait</figcaption></figure>
 
-  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.jpg" alt="Image 07"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-label="Image 16" data-num="16" style="left:72.8%; top:69.0vh;"><img src="photos/interiors-16.jpg" alt="Image 16"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="17" data-label="Image 17" style="left:0.1%; top:194.3vh;"><img src="photos/commercial-17.jpg" alt="Image 17"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l2 border-thick" data-num="27" data-label="Image 27" data-subcat="Landscape" style="left:4.0%; top:413.2vh; border-width:24px;"><img src="photos/landscape-27.jpg" alt="Image 27"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="https://louis-amore.github.io/concept-05/photos/portrait-07.jpg" alt="Image 07"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-label="Image 16" data-num="16" style="left:72.8%; top:69.0vh;"><img src="https://louis-amore.github.io/concept-05/photos/interiors-16.jpg" alt="Image 16"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-thin" data-num="17" data-label="Image 17" style="left:0.1%; top:194.3vh;"><img src="https://louis-amore.github.io/concept-05/photos/commercial-17.jpg" alt="Image 17"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l2 border-thick" data-num="27" data-label="Image 27" data-subcat="Landscape" style="left:4.0%; top:413.2vh; border-width:24px;"><img src="https://louis-amore.github.io/concept-05/photos/landscape-27.jpg" alt="Image 27"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 border-gold" data-num="29" style="left:0.2%; top:611.4vh;"><span>Image 29</span><figcaption>Fashion</figcaption></figure>
 
-  <figure class="field-frame w-t1 border-thick" data-num="31" data-label="Image 31" style="left:30.3%; top:360.3vh; border-width:24px;"><img src="photos/commercial-31.jpg" alt="Image 31"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" data-subcat="Landscape" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.jpg" alt="Image 32"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.jpg" alt="Image 33"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" data-num="34" data-label="Image 34" style="left:35.4%; top:473.3vh;"><img src="photos/commercial-34.jpg" alt="Image 34"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t1 double-border" data-num="35" data-label="Image 35" style="left:22.0%; top:527.3vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/portrait-35.jpg" alt="Image 35"></div><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-num="31" data-label="Image 31" style="left:30.3%; top:360.3vh; border-width:24px;"><img src="https://louis-amore.github.io/concept-05/photos/commercial-31.jpg" alt="Image 31"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" data-subcat="Landscape" style="left:26.3%; top:2.5vh;"><img src="https://louis-amore.github.io/concept-05/photos/personal-32.jpg" alt="Image 32"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="https://louis-amore.github.io/concept-05/photos/portrait-33.jpg" alt="Image 33"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="34" data-label="Image 34" style="left:35.4%; top:473.3vh;"><img src="https://louis-amore.github.io/concept-05/photos/commercial-34.jpg" alt="Image 34"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t1 double-border" data-num="35" data-label="Image 35" style="left:22.0%; top:527.3vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="https://louis-amore.github.io/concept-05/photos/portrait-35.jpg" alt="Image 35"></div><figcaption>Portrait</figcaption></figure>
 </div>
 
 <div class="statement">
@@ -936,5 +946,20 @@ body.lb-open{ overflow:hidden; }
   });
 </script>
 
+<script>
+
+(function(){
+  const styles=[
+    ['#fff',6],['#fff',22],['#111110',2],['#111110',14],
+    ['#a9852f',6],['#fff',40],['#111110',30],['#a9852f',3],
+    ['#fff',10],['#111110',4]
+  ];
+  document.querySelectorAll('.field-frame').forEach(function(f,i){
+    const s=styles[(i*3+1)%styles.length];
+    f.style.background=s[0]; f.style.border=s[1]+'px solid '+s[0];
+  });
+})();
+
+</script>
 </body>
 </html>
