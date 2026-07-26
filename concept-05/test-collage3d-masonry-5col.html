@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Collage 3 — Dense Masonry (3 col, no overlap)</title>
+<title>Collage 3d — Very Dense Masonry (5 col, no overlap)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
@@ -358,7 +358,7 @@ body.lb-open{ overflow:hidden; }
 
 .fixed-name{ mix-blend-mode:difference; color:#fff; z-index:5; }
 .field-frame{ transition:transform .3s ease, box-shadow .3s ease; }
-.field-frame:hover{ z-index:40; transform:scale(1.03); box-shadow:0 20px 44px rgba(20,19,16,.28); }
+.field-frame:hover{ z-index:40; transform:scale(1.04); box-shadow:0 18px 40px rgba(20,19,16,.28); }
 
 </style>
 </head>
@@ -946,7 +946,7 @@ body.lb-open{ overflow:hidden; }
 <script>
 
 (function(){
-  const NCOLS=3, GAP=2.5;
+  const NCOLS=5, GAP=1.6;
   const field=document.querySelector('.field');
   const frames=[...document.querySelectorAll('.field-frame')];
   // reveal immediately (don't wait for scroll observer) so heights measure right

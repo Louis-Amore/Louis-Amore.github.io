@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Collage 3 — Dense Masonry (3 col, no overlap)</title>
+<title>Collage 3c — Dense Masonry + Name Left (no overlap)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
@@ -356,7 +356,7 @@ body.lb-open{ overflow:hidden; }
 </style>
 <style id="fx-collage">
 
-.fixed-name{ mix-blend-mode:difference; color:#fff; z-index:5; }
+.fixed-name{ top:50%; left:4%; transform:translateY(-50%); text-align:left; z-index:5; }
 .field-frame{ transition:transform .3s ease, box-shadow .3s ease; }
 .field-frame:hover{ z-index:40; transform:scale(1.03); box-shadow:0 20px 44px rgba(20,19,16,.28); }
 
@@ -946,32 +946,24 @@ body.lb-open{ overflow:hidden; }
 <script>
 
 (function(){
-  const NCOLS=3, GAP=2.5;
+  const NCOLS=4, GAP=2.0, LEFTZONE=24; // name zone %
   const field=document.querySelector('.field');
   const frames=[...document.querySelectorAll('.field-frame')];
-  // reveal immediately (don't wait for scroll observer) so heights measure right
   frames.forEach(f=>f.classList.add('in'));
   function layout(){
-    const vw=innerWidth, vh=innerHeight;
-    const pad=2.5;                       // side padding %
-    const usable=100-pad*2;
+    const vh=innerHeight;
+    const pad=2, right=100-pad, usable=right-LEFTZONE;
     const colW=usable/NCOLS;
-    const colTop=new Array(NCOLS).fill(4);   // running top per column, in vh
-    // order frames tallest-first? no—keep source order for balanced feel
+    const colTop=new Array(NCOLS).fill(4);
     frames.forEach(function(f){
-      // shortest column gets the next frame (classic masonry balance)
       let c=0; for(let k=1;k<NCOLS;k++) if(colTop[k]<colTop[c]) c=k;
-      const leftPct=pad + c*colW + (colW*0.06);   // small inset within column
+      const leftPct=LEFTZONE + c*colW + colW*0.06;
       f.style.left=leftPct+'%';
       f.style.top=colTop[c]+'vh';
-      // set width to fit the column so nothing spills sideways
-      f.style.width='min('+(colW*0.88)+'vw, 520px)';
-      // measure real rendered height, convert to vh, advance the column
-      const hpx=f.getBoundingClientRect().height;
-      const hvh=(hpx/vh)*100;
+      f.style.width='min('+(colW*0.88)+'vw, 440px)';
+      const hvh=(f.getBoundingClientRect().height/vh)*100;
       colTop[c]+=hvh+GAP;
     });
-    // set field height to the tallest column so scroll ends cleanly
     field.style.height=(Math.max(...colTop)+6)+'vh';
   }
   function run(){ requestAnimationFrame(function(){ requestAnimationFrame(layout); }); }
