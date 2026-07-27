@@ -788,30 +788,65 @@ body.lb-open{ overflow:hidden; }
     if (!tiles.length) return;
     const pad = 20, gap = 12;
     const railW = lbRail.clientWidth - pad * 2;
-    const NCOLS = railW > 300 ? 2 : 1;
-    const colW = (railW - gap * (NCOLS - 1)) / NCOLS;
-    const colH = new Array(NCOLS).fill(0);
-    tiles.forEach((t) => {
-      let ratio = 1.5;
-      if (t.classList.contains('ratio-portrait')) ratio = 2 / 3;
+    const visibleH = lbRail.clientHeight - pad * 2;
+
+    const ratios = tiles.map(t => {
       const img = t.querySelector('img');
-      if (img && img.naturalWidth) ratio = img.naturalWidth / img.naturalHeight;
-      const h = colW / ratio;
-      let c = 0; for (let k = 1; k < NCOLS; k++) if (colH[k] < colH[c]) c = k;
-      t.style.width = colW + 'px';
-      t.style.height = h + 'px';
-      t.style.left = (pad + c * (colW + gap)) + 'px';
-      t.style.top = colH[c] + 'px';
-      colH[c] += h + gap;
+      if (img && img.naturalWidth) return img.naturalWidth / img.naturalHeight;
+      return t.classList.contains('ratio-portrait') ? 2 / 3 : 1.5;
     });
-    // give the rail a scrollable inner height via a spacer, and bound the rail
-    // itself to the body height so overflow-y:auto actually scrolls
+
+    // pack tiles into n columns at a given tile width (shortest column wins)
+    function pack(ncols, colW) {
+      const colH = new Array(ncols).fill(0);
+      const pos = ratios.map(r => {
+        const th = colW / r;
+        let c = 0; for (let k = 1; k < ncols; k++) if (colH[k] < colH[c]) c = k;
+        const top = colH[c];
+        colH[c] += th + gap;
+        return { c, top, h: th };
+      });
+      return { pos, height: Math.max(...colH) - gap };
+    }
+
+    let ncols = railW > 300 ? 2 : 1;
+    let colW = (railW - gap * (ncols - 1)) / ncols;
+    let laid = pack(ncols, colW);
+
+    // EDIT: a short series used to leave the rail half empty, which made a
+    // tight edit look thin rather than deliberate. If a set doesn't fill the
+    // panel, fall back to fewer, LARGER tiles sized to fill the height.
+    // Big sets are untouched — they still scroll at the normal tile size.
+    if (laid.height < visibleH) {
+      for (let n = 1; n < ncols; n++) {
+        const maxW = (railW - gap * (n - 1)) / n;
+        const base = pack(n, maxW);
+        if (!base.height) continue;
+        const w = Math.min(maxW, maxW * (visibleH / base.height));
+        if (w > colW) { ncols = n; colW = w; laid = pack(n, w); }
+      }
+    }
+
+    // centre a short set rather than stranding it at the top of the panel
+    const offset = Math.max(0, (visibleH - laid.height) / 2);
+    const totalW = ncols * colW + gap * (ncols - 1);
+    const left0 = pad + Math.max(0, (railW - totalW) / 2);
+
+    tiles.forEach((t, i) => {
+      const q = laid.pos[i];
+      t.style.width = colW + 'px';
+      t.style.height = q.h + 'px';
+      t.style.left = (left0 + q.c * (colW + gap)) + 'px';
+      t.style.top = (offset + q.top) + 'px';
+    });
+
     let spacer = lbRail.querySelector('.rail-spacer');
     if (!spacer) { spacer = document.createElement('div'); spacer.className = 'rail-spacer'; lbRail.appendChild(spacer); }
     spacer.style.cssText = 'position:absolute; left:0; top:0; width:1px; pointer-events:none;';
-    spacer.style.height = (Math.max(...colH) + pad) + 'px';
+    spacer.style.height = (offset + laid.height + pad) + 'px';
     lbRail.style.minHeight = '';
   }
+
   // relayout when images finish loading (ratios become known) and on resize
   window.addEventListener('resize', () => setTimeout(layoutCollageRail, 120));
   document.addEventListener('load', (e) => {
