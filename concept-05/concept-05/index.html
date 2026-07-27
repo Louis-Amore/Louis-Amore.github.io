@@ -255,11 +255,20 @@ body.lb-open{ overflow:hidden; }
      ratio stays centred over the counter. The mat adds 60px on every side. */
   border:60px solid #ffffff; box-sizing:content-box;
   height:auto; max-height:calc(61.05vh);
-  max-width:calc(100% - 120px);
+  /* EDIT: cap width to the space BETWEEN the collage (30vw, max 440px on the
+     left) and the info panel (320px on the right), minus the 120px mat and
+     some breathing room — so on a narrow/snapped window the photo shrinks to
+     fit instead of overflowing the panels. */
+  max-width:calc(100vw - 30vw - 320px - 120px - 80px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
-/* the image itself carries the height cap; width follows naturally */
-.lb-frame.has-photo img{ max-height:calc(61.05vh - 120px); width:auto; height:auto; max-width:100%; display:block; }
+/* the image itself carries BOTH caps; width follows naturally but never
+   exceeds the available middle space */
+.lb-frame.has-photo img{
+  max-height:calc(61.05vh - 120px);
+  max-width:calc(100vw - 30vw - 320px - 200px);
+  width:auto; height:auto; display:block;
+}
 /* EDIT: We Shall Remember sized 7% smaller than the other categories */
 .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 120px); }
 .lb-frame.ratio-landscape:not(.has-photo){ width:min(70vw, 900px); aspect-ratio:3/2; }
@@ -291,7 +300,7 @@ body.lb-open{ overflow:hidden; }
   .lb-info h3{ font-size:21px; }
   .lb-info p{ font-size:13px; }
   .lb-frame{ border-width:40px; }
-  .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); }
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 140px); }
   .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
   .lb-tags{ flex-basis:170px; min-width:120px; }
   .lb-stage::before{ flex-basis:170px; min-width:120px; }
@@ -392,7 +401,7 @@ body.lb-open{ overflow:hidden; }
 </div>
 
 <div class="field" id="field">
-  <figure class="field-frame w-t1 border-thick" data-num="01" style="left:80.3%; top:294.3vh;"><span>Image 01</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-thick" data-num="01" data-label="Image 01" style="left:80.3%; top:294.3vh;"><img src="photos/commercial-50.jpg" alt="Image 01" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-02.jpg" alt="Image 02" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-white-thin" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh;"><img src="photos/interiors-03.jpg" alt="Image 03" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="photos/bali-04.jpg" alt="Image 04" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
@@ -410,7 +419,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.jpg" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.jpg" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t2" data-num="21" data-label="Image 21" style="left:59.2%; top:406.0vh;"><img src="photos/fashion-17.jpg" alt="Image 21" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="22" style="left:74.9%; top:599.3vh;"><span>Image 22</span><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l2 border-thick" data-num="22" data-label="Image 22" style="left:74.9%; top:599.3vh;"><img src="photos/commercial-51.jpg" alt="Image 22" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l3" data-num="23" data-label="Image 23" data-subcat="Landscape" style="left:2.8%; top:667.0vh;"><img src="photos/landscape-23.jpg" alt="Image 23" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" data-subcat="Landscape" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.jpg" alt="Image 24" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:26.2%; top:38.9vh;"><img src="photos/fashion-25.jpg" alt="Image 25" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
@@ -423,7 +432,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t2 border-gold" data-label="Image 16" data-num="16" style="left:72.8%; top:69.0vh;"><img src="photos/interiors-16.jpg" alt="Image 16" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="17" data-label="Image 17" style="left:0.1%; top:194.3vh;"><img src="photos/commercial-17.jpg" alt="Image 17" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l2 border-thick" data-num="27" data-label="Image 27" data-subcat="Landscape" style="left:4.0%; top:413.2vh; border-width:24px;"><img src="photos/landscape-27.jpg" alt="Image 27" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-gold" data-num="29" style="left:0.2%; top:611.4vh;"><span>Image 29</span><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l2 border-gold" data-num="29" data-label="Image 29" style="left:0.2%; top:611.4vh;"><img src="photos/fashion-41.jpg" alt="Image 29" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
 
   <figure class="field-frame w-t1 border-thick" data-num="31" data-label="Image 31" style="left:30.3%; top:360.3vh; border-width:24px;"><img src="photos/commercial-31.jpg" alt="Image 31" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" data-subcat="Landscape" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.jpg" alt="Image 32" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
@@ -510,6 +519,13 @@ body.lb-open{ overflow:hidden; }
   // touching the homepage. Give each one a label (used for project/
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
+    'Commercial': [
+      { label: 'Commercial 52', ratio: 'landscape', src: 'photos/commercial-52.jpg' },
+      { label: 'Commercial 53', ratio: 'landscape', src: 'photos/commercial-53.jpg' },
+      { label: 'Commercial 54', ratio: 'landscape', src: 'photos/commercial-54.jpg' },
+      { label: 'Commercial 55', ratio: 'landscape', src: 'photos/commercial-55.jpg' },
+      { label: 'Commercial 56', ratio: 'landscape', src: 'photos/commercial-56.jpg' },
+    ],
     'Portrait': [
       { label: 'Extra Portrait 1', ratio: 'portrait' },
       { label: 'Extra Portrait 2', ratio: 'landscape' },
@@ -528,6 +544,7 @@ body.lb-open{ overflow:hidden; }
       { label: 'Fashion 15', ratio: 'portrait', src: 'photos/fashion-15.jpg' },
       { label: 'Fashion 19', ratio: 'portrait', src: 'photos/fashion-19.jpg' },
       { label: 'Fashion 40', ratio: 'portrait', src: 'photos/fashion-40.jpg' },
+      { label: 'Fashion 42', ratio: 'portrait', src: 'photos/fashion-42.jpg' },
     ],
   };
 
