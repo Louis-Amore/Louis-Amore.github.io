@@ -90,47 +90,37 @@ a{ color:inherit; text-decoration:none; }
 .quick-subcats button{ font-size:11px; padding:3px 0; }
 
 /* scrolling field of scattered work */
-/* ---------- INDEX OVERLAY (front-screen menu) ----------
-   Replaces the old top-left quick-cats stack. A single word opens a
-   full-screen index; hovering a line summons a cluster of that set's photos.
-   NOTE: closed state uses visibility:hidden, not just pointer-events:none —
-   a child that sets pointer-events:auto would otherwise still swallow clicks
-   on the field beneath (the bug that killed the field frames before). */
-.index-open{
-  position:fixed; left:28px; top:52px; z-index:41;
-  background:none; border:0; cursor:pointer; padding:6px 2px;
-  font-family:var(--font-display); font-weight:800; font-size:13px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
-  transition:color .2s;
+/* ---------- INDEX (permanent left column) ----------
+   The category list sits fixed on the left of the main screen at all times.
+   Photos never reach it because .field-inner is inset past it — see
+   --field-left below, which is sized to the widest row. */
+.idx-list{
+  position:fixed; left:40px; top:50%; transform:translateY(-50%);
+  z-index:41; pointer-events:auto;
 }
-.index-open:hover, .index-open[aria-expanded="true"]{ color:var(--ink); }
-
-.index-overlay{
-  position:fixed; inset:0; z-index:90; background:#0e0e0d; color:#f5f4f0;
-  opacity:0; visibility:hidden; transition:opacity .34s ease, visibility 0s linear .34s;
+.idx-row{
+  display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
+  color:var(--ink); font-family:var(--font-display); font-weight:900; text-transform:uppercase;
+  font-size:clamp(19px, 1.9vw, 27px); line-height:1.0; letter-spacing:-.02em;
+  padding:2px 0; opacity:.5; transition:opacity .22s;
 }
-.index-overlay.open{ opacity:1; visibility:visible; transition:opacity .34s ease, visibility 0s linear 0s; }
-
-.idx-list{ position:absolute; top:50%; left:40px; transform:translateY(-50%); }
-.idx-row{ display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
-  color:#f5f4f0; font-family:var(--font-display); font-weight:900; text-transform:uppercase;
-  font-size:clamp(24px,3.2vw,46px); line-height:.98; letter-spacing:-.02em; padding:3px 0;
-  opacity:.34; transition:opacity .22s; }
 .idx-row:hover, .idx-row.on{ opacity:1; }
-.idx-row .idx-n{ font-family:var(--font-mono); font-weight:400; font-size:10px;
-  letter-spacing:.1em; vertical-align:super; margin-left:10px; color:#b8a06a; }
-.idx-subs{ display:none; padding:2px 0 10px; }
+.idx-row .idx-n{
+  font-family:var(--font-mono); font-weight:400; font-size:10px; letter-spacing:.1em;
+  vertical-align:super; margin-left:9px; color:#8a7132;
+}
+.idx-subs{ display:none; padding:3px 0 9px; }
 .idx-subs.open{ display:block; }
-.idx-sub{ display:block; background:none; border:0; cursor:pointer; color:var(--muted);
+.idx-sub{
+  display:block; background:none; border:0; cursor:pointer; color:#5f5c55;
   font-family:var(--font-mono); font-size:11px; letter-spacing:.13em; text-transform:uppercase;
-  padding:5px 0 5px 2px; transition:color .2s; }
-.idx-sub:hover, .idx-sub.on{ color:#f5f4f0; }
-.idx-sub i{ font-style:normal; color:#b8a06a; margin-left:7px; font-size:9px; }
-
-body.idx-open{ overflow:hidden; }
+  padding:5px 0 5px 2px; transition:color .2s;
+}
+.idx-sub:hover, .idx-sub.on{ color:var(--ink); }
+.idx-sub i{ font-style:normal; color:#8a7132; margin-left:7px; font-size:9px; }
 @media (max-width:820px){
-  .idx-list{ position:static; transform:none; padding:70px 24px 40px; }
-  .index-overlay{ overflow-y:auto; }
+  .idx-list{ position:static; transform:none; padding:66px 24px 10px; }
+  .idx-row{ font-size:24px; opacity:1; }
 }
 
 .field{ position:relative; height:745vh; margin-top:6vh; }
@@ -141,7 +131,10 @@ body.idx-open{ overflow:hidden; }
    clearance from the nav; --field-right keeps wide frames on screen. */
 .field-inner{
   position:absolute; top:0; bottom:0;
-  left:var(--field-left, 215px); right:var(--field-right, 40px);
+  /* the gutter tracks the list's own scaling (rows are clamp(19,1.9vw,27)),
+     so the photos give up exactly as much room as the type needs and no more */
+  left:var(--field-left, clamp(250px, calc(16.2vw + 76px), 300px));
+  right:var(--field-right, 40px);
   container-type:inline-size;
 }
 @media (max-width:760px){
@@ -445,11 +438,7 @@ body.lb-open{ overflow:hidden; }
   </div>
 </div>
 
-<button class="index-open" id="index-open" aria-expanded="false" aria-controls="index-overlay">Index</button>
-
-<div class="index-overlay" id="index-overlay" role="dialog" aria-modal="true" aria-label="Browse the work">
-  <nav class="idx-list" id="idx-list"></nav>
-</div>
+<nav class="idx-list" id="idx-list"></nav>
 
 <div class="field" id="field">
 <div class="field-inner">
@@ -1104,8 +1093,6 @@ body.lb-open{ overflow:hidden; }
     ['Interiors', []],
     ['Personal', ['UL', 'Bali', 'Landscape', 'WSR', 'Vape', 'Street']]
   ];
-  const idxOverlay = document.getElementById('index-overlay');
-  const idxOpenBtn = document.getElementById('index-open');
   const idxList    = document.getElementById('idx-list');
 
   const fieldInfos = () => frameList.map(f => frameInfo(f));
@@ -1162,7 +1149,7 @@ body.lb-open{ overflow:hidden; }
       preview();
       // categories with subcategories only reveal their choices, exactly as
       // the old nav behaved — they never open an unfiltered gallery
-      if (!subs.length) { closeIndex(); openLightboxByCategory(cat); }
+      if (!subs.length) { openLightboxByCategory(cat); }
     });
   });
 
@@ -1170,30 +1157,7 @@ body.lb-open{ overflow:hidden; }
     const preview = () => { idxClear('.idx-sub'); b.classList.add('on'); };
     b.addEventListener('mouseenter', preview);
     b.addEventListener('focus', preview);
-    b.addEventListener('click', () => { closeIndex(); openLightboxBySubcat(b.dataset.subcat); });
-  });
-
-  function openIndex() {
-    idxOverlay.classList.add('open');
-    idxOpenBtn.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('idx-open');
-    const first = idxList.querySelector('.idx-row');
-    if (first) { first.focus(); }
-  }
-  function closeIndex() {
-    idxOverlay.classList.remove('open');
-    idxOpenBtn.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('idx-open');
-  }
-  idxOpenBtn.addEventListener('click', () => {
-    idxOverlay.classList.contains('open') ? closeIndex() : openIndex();
-  });
-  // no Close button — clicking anywhere off the list dismisses it, as does Esc
-  idxOverlay.addEventListener('click', e => {
-    if (!e.target.closest('.idx-list')) { closeIndex(); idxOpenBtn.focus(); }
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && idxOverlay.classList.contains('open')) { closeIndex(); idxOpenBtn.focus(); }
+    b.addEventListener('click', () => { openLightboxBySubcat(b.dataset.subcat); });
   });
 
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
