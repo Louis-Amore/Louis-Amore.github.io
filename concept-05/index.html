@@ -48,12 +48,6 @@ a{ color:inherit; text-decoration:none; }
   font-family:var(--font-mono); color:var(--muted); font-size:11px; letter-spacing:.16em; font-weight:700;
   text-transform:uppercase; text-align:center; margin-top:14px;
 }
-.fixed-name .hero-statement{
-  font-family:var(--font-display); font-weight:600; font-style:italic; color:var(--ink);
-  font-size:clamp(13px,1.4vw,17px); text-align:center; max-width:26ch; margin:16px auto 0;
-  line-height:1.4;
-}
-
 /* fixed corner nav, same blend trick so it's always legible */
 .corner-nav{
   position:fixed; top:26px; left:0; right:0; z-index:41; pointer-events:none;
@@ -61,33 +55,6 @@ a{ color:inherit; text-decoration:none; }
 }
 .corner-nav a, .corner-nav span{ color:#fff; font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; pointer-events:auto; }
 .corner-nav .links{ display:flex; gap:18px; }
-
-.quick-cats{
-  position:fixed; top:52px; left:28px; z-index:41; pointer-events:auto;
-  /* EDIT: modest spacing between category buttons; hit areas stay padded */
-  display:flex; flex-direction:column; gap:6px;
-}
-.quick-cats button{
-  background:none; border:none; padding:3px 0; margin:0; cursor:pointer; text-align:left;
-  font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:.06em; text-transform:uppercase;
-  color:var(--ink); mix-blend-mode:normal; transition:color .15s ease;
-}
-.quick-cats button:hover{ color:var(--ink); }
-
-.quick-cats-row{ display:flex; align-items:center; gap:8px; }
-.quick-cats-toggle{
-  font-size:12px !important; padding:3px 8px !important;
-  color:var(--ink); transition:transform .15s ease, color .15s ease;
-}
-.quick-cats-toggle.open{ transform:rotate(90deg); }
-.quick-subcats{
-  display:none; flex-direction:column; gap:4px; margin:6px 0 0 12px;
-  border-left:1px solid rgba(17,17,16,0.15); padding-left:10px;
-}
-.quick-subcats.open{ display:flex; }
-/* EDIT: subcategory buttons were 9px and fiddly to click — now larger with
-   padded hit areas */
-.quick-subcats button{ font-size:11px; padding:3px 0; }
 
 /* scrolling field of scattered work */
 /* ---------- INDEX (permanent left column) ----------
@@ -179,34 +146,11 @@ a{ color:inherit; text-decoration:none; }
 }
 .field-frame:hover figcaption{ opacity:1; }
 
-.row{ display:flex; }
-.gap-a{ margin-bottom:0.1vh; }
-.gap-b{ margin-bottom:0.3vh; }
-.gap-c{ margin-bottom:0.25vh; }
-.gap-d{ margin-bottom:0.5vh; }
-.gap-e{ margin-bottom:0.05vh; }
-.row.left{ justify-content:flex-start; }
-.row.right{ justify-content:flex-end; }
-.row.center{ justify-content:center; }
-.row.split{ justify-content:space-between; align-items:flex-start; padding:0 4vw; }
-
-.w-xs{ width:min(9vw, 110px); aspect-ratio:2/3; }
-.w-sm{ width:min(12vw, 150px); aspect-ratio:2/3; }
-.w-md{ width:min(19vw, 240px); aspect-ratio:3/2; }
-.w-lg{ width:min(25vw, 320px); aspect-ratio:3/2; }
-.w-xl{ width:min(30vw, 380px); aspect-ratio:3/2; }
-.w-tall{ width:min(10vw, 125px); aspect-ratio:2/3; }
-.w-2xs{ width:min(7vw, 90px); aspect-ratio:2/3; }
-.w-2xl{ width:min(34vw, 440px); aspect-ratio:3/2; }
-.w-med2{ width:min(23vw, 290px); aspect-ratio:3/2; }
 .w-t1{ width:min(17cqw, 220px); aspect-ratio:2/3; }
 .w-t2{ width:min(24cqw, 310px); aspect-ratio:2/3; }
 .w-l1{ width:min(30cqw, 390px); aspect-ratio:3/2; }
 .w-l2{ width:min(42cqw, 540px); aspect-ratio:3/2; }
 .w-l3{ width:min(54cqw, 700px); aspect-ratio:3/2; }
-
-.pad-l{ padding-left:6vw; }
-.pad-r{ padding-right:6vw; }
 
 .field-frame.border-thick{ border:12px solid #111110; }
 .field-frame.border-thin{ border:2px solid #111110; }
@@ -238,10 +182,6 @@ footer{
   display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px;
   letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex-wrap:wrap; gap:12px;
 }
-.footer-links{ display:flex; gap:22px; }
-.footer-links a{ color:var(--muted); border-bottom:1px solid transparent; transition:color .15s ease, border-color .15s ease; }
-.footer-links a:hover{ color:var(--ink); border-color:var(--ink); }
-
 /* --------------------------------------------------------------------- */
 /* Lightbox — white rail + main image view                                */
 /* --------------------------------------------------------------------- */
