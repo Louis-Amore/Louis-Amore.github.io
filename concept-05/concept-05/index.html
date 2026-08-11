@@ -48,12 +48,6 @@ a{ color:inherit; text-decoration:none; }
   font-family:var(--font-mono); color:var(--muted); font-size:11px; letter-spacing:.16em; font-weight:700;
   text-transform:uppercase; text-align:center; margin-top:14px;
 }
-.fixed-name .hero-statement{
-  font-family:var(--font-display); font-weight:600; font-style:italic; color:var(--ink);
-  font-size:clamp(13px,1.4vw,17px); text-align:center; max-width:26ch; margin:16px auto 0;
-  line-height:1.4;
-}
-
 /* fixed corner nav, same blend trick so it's always legible */
 .corner-nav{
   position:fixed; top:26px; left:0; right:0; z-index:41; pointer-events:none;
@@ -61,33 +55,6 @@ a{ color:inherit; text-decoration:none; }
 }
 .corner-nav a, .corner-nav span{ color:#fff; font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; pointer-events:auto; }
 .corner-nav .links{ display:flex; gap:18px; }
-
-.quick-cats{
-  position:fixed; top:52px; left:28px; z-index:41; pointer-events:auto;
-  /* EDIT: modest spacing between category buttons; hit areas stay padded */
-  display:flex; flex-direction:column; gap:6px;
-}
-.quick-cats button{
-  background:none; border:none; padding:3px 0; margin:0; cursor:pointer; text-align:left;
-  font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:.06em; text-transform:uppercase;
-  color:var(--ink); mix-blend-mode:normal; transition:color .15s ease;
-}
-.quick-cats button:hover{ color:var(--ink); }
-
-.quick-cats-row{ display:flex; align-items:center; gap:8px; }
-.quick-cats-toggle{
-  font-size:12px !important; padding:3px 8px !important;
-  color:var(--ink); transition:transform .15s ease, color .15s ease;
-}
-.quick-cats-toggle.open{ transform:rotate(90deg); }
-.quick-subcats{
-  display:none; flex-direction:column; gap:4px; margin:6px 0 0 12px;
-  border-left:1px solid rgba(17,17,16,0.15); padding-left:10px;
-}
-.quick-subcats.open{ display:flex; }
-/* EDIT: subcategory buttons were 9px and fiddly to click — now larger with
-   padded hit areas */
-.quick-subcats button{ font-size:11px; padding:3px 0; }
 
 /* scrolling field of scattered work */
 /* ---------- INDEX (permanent left column) ----------
@@ -113,8 +80,8 @@ a{ color:inherit; text-decoration:none; }
 .idx-subs.open{ display:block; }
 .idx-sub{
   display:block; background:none; border:0; cursor:pointer; color:#5f5c55;
-  font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:-.005em;
-  text-transform:uppercase; padding:6px 0 6px 2px; transition:color .2s;
+  font-family:var(--font-display); font-weight:900; letter-spacing:-.02em;
+  text-transform:uppercase; font-size:15px; padding:6px 0 6px 2px; transition:color .2s;
 }
 .idx-sub:hover, .idx-sub.on{ color:var(--ink); }
 .idx-sub i{ font-style:normal; font-family:var(--font-mono); font-weight:400; color:#8a7132;
@@ -179,34 +146,11 @@ a{ color:inherit; text-decoration:none; }
 }
 .field-frame:hover figcaption{ opacity:1; }
 
-.row{ display:flex; }
-.gap-a{ margin-bottom:0.1vh; }
-.gap-b{ margin-bottom:0.3vh; }
-.gap-c{ margin-bottom:0.25vh; }
-.gap-d{ margin-bottom:0.5vh; }
-.gap-e{ margin-bottom:0.05vh; }
-.row.left{ justify-content:flex-start; }
-.row.right{ justify-content:flex-end; }
-.row.center{ justify-content:center; }
-.row.split{ justify-content:space-between; align-items:flex-start; padding:0 4vw; }
-
-.w-xs{ width:min(9vw, 110px); aspect-ratio:2/3; }
-.w-sm{ width:min(12vw, 150px); aspect-ratio:2/3; }
-.w-md{ width:min(19vw, 240px); aspect-ratio:3/2; }
-.w-lg{ width:min(25vw, 320px); aspect-ratio:3/2; }
-.w-xl{ width:min(30vw, 380px); aspect-ratio:3/2; }
-.w-tall{ width:min(10vw, 125px); aspect-ratio:2/3; }
-.w-2xs{ width:min(7vw, 90px); aspect-ratio:2/3; }
-.w-2xl{ width:min(34vw, 440px); aspect-ratio:3/2; }
-.w-med2{ width:min(23vw, 290px); aspect-ratio:3/2; }
 .w-t1{ width:min(17cqw, 220px); aspect-ratio:2/3; }
 .w-t2{ width:min(24cqw, 310px); aspect-ratio:2/3; }
 .w-l1{ width:min(30cqw, 390px); aspect-ratio:3/2; }
 .w-l2{ width:min(42cqw, 540px); aspect-ratio:3/2; }
 .w-l3{ width:min(54cqw, 700px); aspect-ratio:3/2; }
-
-.pad-l{ padding-left:6vw; }
-.pad-r{ padding-right:6vw; }
 
 .field-frame.border-thick{ border:12px solid #111110; }
 .field-frame.border-thin{ border:2px solid #111110; }
@@ -238,10 +182,6 @@ footer{
   display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px;
   letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex-wrap:wrap; gap:12px;
 }
-.footer-links{ display:flex; gap:22px; }
-.footer-links a{ color:var(--muted); border-bottom:1px solid transparent; transition:color .15s ease, border-color .15s ease; }
-.footer-links a:hover{ color:var(--ink); border-color:var(--ink); }
-
 /* --------------------------------------------------------------------- */
 /* Lightbox — white rail + main image view                                */
 /* --------------------------------------------------------------------- */
@@ -453,13 +393,11 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-  <figure class="field-frame w-l1 border-thick" data-num="01" data-label="Image 01" data-subcat="Workplace" style="left:74%; top:294.3vh;"><img src="photos/commercial-50.jpg" srcset="photos/thumb/commercial-50.jpg 400w, photos/med/commercial-50.jpg 1400w, photos/commercial-50.jpg 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 01" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-02.jpg" srcset="photos/thumb/fashion-02.jpg 400w, photos/fashion-02.jpg 1335w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t2 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-02.jpg" srcset="photos/thumb/fashion-02.jpg 400w, photos/fashion-02.jpg 1335w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-white-thin" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh;"><img src="photos/interiors-03.jpg" srcset="photos/thumb/interiors-03.jpg 400w, photos/med/interiors-03.jpg 1400w, photos/interiors-03.jpg 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="photos/bali-04.jpg" srcset="photos/thumb/bali-04.jpg 400w, photos/med/bali-04.jpg 1400w, photos/bali-04.jpg 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:9.7%; top:459.8vh;"><img src="photos/street-05.jpg" srcset="photos/thumb/street-05.jpg 400w, photos/street-05.jpg 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l1 border-thick" data-num="06" data-label="Image 06" style="left:67.2%; top:200.8vh;"><img src="photos/fashion-06.jpg" srcset="photos/thumb/fashion-06.jpg 400w, photos/med/fashion-06.jpg 1400w, photos/fashion-06.jpg 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 06" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Bali" style="left:14.3%; top:88.6vh;"><img src="photos/personal-08.jpg" srcset="photos/thumb/personal-08.jpg 400w, photos/med/personal-08.jpg 1400w, photos/personal-08.jpg 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Bali" style="left:14.3%; top:88.6vh;"><img src="photos/personal-08.jpg" srcset="photos/thumb/personal-08.jpg 400w, photos/med/personal-08.jpg 1400w, photos/personal-08.jpg 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l3 border-thick" data-num="09" data-label="Image 09" data-subcat="Bali" style="left:41.1%; top:511.7vh;"><img src="photos/personal-image09.jpg" srcset="photos/thumb/personal-image09.jpg 400w, photos/med/personal-image09.jpg 1400w, photos/personal-image09.jpg 2000w" sizes="(max-width:760px) 82vw, (max-width:1296px) 54vw, 700px" alt="Image 09" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 double-border" data-num="10" data-label="Image 10" style="left:65.9%; top:147.2vh; --db-outer:48px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/interiors-10.jpg" srcset="photos/thumb/interiors-10.jpg 400w, photos/med/interiors-10.jpg 1400w, photos/interiors-10.jpg 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="11" data-label="Image 11" style="left:47.4%; top:353.2vh;"><img src="photos/interiors-11.jpg" srcset="photos/thumb/interiors-11.jpg 400w, photos/med/interiors-11.jpg 1400w, photos/interiors-11.jpg 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 11" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
@@ -624,6 +562,8 @@ body.lb-open{ overflow:hidden; }
       { label: 'Commercial 58', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-58.jpg' },
       { label: 'Commercial 59', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-59.jpg' },
       { label: 'Commercial 60', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-60.jpg' },
+      { label: 'Commercial 61', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-61.jpg' },
+      { label: 'Commercial 62', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-62.jpg' },
     ],
     'Wellness': [
       { label: 'Commercial 52', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-52.jpg' },
