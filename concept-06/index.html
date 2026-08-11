@@ -49,7 +49,7 @@ img{ display:block; }
   position:relative; overflow:hidden; background:var(--placeholder); cursor:pointer; min-height:0;
 }
 .home-imgs > div:first-child{ border-right:2px solid var(--ink); }
-.home-imgs img{ width:100%; height:100%; object-fit:cover; }
+.home-imgs img{ width:100%; height:100%; object-fit:contain; }
 .home-imgs .right img{ object-position:50% 22%; }
 
 /* ---------- red band (home + collapsed variants) ---------- */
@@ -98,7 +98,7 @@ img{ display:block; }
   flex:1; min-height:0; display:grid; grid-template-columns:1fr 280px; grid-template-rows:minmax(0,1fr);
 }
 .single-photo{ position:relative; overflow:hidden; border-right:2px solid var(--ink); background:var(--placeholder); min-height:0; }
-.single-photo img{ width:100%; height:100%; object-fit:cover; }
+.single-photo img{ width:100%; height:100%; object-fit:contain; }
 .margin{ padding:26px 24px; display:flex; flex-direction:column; gap:20px; overflow-y:auto; }
 .margin .setlabel{ font-size:10px; font-weight:600; letter-spacing:0.18em; color:var(--red); margin-bottom:6px; }
 .margin .setname{ font-size:22px; font-weight:800; letter-spacing:-0.02em; }
