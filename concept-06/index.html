@@ -11,7 +11,7 @@
 /* ---------- design tokens, from the Modernist system handoff ---------- */
 :root{
   --ground:#f3f2f2; --ink:#201e1d; --red:#ec3013; --red-pressed:#c02409;
-  --muted:#6b6664; --hairline:#c9c5c2; --placeholder:#dedad7;
+  --muted:#6b6664; --hairline:#c9c5c2; --placeholder:#ffffff;
   --font:'Archivo', sans-serif;
 }
 *{box-sizing:border-box}
@@ -80,7 +80,7 @@ img{ display:block; }
 }
 .grid .cell{ position:relative; overflow:hidden; background:var(--placeholder); cursor:pointer; min-height:0; }
 .grid .cell.lead{ grid-column:span 2; grid-row:span 2; }
-.grid .cell img{ width:100%; height:100%; object-fit:cover; display:block; transition:opacity .15s; }
+.grid .cell img{ width:100%; height:100%; object-fit:contain; display:block; transition:opacity .15s; }
 .grid .cell:hover img{ opacity:0.88; }
 
 .band-set{ display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:14px; }
@@ -107,8 +107,8 @@ img{ display:block; }
 .meta-row .lbl{ color:var(--muted); }
 .meta-row .val{ font-weight:700; color:var(--ink); }
 .thumbs{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-.thumbs .th{ height:84px; overflow:hidden; cursor:pointer; }
-.thumbs .th img{ width:100%; height:100%; object-fit:cover; display:block; }
+.thumbs .th{ height:84px; overflow:hidden; cursor:pointer; background:var(--placeholder); }
+.thumbs .th img{ width:100%; height:100%; object-fit:contain; display:block; }
 .thumbs .th.on img{ outline:2px solid var(--red); outline-offset:-2px; }
 .enquire{ margin-top:auto; font-size:11px; font-weight:700; letter-spacing:0.13em; cursor:pointer; }
 .enquire:hover{ color:var(--red); }
