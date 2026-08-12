@@ -424,7 +424,7 @@ body.lb-open{ overflow:hidden; }
 
     <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" data-subcat="Landscape" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.jpg" srcset="photos/thumb/personal-32.jpg 400w, photos/med/personal-32.jpg 1400w, photos/personal-32.jpg 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.jpg" srcset="photos/thumb/portrait-33.jpg 400w, photos/portrait-33.jpg 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-black-thick" data-num="34" data-label="Image 34" data-subcat="Workplace" style="left:35.4%; top:473.3vh;"><img src="photos/commercial-34.jpg" srcset="photos/thumb/commercial-34.jpg 400w, photos/med/commercial-34.jpg 1400w, photos/commercial-34.jpg 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 34" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-black-thick" data-num="34" data-label="Image 34" data-subcat="Workplace" style="left:35.4%; top:473.3vh;"><img src="photos/workplace-01.jpg" srcset="photos/thumb/workplace-01.jpg 400w, photos/med/workplace-01.jpg 1400w, photos/workplace-01.jpg 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 34" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-t1 double-border" data-num="35" data-label="Image 35" style="left:22.0%; top:527.3vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/portrait-35.jpg" srcset="photos/thumb/portrait-35.jpg 400w, photos/med/portrait-35.jpg 1400w, photos/portrait-35.jpg 2200w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 35"></div><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
@@ -558,34 +558,34 @@ body.lb-open{ overflow:hidden; }
   // add a "cat" so the info panel still knows the main category too.
   const extraSubcatPhotos = {
     'Workplace': [
-      { label: 'Commercial 58', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-58.jpg' },
-      { label: 'Commercial 59', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-59.jpg' },
-      { label: 'Commercial 61', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-61.jpg' },
-      { label: 'Commercial 62', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-62.jpg' },
-      { label: 'Commercial 63', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-63.jpg' },
-      { label: 'Commercial 64', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-64.jpg' },
-      { label: 'Commercial 65', cat: 'Commercial', ratio: 'portrait', src: 'photos/commercial-65.jpg' },
-      { label: 'Commercial 66', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-66.jpg' },
-      { label: 'Commercial 67', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-67.jpg' },
+      { label: 'Workplace 02', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-02.jpg' },
+      { label: 'Workplace 03', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-03.jpg' },
+      { label: 'Workplace 04', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-04.jpg' },
+      { label: 'Workplace 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-05.jpg' },
+      { label: 'Workplace 06', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-06.jpg' },
+      { label: 'Workplace 07', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-07.jpg' },
+      { label: 'Workplace 08', cat: 'Commercial', ratio: 'portrait', src: 'photos/workplace-08.jpg' },
+      { label: 'Workplace 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-09.jpg' },
+      { label: 'Workplace 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-10.jpg' },
     ],
     'Wellness': [
-      { label: 'Commercial 53', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-53.jpg' },
-      { label: 'Commercial 54', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-54.jpg' },
-      { label: 'Commercial 55', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-55.jpg' },
-      { label: 'Commercial 56', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-56.jpg' },
-      { label: 'Commercial 68', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-68.jpg' },
-      { label: 'Commercial 69', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-69.jpg' },
-      { label: 'Commercial 70', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-70.jpg' },
-      { label: 'Commercial 71', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-71.jpg' },
-      { label: 'Commercial 72', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-72.jpg' },
-      { label: 'Commercial 73', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-73.jpg' },
-      { label: 'Commercial 74', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-74.jpg' },
-      { label: 'Commercial 75', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-75.jpg' },
-      { label: 'Commercial 76', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-76.jpg' },
-      { label: 'Commercial 77', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-77.jpg' },
-      { label: 'Commercial 78', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-78.jpg' },
-      { label: 'Commercial 79', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-79.jpg' },
-      { label: 'Commercial 80', cat: 'Commercial', ratio: 'landscape', src: 'photos/commercial-80.jpg' },
+      { label: 'Wellness 01', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-01.jpg' },
+      { label: 'Wellness 02', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-02.jpg' },
+      { label: 'Wellness 03', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-03.jpg' },
+      { label: 'Wellness 04', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-04.jpg' },
+      { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-05.jpg' },
+      { label: 'Wellness 06', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-06.jpg' },
+      { label: 'Wellness 07', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-07.jpg' },
+      { label: 'Wellness 08', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-08.jpg' },
+      { label: 'Wellness 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-09.jpg' },
+      { label: 'Wellness 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-10.jpg' },
+      { label: 'Wellness 11', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-11.jpg' },
+      { label: 'Wellness 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-12.jpg' },
+      { label: 'Wellness 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-13.jpg' },
+      { label: 'Wellness 14', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-14.jpg' },
+      { label: 'Wellness 15', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-15.jpg' },
+      { label: 'Wellness 16', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-16.jpg' },
+      { label: 'Wellness 17', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-17.jpg' },
     ],
     'Street': [
       { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-40.jpg' },
