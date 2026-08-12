@@ -527,15 +527,20 @@ body.lb-open{ overflow:hidden; }
     ],
     'Portrait': [
       { label: 'Portrait 41', ratio: 'portrait', src: 'photos/portrait-41.jpg' },
-      { label: 'Portrait 42', ratio: 'portrait', src: 'photos/portrait-42.jpg' },
       { label: 'Portrait 43', ratio: 'portrait', src: 'photos/portrait-43.jpg' },
       { label: 'Portrait 49', ratio: 'landscape', src: 'photos/portrait-49.jpg' },
       { label: 'Portrait 51', ratio: 'landscape', src: 'photos/portrait-51.jpg' },
       { label: 'Portrait 56', ratio: 'landscape', src: 'photos/portrait-56.jpg' },
-      { label: 'Portrait 58', ratio: 'portrait', src: 'photos/portrait-58.jpg' },
-      { label: 'Portrait 59', ratio: 'portrait', src: 'photos/portrait-59.jpg' },
       { label: 'Portrait 60', ratio: 'portrait', src: 'photos/portrait-60.jpg' },
       { label: 'Portrait 65', ratio: 'portrait', src: 'photos/portrait-65.jpg' },
+      { label: 'Portrait 66', ratio: 'landscape', src: 'photos/portrait-66.jpg' },
+      { label: 'Portrait 67', ratio: 'portrait', src: 'photos/portrait-67.jpg' },
+      { label: 'Portrait 68', ratio: 'portrait', src: 'photos/portrait-68.jpg' },
+      { label: 'Portrait 69', ratio: 'portrait', src: 'photos/portrait-69.jpg' },
+      { label: 'Portrait 70', ratio: 'portrait', src: 'photos/portrait-70.jpg' },
+      { label: 'Portrait 71', ratio: 'portrait', src: 'photos/portrait-71.jpg' },
+      { label: 'Portrait 72', ratio: 'landscape', src: 'photos/portrait-72.jpg' },
+      { label: 'Portrait 73', ratio: 'portrait', src: 'photos/portrait-73.jpg' },
     ],
     'Fashion': [
       { label: 'Fashion 01', ratio: 'landscape', src: 'photos/fashion-01.jpg' },
@@ -701,6 +706,16 @@ body.lb-open{ overflow:hidden; }
 
     const extras = (extraCategoryPhotos[cat] || []).map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
+
+    // Portrait browses in a fresh shuffled order each time — the whole set
+    // (home-field photos and rail-only extras alike) mixed together, not
+    // just field-frames-then-extras. Fisher-Yates.
+    if (cat === 'Portrait') {
+      for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+      }
+    }
 
     if (currentCategoryItems.length === 0) return;
 
