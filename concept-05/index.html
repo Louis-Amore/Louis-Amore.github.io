@@ -78,11 +78,6 @@ a{ color:inherit; text-decoration:none; }
 }
 .idx-subs{ display:none; padding:3px 0 9px; }
 .idx-subs.open{ display:block; }
-.idx-subs.reserve{
-  display:block; padding:3px 0 9px; opacity:0; pointer-events:none;
-  transition:opacity .15s;
-}
-.idx-subs.reserve.open{ opacity:1; pointer-events:auto; }
 .idx-sub{
   display:block; background:none; border:0; cursor:pointer; color:#5f5c55;
   font-family:var(--font-display); font-weight:900; letter-spacing:-.02em;
@@ -1103,7 +1098,7 @@ body.lb-open{ overflow:hidden; }
   }
 
   // build the list from the same source of truth as the galleries
-  IDX.forEach(([cat, subs], catIndex) => {
+  IDX.forEach(([cat, subs]) => {
     const row = document.createElement('button');
     row.className = 'idx-row';
     row.dataset.cat = cat;
@@ -1111,7 +1106,7 @@ body.lb-open{ overflow:hidden; }
     idxList.appendChild(row);
     if (subs.length) {
       const box = document.createElement('div');
-      box.className = 'idx-subs' + (catIndex < IDX.length - 1 ? ' reserve' : '');
+      box.className = 'idx-subs';
       box.dataset.for = cat;
       subs.forEach(s => {
         const b = document.createElement('button');
@@ -1134,7 +1129,6 @@ body.lb-open{ overflow:hidden; }
       row.classList.add('on');
       idxList.querySelectorAll('.idx-subs').forEach(b => b.classList.toggle('open', b.dataset.for === cat));
     };
-    row.addEventListener('mouseenter', preview);
     row.addEventListener('focus', preview);
     row.addEventListener('click', () => {
       preview();
