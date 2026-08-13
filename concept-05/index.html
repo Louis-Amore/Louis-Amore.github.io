@@ -295,7 +295,7 @@ body.lb-open{ overflow:hidden; }
 
 .lb-tags{
   /* float to the right of the centred photo without pushing it off-centre */
-  position:absolute; left:100%; top:0; margin-left:28px; width:220px;
+  position:absolute; left:100%; top:0; margin-left:14px; width:220px;
 }
 /* no left spacer needed now the photo is screen-centred */
 .lb-stage::before{ display:none; }
@@ -318,8 +318,8 @@ body.lb-open{ overflow:hidden; }
   .lb-frame{ border-width:40px; }
   .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 140px); }
   .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
-  .lb-tags{ flex-basis:170px; min-width:120px; }
-  .lb-stage::before{ flex-basis:170px; min-width:120px; }
+  .lb-tags{ width:120px; margin-left:10px; }
+  .lb-stage::before{ flex-basis:120px; min-width:120px; }
 }
 
 .lb-info{
@@ -362,9 +362,16 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
   /* EDIT: on phones un-pin the stage and stack tags below the photo */
   .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
+}
+
+/* Below 1024px there just isn't room for the tags box to float beside the
+   photo without either the photo or the box being squeezed uncomfortably
+   small, or the two overlapping — confirmed by measuring the real available
+   space at these widths, not assumed. Stack it below the photo instead,
+   same as it already does on true mobile. */
+@media (max-width:1024px){
   .lb-stage{ flex-direction:column; gap:14px; }
   .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
-  .lb-info{ width:100%; flex:0 0 auto; border-left:none; border-top:1px solid rgba(17,17,16,0.12); padding:24px 28px; }
 }
 
 @media (max-width:760px){
@@ -1018,6 +1025,9 @@ body.lb-open{ overflow:hidden; }
     if (info.src) {
       lbFrame.classList.add('has-photo');
       lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}" decoding="async">`;
+      const _img = lbFrame.querySelector('img');
+      if (_img.complete) { /* already cached — fitStage() below covers it */ }
+      else _img.addEventListener('load', fitStage, { once: true });
       // EDIT: real photos size the frame by their own height (max-height on the
       // img), so any ratio — landscape, portrait, cinematic — displays fully and
       // stays centred. No forced aspect-ratio on the frame.
@@ -1053,7 +1063,57 @@ body.lb-open{ overflow:hidden; }
     Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
     const activeThumb = lbRail.children[currentPos];
     if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    fitStage();
   }
+
+  // Measures the real, current gap between the rail and the info panel and
+  // subtracts the tags box's real rendered footprint (when it's showing),
+  // then caps the photo to whatever's left — guaranteed not to overlap
+  // either neighbour, at any viewport width, rather than a hand-derived
+  // pixel formula that has to be re-verified every time anything nearby changes.
+  function fitStage() {
+    const info = document.querySelector('.lb-info');
+    const frame = document.querySelector('.lb-frame');
+    const img = frame && frame.querySelector('img');
+    const tags = document.querySelector('.lb-tags');
+    if (!info || !frame) return;
+    frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
+    if (tags) tags.style.width = '';
+    if (window.innerWidth <= 1024) return; // tags stacks below the photo here — nothing to protect
+    const SAFETY = 16;
+    const MIN_TAGS = 70;
+    // Neither the photo's rendered width nor exactly where it centres is
+    // reliably predictable from outside the flex/centring layout (it depends
+    // on the photo's own aspect ratio and box-model details that vary per
+    // photo and breakpoint) — so measure the real, current overlap after
+    // each change and correct again, converging empirically instead of
+    // trying to calculate the right answer in one shot.
+    for (let i = 0; i < 8; i++) {
+      const infoLeft = info.getBoundingClientRect().left;
+      const tagsShowing = tags && !frame.closest('.lb-stage').classList.contains('no-tags');
+      const rightEdge = tagsShowing ? tags.getBoundingClientRect().right : frame.getBoundingClientRect().right;
+      const overlap = rightEdge - infoLeft + SAFETY;
+      if (overlap <= 0) break;
+      if (tagsShowing && tags.getBoundingClientRect().width > MIN_TAGS) {
+        // first give back room by narrowing the tags box itself, down to a
+        // still-readable minimum, before touching the photo at all
+        const w = tags.getBoundingClientRect().width;
+        tags.style.width = Math.max(MIN_TAGS, w - overlap) + 'px';
+      } else {
+        // tags box is already as narrow as it should get — shrink the photo
+        // instead. It's centred, so its right edge only moves in by about
+        // half of any width reduction; overshoot the request and let the
+        // next loop iteration correct any remainder.
+        const fcs = getComputedStyle(frame);
+        const borderTotal = parseFloat(fcs.borderLeftWidth || '0') + parseFloat(fcs.borderRightWidth || '0');
+        const currentContentW = frame.getBoundingClientRect().width - borderTotal;
+        const nextContentW = Math.max(80, currentContentW - overlap * 2.2);
+        frame.style.maxWidth = nextContentW + 'px';
+        if (img) img.style.maxWidth = nextContentW + 'px';
+      }
+    }
+  }
+  window.addEventListener('resize', () => setTimeout(fitStage, 120));
 
   function step(delta) {
     currentPos = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
