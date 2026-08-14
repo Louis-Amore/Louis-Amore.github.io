@@ -796,10 +796,15 @@ body.lb-open{ overflow:hidden; }
       thumb.className = 'lb-thumb ratio-' + item.info.ratio;
       const localNum = String(pos + 1).padStart(2, '0');
       if (item.info.src) {
-        // EDIT: lazy-load + async decode so opening a big category (WSR=25,
-        // UL, etc.) doesn't download every full-size thumbnail at once —
-        // images now load only as they scroll into the rail's view.
-        thumb.innerHTML = `<img src="${variantSrc(item.info.src, 'thumb')}" alt="Image ${localNum}" loading="lazy" decoding="async">`;
+        // The whole rail is already fully visible the instant a category
+        // opens (it's a small on-screen panel, not off-screen content), so
+        // loading="lazy" was deferring images that never actually needed
+        // deferring — browsers vary in how conservative their "near
+        // viewport" heuristic is (Safari/mobile especially), which could
+        // add a real, felt delay before thumbnails start appearing even
+        // though nothing here needs scrolling into view. Removed; kept
+        // decoding="async" so decoding still doesn't block the main thread.
+        thumb.innerHTML = `<img src="${variantSrc(item.info.src, 'thumb')}" alt="Image ${localNum}" decoding="async">`;
         const tImg = thumb.querySelector('img');
         const fitThumb = () => { if (tImg.naturalWidth) thumb.style.aspectRatio = tImg.naturalWidth + ' / ' + tImg.naturalHeight; };
         if (tImg.complete) fitThumb(); else tImg.addEventListener('load', fitThumb);
