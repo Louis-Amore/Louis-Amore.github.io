@@ -684,10 +684,18 @@ body.lb-open{ overflow:hidden; }
   // frame), so the same photo can never land on two frames at once.
   (function shuffleFieldPhotos() {
     const PROTECTED_LABELS = new Set(['Image 20']);
-    function poolKeyFor(subcat, cat) { return subcat || cat; }
+    // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
+    // (landscape) — a frame's own class is ground truth for the SHAPE it
+    // needs, so a photo of the wrong orientation never gets swapped in,
+    // however well it matches on category.
+    function orientationOf(frame) {
+      return /\bw-t\d/.test(frame.className) ? 'portrait' : 'landscape';
+    }
+    // combine category/subcat with orientation so pools never mix shapes
+    function poolKeyFor(subcat, cat, orientation) { return (subcat || cat) + '|' + orientation; }
 
-    const pools = {};        // key -> Set of every known photo src in that group
-    const groupFrames = {};  // key -> [frame elements needing a photo from that group]
+    const pools = {};        // key -> Set of every known photo src in that group+orientation
+    const groupFrames = {};  // key -> [frame elements needing a photo from that group+orientation]
 
     function addToPool(key, src) {
       if (!key || !src) return;
@@ -698,19 +706,20 @@ body.lb-open{ overflow:hidden; }
     frames.forEach(f => {
       const subcat = f.dataset.subcat || null;
       const cat = f.querySelector('figcaption')?.textContent || null;
+      const orientation = orientationOf(f);
       const img = f.querySelector('img');
       const src = img && img.getAttribute('src');
-      const key = poolKeyFor(subcat, cat);
+      const key = poolKeyFor(subcat, cat, orientation);
       addToPool(key, src);
       if (!PROTECTED_LABELS.has(f.dataset.label)) {
         (groupFrames[key] = groupFrames[key] || []).push(f);
       }
     });
     Object.keys(extraCategoryPhotos).forEach(cat => {
-      extraCategoryPhotos[cat].forEach(e => addToPool(cat, e.src));
+      extraCategoryPhotos[cat].forEach(e => addToPool(poolKeyFor(null, cat, e.ratio || 'landscape'), e.src));
     });
     Object.keys(extraSubcatPhotos).forEach(subcat => {
-      extraSubcatPhotos[subcat].forEach(e => addToPool(subcat, e.src));
+      extraSubcatPhotos[subcat].forEach(e => addToPool(poolKeyFor(subcat, null, e.ratio || 'landscape'), e.src));
     });
 
     function shuffleArr(arr) {
