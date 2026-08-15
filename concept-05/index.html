@@ -552,6 +552,7 @@ body.lb-open{ overflow:hidden; }
       { label: 'Portrait 56', ratio: 'landscape', src: 'photos/portrait-56.jpg' },
       { label: 'Portrait 60', ratio: 'portrait', src: 'photos/portrait-60.jpg' },
       { label: 'Portrait 65', ratio: 'portrait', src: 'photos/portrait-65.jpg' },
+      { label: 'Portrait 66', ratio: 'landscape', src: 'photos/portrait-66.jpg' },
       { label: 'Portrait 67', ratio: 'portrait', src: 'photos/portrait-67.jpg' },
       { label: 'Portrait 68', ratio: 'portrait', src: 'photos/portrait-68.jpg' },
       { label: 'Portrait 69', ratio: 'portrait', src: 'photos/portrait-69.jpg' },
@@ -776,8 +777,14 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.cat === info.cat);
 
-    // add any rail-only extras for this category (not on the homepage field)
-    const extras = (extraCategoryPhotos[info.cat] || []).map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
+    // add any rail-only extras for this category (not on the homepage field) —
+    // but the home-field shuffle can put an extras photo onto a field frame,
+    // so drop any extra whose photo is ALREADY showing on a field frame right
+    // now, or it would appear twice in the rail.
+    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const extras = (extraCategoryPhotos[info.cat] || [])
+      .filter(e => !onFieldNow.has(e.src))
+      .map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     // Same shuffle as browsing via the menu, so a category looks the same
@@ -806,7 +813,12 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.cat === cat);
 
-    const extras = (extraCategoryPhotos[cat] || []).map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
+    // drop any extra whose photo the home-field shuffle has ALSO put onto a
+    // field frame right now, or it would appear twice in the rail.
+    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const extras = (extraCategoryPhotos[cat] || [])
+      .filter(e => !onFieldNow.has(e.src))
+      .map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     // Every category browses in a fresh shuffled order each time — the
@@ -836,7 +848,12 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.subcat === subcat);
 
-    const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
+    // drop any extra whose photo the home-field shuffle has ALSO put onto a
+    // field frame right now, or it would appear twice in the rail.
+    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const extras = (extraSubcatPhotos[subcat] || [])
+      .filter(e => !onFieldNow.has(e.src))
+      .map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
     // Every subcategory browses in a fresh shuffled order each time —
