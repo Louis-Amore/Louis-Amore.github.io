@@ -552,7 +552,6 @@ body.lb-open{ overflow:hidden; }
       { label: 'Portrait 56', ratio: 'landscape', src: 'photos/portrait-56.jpg' },
       { label: 'Portrait 60', ratio: 'portrait', src: 'photos/portrait-60.jpg' },
       { label: 'Portrait 65', ratio: 'portrait', src: 'photos/portrait-65.jpg' },
-      { label: 'Portrait 66', ratio: 'landscape', src: 'photos/portrait-66.jpg' },
       { label: 'Portrait 67', ratio: 'portrait', src: 'photos/portrait-67.jpg' },
       { label: 'Portrait 68', ratio: 'portrait', src: 'photos/portrait-68.jpg' },
       { label: 'Portrait 69', ratio: 'portrait', src: 'photos/portrait-69.jpg' },
@@ -682,6 +681,35 @@ body.lb-open{ overflow:hidden; }
   // photo happens to be sitting in it right now. Assignment is done as a
   // proper shuffle-and-deal per group (not independent random picks per
   // frame), so the same photo can never land on two frames at once.
+  // Complete photo set per category/subcategory (label+ratio+src for
+  // EVERY known photo, whether it normally lives on a home-field frame or
+  // only in a category's rail) — captured once, before the shuffle touches
+  // anything, so the rail can always be rebuilt completely regardless of
+  // which photo the shuffle later puts on which frame. Keyed by subcat if
+  // the frame/entry has one, else by top-level category.
+  const categoryFullSet = {};
+  function addToFullSet(key, entry) {
+    if (!key || !entry.src) return;
+    if (!categoryFullSet[key]) categoryFullSet[key] = [];
+    categoryFullSet[key].push(entry);
+  }
+  (function captureFullSet() {
+    frames.forEach(f => {
+      const subcat = f.dataset.subcat || null;
+      const cat = f.querySelector('figcaption')?.textContent || null;
+      const isPortrait = Array.from(f.classList).some(c => /^w-t/.test(c));
+      const img = f.querySelector('img');
+      const src = img && img.getAttribute('src');
+      addToFullSet(subcat || cat, { src, label: f.dataset.label, ratio: isPortrait ? 'portrait' : 'landscape', cat });
+    });
+    Object.keys(extraCategoryPhotos).forEach(cat => {
+      extraCategoryPhotos[cat].forEach(e => addToFullSet(cat, { src: e.src, label: e.label, ratio: e.ratio, cat }));
+    });
+    Object.keys(extraSubcatPhotos).forEach(subcat => {
+      extraSubcatPhotos[subcat].forEach(e => addToFullSet(subcat, { src: e.src, label: e.label, ratio: e.ratio, cat: e.cat }));
+    });
+  })();
+
   (function shuffleFieldPhotos() {
     const PROTECTED_LABELS = new Set(['Image 20']);
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
@@ -777,12 +805,13 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.cat === info.cat);
 
-    // add any rail-only extras for this category (not on the homepage field) —
-    // but the home-field shuffle can put an extras photo onto a field frame,
-    // so drop any extra whose photo is ALREADY showing on a field frame right
-    // now, or it would appear twice in the rail.
+    // the rail = every field frame's CURRENT photo, plus every OTHER known
+    // category photo (from the full pre-shuffle set) not currently showing
+    // on any of this category's field frames — guarantees the full count
+    // every time, since the shuffle can move a field frame away from its
+    // own original photo and nothing else would otherwise show it.
     const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
-    const extras = (extraCategoryPhotos[info.cat] || [])
+    const extras = (categoryFullSet[info.cat] || [])
       .filter(e => !onFieldNow.has(e.src))
       .map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
@@ -813,10 +842,13 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.cat === cat);
 
-    // drop any extra whose photo the home-field shuffle has ALSO put onto a
-    // field frame right now, or it would appear twice in the rail.
+    // the rail = every field frame's CURRENT photo, plus every OTHER known
+    // category photo (from the full pre-shuffle set) not currently showing
+    // on any of this category's field frames — guarantees the full count
+    // every time, since the shuffle can move a field frame away from its
+    // own original photo and nothing else would otherwise show it.
     const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
-    const extras = (extraCategoryPhotos[cat] || [])
+    const extras = (categoryFullSet[cat] || [])
       .filter(e => !onFieldNow.has(e.src))
       .map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
@@ -848,10 +880,12 @@ body.lb-open{ overflow:hidden; }
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.subcat === subcat);
 
-    // drop any extra whose photo the home-field shuffle has ALSO put onto a
-    // field frame right now, or it would appear twice in the rail.
+    // the rail = every field frame's CURRENT photo, plus every OTHER known
+    // subcategory photo (from the full pre-shuffle set) not currently
+    // showing on any of this subcategory's field frames — guarantees the
+    // full count every time, matching the category-level fix above.
     const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
-    const extras = (extraSubcatPhotos[subcat] || [])
+    const extras = (categoryFullSet[subcat] || [])
       .filter(e => !onFieldNow.has(e.src))
       .map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
