@@ -512,6 +512,17 @@ body.lb-open{ overflow:hidden; }
   let currentPos = 0;
   let currentBrowseSubcat = null; // set only when actually browsing a subcategory, not just because one photo has one
 
+  // frameInfo() reads img.src (a DOM property, always a full resolved URL);
+  // the data arrays and getAttribute('src') calls elsewhere give back the
+  // raw relative "photos/xxx.jpg" string instead — same photo, two
+  // different-looking strings. Strip down to "photos/xxx.jpg" on both sides
+  // before ever comparing two src values for equality.
+  function normalizeSrc(src) {
+    if (!src) return src;
+    const i = src.indexOf('photos/');
+    return i === -1 ? src : src.slice(i);
+  }
+
   function frameInfo(frame) {
     const cat = frame.querySelector('figcaption').textContent;
     const spanEl = frame.querySelector('span');
@@ -810,9 +821,9 @@ body.lb-open{ overflow:hidden; }
     // on any of this category's field frames — guarantees the full count
     // every time, since the shuffle can move a field frame away from its
     // own original photo and nothing else would otherwise show it.
-    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
     const extras = (categoryFullSet[info.cat] || [])
-      .filter(e => !onFieldNow.has(e.src))
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
       .map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
@@ -847,9 +858,9 @@ body.lb-open{ overflow:hidden; }
     // on any of this category's field frames — guarantees the full count
     // every time, since the shuffle can move a field frame away from its
     // own original photo and nothing else would otherwise show it.
-    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
     const extras = (categoryFullSet[cat] || [])
-      .filter(e => !onFieldNow.has(e.src))
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
       .map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
@@ -884,9 +895,9 @@ body.lb-open{ overflow:hidden; }
     // subcategory photo (from the full pre-shuffle set) not currently
     // showing on any of this subcategory's field frames — guarantees the
     // full count every time, matching the category-level fix above.
-    const onFieldNow = new Set(currentCategoryItems.map(x => x.info.src));
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
     const extras = (categoryFullSet[subcat] || [])
-      .filter(e => !onFieldNow.has(e.src))
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
       .map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
