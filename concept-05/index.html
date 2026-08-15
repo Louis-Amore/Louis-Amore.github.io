@@ -594,13 +594,7 @@ body.lb-open{ overflow:hidden; }
       { label: 'Workplace 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-10.jpg' },
     ],
     'Wellness': [
-      { label: 'Wellness 01', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-01.jpg' },
-      { label: 'Wellness 02', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-02.jpg' },
-      { label: 'Wellness 03', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-03.jpg' },
-      { label: 'Wellness 04', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-04.jpg' },
       { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-05.jpg' },
-      { label: 'Wellness 06', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-06.jpg' },
-      { label: 'Wellness 07', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-07.jpg' },
       { label: 'Wellness 08', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-08.jpg' },
       { label: 'Wellness 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-09.jpg' },
       { label: 'Wellness 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-10.jpg' },
@@ -760,6 +754,15 @@ body.lb-open{ overflow:hidden; }
 
     const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
+
+    // Wellness browses in a fresh shuffled order each time, same as Portrait —
+    // Fisher-Yates over the whole set (field frames + extras mixed together).
+    if (subcat === 'Wellness') {
+      for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+      }
+    }
 
     if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
 
