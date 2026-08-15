@@ -496,7 +496,6 @@ body.lb-open{ overflow:hidden; }
       if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
     });
   }, { threshold: 0, rootMargin: '10% 0px 60% 0px' });
-  frames.forEach(f => io.observe(f));
 
   // -------------------- Lightbox --------------------
   const frameList = Array.from(frames);
@@ -672,6 +671,77 @@ body.lb-open{ overflow:hidden; }
       { label: 'Vape 08', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-08.jpg' },
     ],
   };
+
+  // -------------------- Home-field shuffle --------------------
+  // Every visit, each home-field photo (except Image 20, whose caption and
+  // the Unconditional Love write-up are tied to that specific photo) is
+  // swapped for a DIFFERENT photo from the exact same category or
+  // subcategory — a Fashion frame only ever shows another Fashion photo, a
+  // Bali frame only another Bali photo, etc. The frame itself (position,
+  // size, border, its own "Image NN" identity) never changes, only which
+  // photo happens to be sitting in it right now. Assignment is done as a
+  // proper shuffle-and-deal per group (not independent random picks per
+  // frame), so the same photo can never land on two frames at once.
+  (function shuffleFieldPhotos() {
+    const PROTECTED_LABELS = new Set(['Image 20']);
+    function poolKeyFor(subcat, cat) { return subcat || cat; }
+
+    const pools = {};        // key -> Set of every known photo src in that group
+    const groupFrames = {};  // key -> [frame elements needing a photo from that group]
+
+    function addToPool(key, src) {
+      if (!key || !src) return;
+      if (!pools[key]) pools[key] = new Set();
+      pools[key].add(src);
+    }
+
+    frames.forEach(f => {
+      const subcat = f.dataset.subcat || null;
+      const cat = f.querySelector('figcaption')?.textContent || null;
+      const img = f.querySelector('img');
+      const src = img && img.getAttribute('src');
+      const key = poolKeyFor(subcat, cat);
+      addToPool(key, src);
+      if (!PROTECTED_LABELS.has(f.dataset.label)) {
+        (groupFrames[key] = groupFrames[key] || []).push(f);
+      }
+    });
+    Object.keys(extraCategoryPhotos).forEach(cat => {
+      extraCategoryPhotos[cat].forEach(e => addToPool(cat, e.src));
+    });
+    Object.keys(extraSubcatPhotos).forEach(subcat => {
+      extraSubcatPhotos[subcat].forEach(e => addToPool(subcat, e.src));
+    });
+
+    function shuffleArr(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    Object.keys(groupFrames).forEach(key => {
+      const fs = groupFrames[key];
+      const pool = pools[key] ? Array.from(pools[key]) : [];
+      if (pool.length < 2 || fs.length === 0) return;
+
+      // deal distinct photos to each frame in this group, no repeats within
+      // the pass — if the pool is smaller than the number of frames, cycle
+      // through a second shuffled pass rather than leaving any frame blank
+      let deck = shuffleArr(pool.slice());
+      shuffleArr(fs).forEach(f => {
+        if (deck.length === 0) deck = shuffleArr(pool.slice());
+        const pick = deck.pop();
+        const img = f.querySelector('img');
+        const thumbSrc = pick.replace('photos/', 'photos/thumb/');
+        img.setAttribute('src', pick);
+        img.setAttribute('srcset', thumbSrc + ' 400w, ' + pick + ' 1900w');
+      });
+    });
+  })();
+
+  frames.forEach(f => io.observe(f));
 
   // EDIT: full display names for subcategory abbreviations used in data-subcat.
   const subcatNames = {
