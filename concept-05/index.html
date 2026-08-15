@@ -702,6 +702,14 @@ body.lb-open{ overflow:hidden; }
     const extras = (extraCategoryPhotos[info.cat] || []).map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
+    // Same shuffle as browsing via the menu, so a category looks the same
+    // whether you clicked a field frame directly or opened it from the list.
+    // Shuffle BEFORE finding the clicked photo's new position.
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+    }
+
     currentPos = currentCategoryItems.findIndex(x => x.i === index);
 
     buildRail();
@@ -723,14 +731,12 @@ body.lb-open{ overflow:hidden; }
     const extras = (extraCategoryPhotos[cat] || []).map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
-    // Portrait browses in a fresh shuffled order each time — the whole set
-    // (home-field photos and rail-only extras alike) mixed together, not
-    // just field-frames-then-extras. Fisher-Yates.
-    if (cat === 'Portrait') {
-      for (let i = currentCategoryItems.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
-      }
+    // Every category browses in a fresh shuffled order each time — the
+    // whole set (home-field photos and rail-only extras alike) mixed
+    // together, not just field-frames-then-extras. Fisher-Yates.
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
     }
 
     if (currentCategoryItems.length === 0) return;
@@ -755,13 +761,11 @@ body.lb-open{ overflow:hidden; }
     const extras = (extraSubcatPhotos[subcat] || []).map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
 
-    // Wellness browses in a fresh shuffled order each time, same as Portrait —
+    // Every subcategory browses in a fresh shuffled order each time —
     // Fisher-Yates over the whole set (field frames + extras mixed together).
-    if (subcat === 'Wellness') {
-      for (let i = currentCategoryItems.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
-      }
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
     }
 
     if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
