@@ -335,14 +335,14 @@ body.lb-open{ overflow:hidden; }
      left) and the info panel (320px on the right), minus the 120px mat and
      some breathing room — so on a narrow/snapped window the photo shrinks to
      fit instead of overflowing the panels. */
-  max-width:calc(100vw - 21vw - 320px - 200px);
+  max-width:calc(100vw - 21vw - 320px - 300px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
 /* the image itself carries BOTH caps; width follows naturally but never
    exceeds the available middle space */
 .lb-frame.has-photo img{
   max-height:calc(61.05vh - 120px);
-  max-width:calc(100vw - 21vw - 320px - 200px);
+  max-width:calc(100vw - 21vw - 320px - 300px);
   width:auto; height:auto; display:block;
 }
 /* EDIT: We Shall Remember sized 7% smaller than the other categories */
@@ -366,7 +366,7 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-tags strong{ display:block; margin-bottom:8px; color:var(--ink); }
 
-@media (min-width:761px) and (max-width:1024px){
+@media (min-width:761px) and (max-width:1150px){
   .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
   .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
   .lb-stage-wrap{ padding:20px; }
@@ -429,7 +429,13 @@ body.lb-open{ overflow:hidden; }
    small, or the two overlapping — confirmed by measuring the real available
    space at these widths, not assumed. Stack it below the photo instead,
    same as it already does on true mobile. */
-@media (max-width:1024px){
+@media (max-width:1150px){
+  /* raised from 1024px — the narrow 1025-1150px band genuinely doesn't
+     have room to float the tags box beside the photo AND clear the info
+     panel, even with the photo and tags both shrunk to their readable
+     minimums (verified: photo hit its floor, tags hit their floor, and a
+     real ~14px overlap still remained) — stacking here instead of forcing
+     a side-by-side squeeze that can't actually fit. */
   .lb-stage{ flex-direction:column; gap:14px; }
   .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
 }
@@ -1308,7 +1314,7 @@ body.lb-open{ overflow:hidden; }
     if (!info || !frame) return;
     frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
     if (tags) tags.style.width = '';
-    if (window.innerWidth <= 1024) return; // tags stacks below the photo here — nothing to protect
+    if (window.innerWidth <= 1150) return; // tags stacks below the photo here (see CSS comment) — nothing to protect
     const SAFETY = 16;
     const MIN_TAGS = 70;
     // Neither the photo's rendered width nor exactly where it centres is
