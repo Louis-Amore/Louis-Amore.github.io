@@ -414,6 +414,18 @@ body.lb-open{ overflow:hidden; }
   .lb-topbar{ display:flex; justify-content:space-between; }
   .lb-body{ flex-direction:column; }
   .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
+  /* EDIT: on mobile the rail is a SEPARATE, independently-scrolling area
+     stacked above the page's own scroll — with the scrollbar hidden (the
+     desktop/tablet default), there's nothing telling a visitor this box
+     scrolls on its own, so a downward swipe on it can easily be mistaken
+     for scrolling the whole page instead. Restore a thin, subtle scrollbar
+     here specifically (kept invisible elsewhere, where this ambiguity
+     doesn't really come up) as a clear, standard, universally-understood
+     "this scrolls" signal. */
+  .lb-rail{ scrollbar-width:thin; -ms-overflow-style:auto; }
+  .lb-rail::-webkit-scrollbar{ width:4px; height:4px; display:block; }
+  .lb-rail::-webkit-scrollbar-track{ background:transparent; }
+  .lb-rail::-webkit-scrollbar-thumb{ background:rgba(17,17,16,0.28); border-radius:4px; }
   .lb-topbar{ grid-template-columns:100px 1fr 100px; }
   .lb-bottombar{ padding-left:28px; padding-right:28px; }
   .lb-frame{ border-width:44px; }
