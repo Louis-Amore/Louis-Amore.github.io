@@ -413,7 +413,18 @@ body.lb-open{ overflow:hidden; }
 @media (max-width:760px){
   .lb-topbar{ display:flex; justify-content:space-between; }
   .lb-body{ flex-direction:column; }
-  .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12); }
+  .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12);
+    /* EDIT: the real, deeper fix behind the scroll-hint work above — a
+       swipe on the rail was scrolling the WHOLE PAGE instead of just the
+       rail itself (confirmed via screen recording: repeated swipes on the
+       rail kept landing on the stage photo below rather than revealing
+       more thumbnails). overscroll-behavior-y:contain stops the gesture
+       from "chaining" through to the page once the rail's own scroll hits
+       its start/end — the rail now properly owns its own scroll instead
+       of handing it off. -webkit-overflow-scrolling adds native momentum
+       scrolling on iOS specifically, so it also feels right, not just
+       behaves right. */
+    overscroll-behavior-y:contain; -webkit-overflow-scrolling:touch; }
   /* EDIT: on mobile the rail is a SEPARATE, independently-scrolling area
      stacked above the page's own scroll — with the scrollbar hidden (the
      desktop/tablet default), there's nothing telling a visitor this box
