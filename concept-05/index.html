@@ -590,6 +590,36 @@ body.lb-open{ overflow:hidden; }
   const lbCat = document.getElementById('lb-cat');
   const lbCount = document.getElementById('lb-count');
   const lbRail = document.getElementById('lb-rail');
+
+  // EDIT: overscroll-behavior-y:contain (added earlier) is the
+  // theoretically-correct CSS fix for scroll chaining, but iOS Safari has
+  // long-documented gaps in its support for this property — specifically
+  // around the rubber-band/bounce effect at a scroll boundary, which can
+  // still chain through to the page even with "contain" set. Confirmed via
+  // user report that the CSS-only fix genuinely wasn't enough in practice.
+  // This is the more reliable, browser-independent backup: track touch
+  // direction manually, and only when the rail is ALREADY at its scroll
+  // boundary in that direction do we stop the swipe from continuing on to
+  // scroll the page — normal scrolling within the rail is untouched.
+  (function railTouchContain() {
+    if (!lbRail) return;
+    let lastY = 0;
+    lbRail.addEventListener('touchstart', (e) => {
+      if (e.touches.length) lastY = e.touches[0].clientY;
+    }, { passive: true });
+    lbRail.addEventListener('touchmove', (e) => {
+      if (!e.touches.length) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - lastY; // >0: finger moving down (wants content ABOVE); <0: wants content BELOW
+      const atTop = lbRail.scrollTop <= 0;
+      const atBottom = Math.ceil(lbRail.scrollTop + lbRail.clientHeight) >= lbRail.scrollHeight;
+      if ((deltaY > 0 && atTop) || (deltaY < 0 && atBottom)) {
+        e.preventDefault();
+      }
+      lastY = currentY;
+    }, { passive: false });
+  })();
+
   const lbInfoCat = document.getElementById('lb-info-cat');
   const lbInfoTitle = document.getElementById('lb-info-title');
   const lbInfoBody = document.getElementById('lb-info-body');
