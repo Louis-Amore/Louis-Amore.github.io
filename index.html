@@ -879,6 +879,54 @@ body.lb-open{ overflow:hidden; }
     });
   })();
 
+  // EDIT: random border style per page load, one of the two ideas discussed
+  // with the client for making the home field feel a little different every
+  // visit (the photo shuffle above being the first). Each eligible frame
+  // draws one style from its OWN safe pool — not every frame can safely
+  // take every style, since border thickness changes a frame's actual
+  // footprint on the "extrude" frames (born out of the whole Image 10
+  // saga). Deliberately scoped: Images 10, 15, 18, 35 are excluded and
+  // stay exactly as they are — 10/35 use the structurally different
+  // double-border system (a wrapper <div>, not just a border class), and
+  // 15/18 have bespoke sizing math tied to their current exact thickness
+  // that isn't safe to swap under randomly.
+  (function randomizeBorders() {
+    const STYLES = [
+      { cls: 'border-thin',        px: 2  },
+      { cls: 'border-white-thin',  px: 2  },
+      { cls: 'border-gold',        px: 6  },
+      { cls: 'border-thick',       px: 12 },
+      { cls: 'border-white',       px: 12 },
+      { cls: 'border-gold-thick',  px: 12 },
+      { cls: 'border-white-thick', px: 24 },
+      { cls: 'border-black-thick', px: 24 },
+    ];
+    const ALL_BORDER_CLASSES = STYLES.map(s => s.cls);
+    // frames whose footprint grows with border thickness (the "extrude"
+    // frames) each get their own measured-safe ceiling; everything else
+    // (intrude, or no border at all) can safely take any style since its
+    // total size never changes regardless of border weight.
+    const EXTRUDE_MAX = { '04': 24, '14': 24, '27': 24, '34': 6 };
+    const EXCLUDED = new Set(['10', '15', '18', '35']);
+
+    function poolFor(num) {
+      if (EXTRUDE_MAX.hasOwnProperty(num)) {
+        const max = EXTRUDE_MAX[num];
+        return STYLES.filter(s => s.px <= max);
+      }
+      return STYLES;
+    }
+
+    document.querySelectorAll('.field-frame').forEach(f => {
+      const num = f.dataset.num;
+      if (EXCLUDED.has(num)) return;
+      const pool = poolFor(num);
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      f.classList.remove(...ALL_BORDER_CLASSES);
+      f.classList.add(pick.cls);
+    });
+  })();
+
   (function shuffleFieldPhotos() {
     const PROTECTED_LABELS = new Set(['Image 20']);
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
