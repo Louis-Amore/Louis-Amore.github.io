@@ -195,6 +195,7 @@ a{ color:inherit; text-decoration:none; }
    border AND shrink its base width formula to compensate, landing net
    growth safely inside the measured budget rather than the full amount. */
 .field-frame.border-extrude-15{ box-sizing:content-box; width:min(calc(30cqw - 36px), 354px) !important; }
+.field-frame.border-extrude-34{ box-sizing:content-box; width:min(calc(30cqw - 36px), 354px) !important; }
 /* EDIT: Images 10 and 18 have essentially no safe room to grow at
    laptop/tablet widths without repositioning (measured: Image 10 needs
    1900px+, Image 18 needs 2000px+ before there's genuinely enough
@@ -526,7 +527,7 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:17vh; width:min(19cqw,225px) !important;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-white-thin" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh;"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:247.5vh;"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:9.7%; top:459.8vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
@@ -557,7 +558,7 @@ body.lb-open{ overflow:hidden; }
 
     <figure class="field-frame w-l1 border-thin" data-label="Image 32" data-num="32" data-subcat="Landscape" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-black-thick border-extrude" data-num="34" data-label="Image 34" data-subcat="Workplace" style="left:35.4%; top:473.3vh;"><img src="photos/workplace-01.webp" srcset="photos/thumb/workplace-01.webp 400w, photos/med/workplace-01.webp 1400w, photos/workplace-01.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 34" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l1 border-black-thick border-extrude-34" data-num="34" data-label="Image 34" data-subcat="Workplace" style="left:35.4%; top:473.3vh;"><img src="photos/workplace-01.webp" srcset="photos/thumb/workplace-01.webp 400w, photos/med/workplace-01.webp 1400w, photos/workplace-01.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 34" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-t1 double-border" data-num="35" data-label="Image 35" style="left:22.0%; top:527.3vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/portrait-35.webp" srcset="photos/thumb/portrait-35.webp 400w, photos/med/portrait-35.webp 1400w, photos/portrait-35.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 35"></div><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
