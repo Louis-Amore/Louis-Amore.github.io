@@ -1072,16 +1072,28 @@ body.lb-open{ overflow:hidden; }
   // open on the first photo found in the subcategory.
   function openLightboxBySubcat(subcat, startIndex) {
     currentBrowseSubcat = subcat;
+    const fullSet = categoryFullSet[subcat] || [];
+    // EDIT: a subcat-tagged frame's CURRENT photo can legitimately be a
+    // SIBLING subcategory's photo now (the Commercial/Travel shuffle-pool
+    // merge lets e.g. a Bali-tagged frame occasionally show a Sri Lanka
+    // photo) — only count a frame's live photo here if it's genuinely a
+    // member of THIS subcategory's own full set, so browsing "Bali"
+    // directly never shows a Sri Lanka photo just because a frame's
+    // shuffle happened to land there this load. Any frame excluded this
+    // way is simply backfilled from its own subcategory's extras below,
+    // same as it would be if that frame didn't exist at all.
+    const belongsHere = (src) => fullSet.some(e => normalizeSrc(e.src) === normalizeSrc(src));
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
-      .filter(x => x.info.subcat === subcat);
+      .filter(x => x.info.subcat === subcat && belongsHere(x.info.src));
 
-    // the rail = every field frame's CURRENT photo, plus every OTHER known
-    // subcategory photo (from the full pre-shuffle set) not currently
-    // showing on any of this subcategory's field frames — guarantees the
-    // full count every time, matching the category-level fix above.
+    // the rail = every field frame's CURRENT (genuinely-this-subcategory)
+    // photo, plus every OTHER known subcategory photo (from the full
+    // pre-shuffle set) not currently showing on any of this subcategory's
+    // field frames — guarantees the full count every time, matching the
+    // category-level fix above.
     const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
-    const extras = (categoryFullSet[subcat] || [])
+    const extras = fullSet
       .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
       .map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
     currentCategoryItems = currentCategoryItems.concat(extras);
