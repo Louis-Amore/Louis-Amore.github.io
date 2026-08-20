@@ -987,10 +987,34 @@ body.lb-open{ overflow:hidden; }
     'Truckers': 'Truckers',
   };
 
+  // EDIT: since the Commercial/Travel shuffle-pool merge can put a sibling
+  // subcategory's photo onto a frame (a Bali-tagged frame can show a Sri
+  // Lanka photo, etc.), a frame's own data-subcat is no longer a reliable
+  // guide to what someone is actually looking at when they click it —
+  // clicking a visibly Sri Lanka photo was opening the Bali gallery
+  // instead, since that's the FRAME's static tag, not the CURRENT photo's
+  // real origin. Build a one-time reverse lookup (photo -> its true
+  // subcategory) from the pre-shuffle full set, so a click always opens
+  // the gallery the photo on screen actually belongs to.
+  const srcToTrueSubcat = {};
+  Object.keys(categoryFullSet).forEach(key => {
+    if (!subcatNames.hasOwnProperty(key)) return; // only real subcategory keys, not top-level cats
+    categoryFullSet[key].forEach(e => {
+      if (e.src) srcToTrueSubcat[normalizeSrc(e.src)] = key;
+    });
+  });
+
   function openLightbox(index) {
     const info = frameInfo(frameList[index]);
-    if (info.subcat) {
-      openLightboxBySubcat(info.subcat, index);
+    const trueSubcat = info.src ? srcToTrueSubcat[normalizeSrc(info.src)] : undefined;
+    const effectiveSubcat = trueSubcat || info.subcat;
+    if (effectiveSubcat) {
+      // when the photo actually belongs to a SIBLING subcategory (not the
+      // clicked frame's own static tag), match by the photo's own src
+      // instead of the frame's index — the frame itself won't appear
+      // in that subcategory's own item list, so landing on the exact
+      // photo needs matching by what's actually showing, not by frame.
+      openLightboxBySubcat(effectiveSubcat, trueSubcat ? undefined : index, trueSubcat ? info.src : undefined);
       return;
     }
     currentBrowseSubcat = null;
@@ -1068,7 +1092,7 @@ body.lb-open{ overflow:hidden; }
   // Open the lightbox filtered to a subcategory (e.g. "UL"). If startIndex is
   // given (a real field photo was clicked), open on that photo; otherwise
   // open on the first photo found in the subcategory.
-  function openLightboxBySubcat(subcat, startIndex) {
+  function openLightboxBySubcat(subcat, startIndex, startSrc) {
     currentBrowseSubcat = subcat;
     const fullSet = categoryFullSet[subcat] || [];
     // EDIT: a subcat-tagged frame's CURRENT photo can legitimately be a
@@ -1105,9 +1129,11 @@ body.lb-open{ overflow:hidden; }
 
     if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
 
-    currentPos = startIndex !== undefined
-      ? currentCategoryItems.findIndex(x => x.i === startIndex)
-      : 0;
+    currentPos = startSrc !== undefined
+      ? currentCategoryItems.findIndex(x => normalizeSrc(x.info.src) === normalizeSrc(startSrc))
+      : (startIndex !== undefined
+          ? currentCategoryItems.findIndex(x => x.i === startIndex)
+          : 0);
     if (currentPos === -1) currentPos = 0;
 
     buildRail();
