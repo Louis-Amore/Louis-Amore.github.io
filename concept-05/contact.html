@@ -80,8 +80,10 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--ink); outline-off
 
 main{
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:40px 24px;
+  gap:56px; text-align:center; padding:60px 24px;
 }
+
+.hero{ display:flex; flex-direction:column; align-items:center; }
 
 .eyebrow{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:22px; }
 
@@ -105,6 +107,11 @@ h1{
 }
 .sub-links a:hover{ color:var(--ink); }
 
+.about{ max-width:560px; }
+.about .eyebrow{ margin-bottom:16px; }
+.about p{ font-size:15px; color:var(--muted); line-height:1.75; margin:0 0 16px; }
+.about p:last-child{ margin-bottom:0; }
+
 footer{
   display:flex; justify-content:space-between; padding:22px 28px;
   font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
@@ -123,15 +130,22 @@ footer{
 </div>
 
 <main>
-  <p class="eyebrow">Get in touch — London</p>
-  <h1>Say Hello.</h1>
-  <p class="tagline">For commissions, collaborations, or just to talk about
-  a project — I'm based in London and I'll get back to you within a couple of days.</p>
-  <a class="email-link" href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
+  <div class="hero">
+    <p class="eyebrow">Get in touch — London</p>
+    <h1>Say Hello.</h1>
+    <p class="tagline">For commissions, collaborations, or just to talk about
+    a project — I'm based in London and I'll get back to you within a couple of days.</p>
+    <a class="email-link" href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
 
-  <div class="sub-links">
-    <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.linkedin.com/in/louisamore/" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="sub-links">
+      <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/in/louisamore/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+
+  <div class="about">
+    <p class="eyebrow">About</p>
+    <p>I'm a London-based photographer drawn to people, places and the stories behind them. My work moves between portraits, brands, workplaces and documentary photography, always looking for something real, considered and human.</p>
   </div>
 </main>
 
