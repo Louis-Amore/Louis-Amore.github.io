@@ -497,6 +497,7 @@ body.lb-open{ overflow:hidden; }
 }
 
 @media (max-width:760px){
+  .fixed-name{ display:none; }
   .field{ height:auto; }
   .field-frame{
     position:static !important; left:auto !important; top:auto !important;
@@ -515,7 +516,7 @@ body.lb-open{ overflow:hidden; }
 </div>
 
 <div class="corner-nav">
-  <span>Work ↓</span>
+  <span>Portfolio ↓</span>
   <div class="links">
     <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.linkedin.com/in/louisamore/" target="_blank" rel="noopener">LinkedIn</a>
@@ -1517,12 +1518,12 @@ body.lb-open{ overflow:hidden; }
   // Structure mirrors the site's own data so counts can never drift: a
   // category's number is exactly what opening it would show.
   const IDX = [
+    ['Travel', ['Bali', 'SriLanka']],
     ['Fashion', []],
     ['Portrait', []],
     ['Interiors', []],
     ['Personal', ['UL', 'WSR', 'Vape', 'Street', 'Truckers']],
     ['Landscape', []],
-    ['Travel', ['Bali', 'SriLanka']],
     ['Commercial', ['Workplace', 'Wellness']]
   ];
   const idxList    = document.getElementById('idx-list');
