@@ -112,6 +112,12 @@ h1{
 .about p{ font-size:15px; color:var(--muted); line-height:1.75; margin:0 0 16px; }
 .about p:last-child{ margin-bottom:0; }
 
+.clients{ max-width:640px; }
+.clients .eyebrow{ margin-bottom:20px; }
+.client-logos{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:28px 36px; }
+.client-logos img{ display:block; max-height:26px; max-width:170px; width:auto; height:auto; opacity:.5; transition:opacity .2s ease; }
+.client-logos img:hover{ opacity:1; }
+
 footer{
   display:flex; justify-content:space-between; padding:22px 28px;
   font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
@@ -133,6 +139,25 @@ footer{
   <div class="about">
     <p class="eyebrow">About</p>
     <p>I'm a London-based photographer drawn to people, places and the stories behind them. My work moves between portraits, brands, workplaces and documentary photography, always looking for something real, considered and human.</p>
+  </div>
+
+  <div class="clients">
+    <p class="eyebrow">Selected Clients</p>
+    <div class="client-logos">
+      <img src="concept-05/logos/saatchi-flat.png" alt="Saatchi & Saatchi" loading="lazy">
+      <img src="concept-05/logos/hsbc-flat.png" alt="HSBC" loading="lazy">
+      <img src="concept-05/logos/airbnb-flat.png" alt="Airbnb" loading="lazy">
+      <img src="concept-05/logos/huma-flat.png" alt="Huma" loading="lazy">
+      <img src="concept-05/logos/random42-flat.png" alt="Random42" loading="lazy">
+      <img src="concept-05/logos/icak-flat.png" alt="ICAK UK" loading="lazy">
+      <img src="concept-05/logos/broadsword-flat.png" alt="Broadsword" loading="lazy">
+      <img src="concept-05/logos/dlapiper-flat.png" alt="DLA Piper" loading="lazy">
+      <img src="concept-05/logos/loreal-flat.png" alt="L'Oréal" loading="lazy">
+      <img src="concept-05/logos/paulandjoe-flat.png" alt="Paul & Joe" loading="lazy">
+      <img src="concept-05/logos/bacardi-flat.png" alt="Bacardi" loading="lazy">
+      <img src="concept-05/logos/ottolenghi-flat.png" alt="Ottolenghi" loading="lazy">
+      <img src="concept-05/logos/rbs-flat.png" alt="Royal Bank of Scotland" loading="lazy">
+    </div>
   </div>
 
   <div class="hero">
