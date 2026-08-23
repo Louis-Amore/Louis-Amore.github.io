@@ -1612,6 +1612,19 @@ body.lb-open{ overflow:hidden; }
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
   });
+
+  // EDIT: deep-link support for the per-category "share" pages (e.g.
+  // bali.html) — they redirect here with ?subcat=Bali or ?cat=Fashion so
+  // the right gallery opens automatically instead of landing on the plain
+  // homepage. Safe to call straight away: everything openLightboxBySubcat/
+  // openLightboxByCategory needs is already built by this point in the script.
+  (function openFromQueryParam() {
+    const params = new URLSearchParams(window.location.search);
+    const subcat = params.get('subcat');
+    const cat = params.get('cat');
+    if (subcat) openLightboxBySubcat(subcat);
+    else if (cat) openLightboxByCategory(cat);
+  })();
 </script>
 
 </body>
