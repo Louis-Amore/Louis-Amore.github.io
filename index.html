@@ -1012,6 +1012,29 @@ body.lb-open{ overflow:hidden; }
     });
   });
 
+  // EDIT: keep the address bar in sync with whatever's open in the
+  // lightbox, so browsing to a category/subcategory produces a real,
+  // copyable, shareable URL and the back button closes it instead of
+  // leaving the URL and the screen out of sync. suppressHistory guards the
+  // cases where we're already responding to a URL change (initial load,
+  // popstate) and shouldn't push yet another entry on top of it.
+  let suppressHistory = false;
+
+  function setURLForOpen(kind, value) {
+    if (suppressHistory) return;
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.searchParams.set(kind, value);
+    history.pushState({ [kind]: value }, '', url.pathname + '?' + url.searchParams.toString());
+  }
+
+  function setURLForClose() {
+    if (suppressHistory || !window.location.search) return;
+    const url = new URL(window.location.href);
+    url.search = '';
+    history.pushState(null, '', url.pathname);
+  }
+
   function openLightbox(index) {
     const info = frameInfo(frameList[index]);
     const trueSubcat = info.src ? srcToTrueSubcat[normalizeSrc(info.src)] : undefined;
@@ -1057,6 +1080,7 @@ body.lb-open{ overflow:hidden; }
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
+    setURLForOpen('cat', info.cat);
   }
 
   // Open a full category from the quick-cats menu — always shows every photo
@@ -1095,6 +1119,7 @@ body.lb-open{ overflow:hidden; }
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
+    setURLForOpen('cat', cat);
   }
 
   // Open the lightbox filtered to a subcategory (e.g. "UL"). If startIndex is
@@ -1149,12 +1174,14 @@ body.lb-open{ overflow:hidden; }
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
+    setURLForOpen('subcat', subcat);
   }
 
   function closeLightbox() {
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('lb-open');
+    setURLForClose();
   }
 
   // EDIT: photos/ holds the full-size file (used by the lightbox stage).
@@ -1615,15 +1642,24 @@ body.lb-open{ overflow:hidden; }
   // EDIT: deep-link support for the per-category "share" pages (e.g.
   // bali.html) — they redirect here with ?subcat=Bali or ?cat=Fashion so
   // the right gallery opens automatically instead of landing on the plain
-  // homepage. Safe to call straight away: everything openLightboxBySubcat/
-  // openLightboxByCategory needs is already built by this point in the script.
-  (function openFromQueryParam() {
+  // homepage. Also drives the browser's own back/forward buttons, since
+  // browsing now pushes a history entry per category/subcategory (see
+  // setURLForOpen/setURLForClose above). Safe to call straight away:
+  // everything openLightboxBySubcat/openLightboxByCategory needs is
+  // already built by this point in the script.
+  function openFromCurrentURL() {
     const params = new URLSearchParams(window.location.search);
     const subcat = params.get('subcat');
     const cat = params.get('cat');
+    suppressHistory = true;
     if (subcat) openLightboxBySubcat(subcat);
     else if (cat) openLightboxByCategory(cat);
-  })();
+    else closeLightbox();
+    suppressHistory = false;
+  }
+
+  window.addEventListener('popstate', openFromCurrentURL);
+  if (window.location.search) openFromCurrentURL();
 </script>
 
 </body>
