@@ -249,7 +249,16 @@ a{ color:inherit; text-decoration:none; }
   background:rgba(17,17,16,0.78); color:#fff;
   font-family:var(--font-mono); font-size:10px; letter-spacing:.04em;
   padding:5px 9px; pointer-events:none;
+  /* EDIT: hidden by default per request — visitors no longer see the
+     "Image NN" tag sitting on every photo. It still exists in the markup
+     and still appears on hover, purely so Louis can mouse over any photo
+     to read off its number when he wants to reference it in a request —
+     same reveal-on-hover pattern already used for the category figcaption
+     below, just without the touch-device fallback since this one's a
+     reference aid rather than visitor-facing content. */
+  opacity:0; transition:opacity .2s ease;
 }
+.field-frame:hover::before{ opacity:1; }
 .field-frame figcaption{
   position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
   background:linear-gradient(0deg, rgba(0,0,0,0.45), transparent);
