@@ -174,11 +174,28 @@ a{ color:inherit; text-decoration:none; }
   position:absolute; z-index:10; background:#d8d4cb; overflow:hidden;
   display:flex; align-items:flex-end;
   font-family:var(--font-mono); font-size:10px; color:var(--muted); text-transform:uppercase;
-  opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;
+  opacity:0; transform:translateY(26px);
   /* EDIT: reverted per request — back to inheriting border-box from the
      universal * reset (borders eat into the photo's own size again,
      frame footprint never grows). User compared both side by side and
      preferred this. */
+  /* EDIT: every frame's left/top/width is a %, vh or cqw value, so they
+     already reflow continuously as the window resizes — the only thing
+     missing was motion. Adding left/top/width/border-width to the
+     transition list means a resize (or an intermediate width where two
+     frames would otherwise overlap) now animates smoothly instead of
+     snapping — frames visibly float to their new spot, and a mid-drag
+     resize keeps re-targeting the animation rather than jumping. Kept
+     slower and floatier than the .7s entrance fade so it reads as its own
+     distinct motion rather than a copy of it.
+  */
+  transition:
+    opacity .7s ease,
+    transform .7s ease,
+    left .9s cubic-bezier(.16,1,.3,1),
+    top .9s cubic-bezier(.16,1,.3,1),
+    width .9s cubic-bezier(.16,1,.3,1),
+    border-width .5s ease;
 }
 /* EDIT: scoped fix for the thick-bordered landscape frames specifically
    (Images 10, 14, 15, 18, 27, 34 — the ones with a visibly heavy border
