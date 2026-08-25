@@ -1505,14 +1505,14 @@ body.lb-open{ overflow:hidden; }
     const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
     lbCat.textContent = displayCat;
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
-    lbInfoCat.textContent = displayCat;
+    lbInfoCat.textContent = info.cat || displayCat;
 
     const story = imageToProject[info.label];
     // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
     // no default text, no category eyebrow; single hyphen separator throughout
     const titleText = (story && story.title) || displayCat;
     lbInfoTitle.innerHTML = titleText + ' <em>- Image&nbsp;' + String(currentPos + 1).padStart(2, '0') + '</em>';
-    lbInfoCat.style.display = story ? '' : 'none';
+    lbInfoCat.style.display = '';
     lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
 
     const caption = photoCaptions[info.label];
