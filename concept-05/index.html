@@ -61,7 +61,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=EB+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap">
 <style>
 
 :root{
@@ -441,7 +441,7 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.ratio-landscape{ width:min(58vw, 640px); }
   .lb-frame.ratio-portrait{ width:min(32vw, 340px); }
   .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
-  .lb-info h3{ font-size:24px; }
+  .lb-info h3{ font-size:28px; }
   .lb-info p{ font-size:13px; }
   .lb-frame{ border-width:80px; max-width:calc(100vw - 100px - 220px - 280px); }
   .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
@@ -461,9 +461,9 @@ body.lb-open{ overflow:hidden; }
   font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px;
 }
 .lb-info h3{
-  font-family:var(--font-display); font-weight:900; font-size:32px; letter-spacing:-0.01em; margin:0 0 20px; line-height:1.08;
+  font-family:'EB Garamond', serif; font-weight:700; font-size:33px; letter-spacing:-0.005em; margin:0 0 20px; line-height:1.16;
 }
-.lb-info h3 em{ font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--muted); }
+.lb-info h3 em{ font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted); }
 .lb-info p{
   font-family:var(--font-body); font-size:15px; line-height:1.7; color:#3a3a38; margin:0;
 }
@@ -1512,7 +1512,7 @@ body.lb-open{ overflow:hidden; }
     // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
     // no default text, no category eyebrow; single hyphen separator throughout
     const titleText = (story && story.title) || displayCat;
-    lbInfoTitle.innerHTML = titleText + ' <em>- Image ' + String(currentPos + 1).padStart(2, '0') + '</em>';
+    lbInfoTitle.innerHTML = titleText + ' <em>- Image&nbsp;' + String(currentPos + 1).padStart(2, '0') + '</em>';
     lbInfoCat.style.display = story ? '' : 'none';
     lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
 
