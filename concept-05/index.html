@@ -1384,6 +1384,19 @@ body.lb-open{ overflow:hidden; }
     p.images.forEach(label => { imageToProject[label] = p; });
   });
 
+  // EDIT: a shared generic subtitle per category — sits in the same spot as
+  // "Image NN" in the lightbox title, but reads as one line describing the
+  // whole set rather than a photo number. Only used when the photo has no
+  // bespoke project story of its own (see titleText below).
+  const genericSubtitles = {
+    'Interiors': 'Light, space, and stillness',
+    'Landscape': 'The land in changing light',
+    'Street': 'Unplanned moments, real people',
+    'Bali': 'A visual journal of Bali',
+    'Sri Lanka': 'Colour, culture, and coastline',
+    'Truckers': 'Life on the road'
+  };
+
   // EDIT: a short per-photo caption for the small box beside the image —
   // who's in it, a name, a detail, and optionally a bit more text below
   // it. Falls back to generic mood words if a photo doesn't have one yet.
@@ -1513,9 +1526,14 @@ body.lb-open{ overflow:hidden; }
 
     const story = imageToProject[info.label];
     // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
-    // no default text, no category eyebrow; single hyphen separator throughout
+    // no default text, no category eyebrow; single hyphen separator throughout.
+    // Categories with a shared generic subtitle (genericSubtitles) show that
+    // phrase instead of the per-photo "Image NN" — one consistent line for
+    // every photo in the set.
     const titleText = (story && story.title) || displayCat;
-    lbInfoTitle.innerHTML = titleText + ' <em>- Image&nbsp;' + String(currentPos + 1).padStart(2, '0') + '</em>';
+    const generic = !story && genericSubtitles[displayCat];
+    const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
+    lbInfoTitle.innerHTML = titleText + ' <em>- ' + suffix + '</em>';
     lbInfoCat.style.display = '';
     lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
 
