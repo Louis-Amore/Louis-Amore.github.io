@@ -231,36 +231,6 @@ a{ color:inherit; text-decoration:none; }
 .field-frame span{ padding:14px; }
 .field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-/* EDIT: decorative ornate-frame overlay (photo-cutout PNG/webp asset with
-   a transparent center) sitting on top of the photo. The frame box grows
-   OUTWARD from the photo's normal footprint so the photo displays at its
-   full original size and the ornate molding wraps around it into what was
-   empty margin, rather than shrinking the photo down to fit inside a
-   fixed-size frame. Growth factors and the photo's inset percentages are
-   both measured from this asset's own transparent cutout ratio (this one:
-   frame-gold-ornate-01), so a different frame image needs its own numbers
-   here. The figure's inline left/top is shifted by calc() so the photo's
-   own on-page position never moves — only the frame extends outward
-   around it. NOTE: width/height on the photo img are explicit percentages
-   (not width:auto/height:auto + right/bottom) because img is a replaced
-   element — auto sizing on a replaced element ignores the opposite inset
-   and falls back to the image's intrinsic pixel size instead of filling
-   the gap, which was the cause of the badly oversized/misaligned photo. */
-.field-frame.framed-gold-32{
-  width:min(29.61cqw, 524.9px) !important;
-  height:min(22.655cqw, 401.61px) !important;
-}
-.field-frame.framed-gold-32 img.photo-img{
-  position:absolute;
-  left:13.36%; top:12.46%;
-  width:74.30%; height:64.74%;
-  object-fit:cover;
-}
-.field-frame.framed-gold-32 img.frame-overlay-img{
-  position:absolute; inset:0; width:100%; height:100%;
-  object-fit:fill; pointer-events:none;
-}
-
 
 /* Double-border: an outer border on the frame itself, plus an inner border
    on a wrapping div around the photo — no gap between them since the inner
@@ -612,7 +582,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16" style="left:65.9%; top:147.2vh;"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
 
-    <figure class="field-frame w-l1 w-l1-tight framed-gold-32" data-label="Image 32" data-num="32" style="left:calc(26.3% - min(3.956cqw, 70.13px)); top:calc(2.5vh - min(2.823cqw, 50.04px));"><img class="photo-img" src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><img class="frame-overlay-img" src="photos/frames/frame-gold-ornate-01.webp" alt="" aria-hidden="true"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
