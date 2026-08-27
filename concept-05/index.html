@@ -154,7 +154,7 @@ a{ color:inherit; text-decoration:none; }
   .idx-subs.reserve.open{ display:block; }
 }
 
-.field{ position:relative; height:745vh; margin-top:6vh; }
+.field{ position:relative; height:386vh; margin-top:6vh; }
 /* EDIT: the nav is a fixed 163px wide (right edge 191px) at every viewport,
    so the photos need a fixed PIXEL inset to clear it, not a percentage.
    Every frame's left:% resolves against this band instead of the full page,
@@ -230,6 +230,71 @@ a{ color:inherit; text-decoration:none; }
 .field-frame.in{ opacity:1; transform:translateY(0); }
 .field-frame span{ padding:14px; }
 .field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* EDIT: decorative ornate-frame overlay (photo-cutout PNG/webp asset with
+   a transparent center) sitting on top of the photo. The frame box grows
+   OUTWARD from the photo's normal footprint so the photo displays at its
+   full original size and the ornate molding wraps around it into what was
+   empty margin, rather than shrinking the photo down to fit inside a
+   fixed-size frame. Growth factors and the photo's inset percentages are
+   both measured from this asset's own transparent cutout ratio (this one:
+   frame-gold-ornate-01), so a different frame image needs its own numbers
+   here. The figure's inline left/top is shifted by calc() so the photo's
+   own on-page position never moves — only the frame extends outward
+   around it. NOTE: width/height on the photo img are explicit percentages
+   (not width:auto/height:auto + right/bottom) because img is a replaced
+   element — auto sizing on a replaced element ignores the opposite inset
+   and falls back to the image's intrinsic pixel size instead of filling
+   the gap, which was the cause of the badly oversized/misaligned photo. */
+.field-frame.framed-gold-32{
+  width:min(23.14cqw, 410.2px) !important;
+  height:min(15.865cqw, 281.2px) !important;
+}
+.field-frame.framed-gold-32 img.photo-img{
+  position:absolute;
+  left:13.36%; top:12.46%;
+  width:74.30%; height:64.74%;
+  object-fit:cover;
+}
+.field-frame.framed-gold-32 img.frame-overlay-img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:fill; pointer-events:none;
+}
+
+/* EDIT: "mood cluster" test around Image 10 (Interiors) — a couple of
+   smaller same-category photos tucked behind it with thin connector lines
+   and a short caption, styled like a mood-board pinup rather than a plain
+   grid tile. Everything here is purely decorative (pointer-events:none)
+   so it never competes with Image 10's own click-to-lightbox behaviour,
+   and it sits at z-index:5 — below every .field-frame (z-index:10) — so it
+   always renders behind neighbouring photos too, not just Image 10.
+   Positioned in the confirmed-empty margin around Image 10 (~300px+ clear
+   on most sides at common widths), so nothing here overlaps a neighbour.
+   If this style is kept, the same pattern (two chips from the same
+   category's unused pool + a caption reusing its generic subtitle) can be
+   repeated for other hero images. */
+.mood-cluster{ position:absolute; inset:0; pointer-events:none; z-index:5; }
+.mood-cluster .mood-chip{
+  position:absolute; background:#d8d4cb; overflow:hidden;
+  border:1px solid rgba(17,17,16,.3);
+  box-shadow:0 8px 20px rgba(17,17,16,.14);
+}
+.mood-cluster .mood-chip img{ width:100%; height:100%; object-fit:cover; display:block; }
+.mood-cluster .mood-line{ position:absolute; background:rgba(17,17,16,.3); }
+.mood-cluster .mood-caption{
+  position:absolute; width:min(9.2cqw, 145px);
+  font-family:var(--font-mono); font-size:11px; line-height:1.5;
+  color:var(--muted);
+}
+.mood-cluster .mood-caption b{
+  display:block; font-size:11px; letter-spacing:.06em;
+  text-transform:uppercase; color:#111110; font-weight:600; margin-bottom:5px;
+}
+/* EDIT: scattered/collage variant — used for the Fashion cluster. Chips sit
+   at small hand-picked rotation angles (via inline transform) instead of
+   square corner-peeks, and render black-and-white so they read as
+   reference/mood material rather than competing with the main photo. */
+.mood-cluster .mood-chip.bw img{ filter:grayscale(100%); }
 
 /* Double-border: an outer border on the frame itself, plus an inner border
    on a wrapping div around the photo — no gap between them since the inner
@@ -564,39 +629,39 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
+    <div class="mood-cluster" aria-hidden="true">
+      <div class="mood-chip bw" style="left:calc(2.1% + min(14cqw,210px)); top:calc(19.8vh - min(5cqw,88.6px)); width:min(8cqw,141.8px); height:min(5.33cqw,94.5px);"><img src="photos/thumb/fashion-13.webp" alt="" loading="lazy"></div>
+      <div class="mood-line" style="left:calc(2.1% + min(11cqw,165px)); top:calc(19.8vh - min(1.5cqw,26.6px)); width:min(3cqw,53.2px); height:1px;"></div>
+      <div class="mood-chip" style="left:calc(2.1% + min(21cqw,300px)); top:calc(19.8vh + min(4cqw,70.9px)); width:min(6.5cqw,115.2px); height:min(9.75cqw,172.8px);"><img src="photos/thumb/fashion-19.webp" alt="" loading="lazy"></div>
+      <div class="mood-chip bw" style="left:calc(2.1% + min(9cqw,135px)); top:calc(19.8vh + min(18cqw,269px)); width:min(6cqw,106.4px); height:min(8cqw,141.8px);"><img src="photos/thumb/fashion-09.webp" alt="" loading="lazy"></div>
+      <div class="mood-caption" style="left:2.1%; top:calc(19.8vh + min(19cqw,284px));"><b>Fashion</b>Editorial fashion work.</div>
+    </div>
     <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:9.7%; top:459.8vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:88.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l3 border-thick" data-num="09" data-label="Image 09" data-subcat="Bali" style="left:41.1%; top:511.7vh;"><img src="photos/personal-image09.webp" srcset="photos/thumb/personal-image09.webp 400w, photos/med/personal-image09.webp 1400w, photos/personal-image09.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1296px) 54vw, 700px" alt="Image 09" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+  <div class="mood-cluster" aria-hidden="true">
+    <div class="mood-chip" style="left:calc(61.63% - min(5.6cqw,104.6px)); top:calc(47.8vh - min(4.3cqw,80.3px)); width:min(9.2cqw,145px); height:min(6.13cqw,96.7px);"><img src="photos/thumb/interiors-67.webp" alt="" loading="lazy"></div>
+    <div class="mood-line" style="left:calc(61.63% - min(1.1cqw,20.5px)); top:calc(47.8vh - min(1.9cqw,35.5px)); width:min(3.2cqw,59.8px); height:1px;"></div>
+    <div class="mood-chip" style="left:calc(61.63% + min(26cqw,485.7px)); top:calc(47.8vh + min(18cqw,336.3px)); width:min(9.2cqw,145px); height:min(6.13cqw,96.7px);"><img src="photos/thumb/interiors-76.webp" alt="" loading="lazy"></div>
+    <div class="mood-line" style="left:calc(61.63% + min(24cqw,448.3px)); top:calc(47.8vh + min(16.5cqw,308.2px)); width:min(3.2cqw,59.8px); height:1px;"></div>
+    <div class="mood-caption" style="left:calc(61.63% + min(26cqw,485.7px)); top:calc(47.8vh + min(25.3cqw,330px));"><b>Interiors</b>Light, space, and stillness.</div>
+  </div>
   <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10" style="left:61.63%; top:47.8vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="11" data-label="Image 11" style="left:47.4%; top:353.2vh;"><img src="photos/interiors-11.webp" srcset="photos/thumb/interiors-11.webp 400w, photos/med/interiors-11.webp 1400w, photos/interiors-11.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 11" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-white-thick border-extrude" data-num="14" data-label="Image 14" style="left:42.6%; top:584.7vh;"><img src="photos/portrait-14.webp" srcset="photos/thumb/portrait-14.webp 400w, photos/med/portrait-14.webp 1400w, photos/portrait-14.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 14" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-white-thick border-extrude-15" data-num="15" data-label="Image 15" style="left:68.0%; top:473.1vh;"><img src="photos/portrait-15.webp" srcset="photos/thumb/portrait-15.webp 400w, photos/med/portrait-15.webp 1400w, photos/portrait-15.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 15" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali" style="left:62.1%; top:0.7vh; border-width:36px;"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t2" data-num="21" data-label="Image 21" style="left:59.2%; top:406.0vh;"><img src="photos/fashion-17.webp" srcset="photos/thumb/fashion-17.webp 400w, photos/med/fashion-17.webp 1400w, photos/fashion-17.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 21" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-l3" data-num="23" data-label="Image 23" style="left:2.8%; top:667.0vh;"><img src="photos/landscape-23.webp" srcset="photos/thumb/landscape-23.webp 400w, photos/med/landscape-23.webp 1400w, photos/landscape-23.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1296px) 54vw, 700px" alt="Image 23" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:26.2%; top:53.5vh;"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
 
-  <figure class="field-frame w-t1" data-num="26" data-label="Image 26" style="left:2.8%; top:546.9vh;"><img src="photos/interiors-26.webp" srcset="photos/thumb/interiors-26.webp 400w, photos/interiors-26.webp 1001w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 26" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t2" data-num="28" data-label="Image 28" style="left:72.1%; top:673.1vh;"><img src="photos/interiors-38.webp" srcset="photos/thumb/interiors-38.webp 400w, photos/interiors-38.webp 1001w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 28" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-num="30" data-label="Image 30" style="left:82.7%; top:347.6vh;"><img src="photos/portrait-30.webp" srcset="photos/thumb/portrait-30.webp 400w, photos/portrait-30.webp 1780w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 30" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-
   <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16" style="left:65.9%; top:147.2vh;"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
-    <figure class="field-frame w-l2 border-thick border-extrude" data-num="27" data-label="Image 27" style="left:4.0%; top:413.2vh; border-width:24px;"><img src="photos/landscape-27.webp" srcset="photos/thumb/landscape-27.webp 400w, photos/med/landscape-27.webp 1400w, photos/landscape-27.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 27" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-l2 border-gold" data-num="29" data-label="Image 29" style="left:0.2%; top:611.4vh;"><img src="photos/fashion-41.webp" srcset="photos/thumb/fashion-41.webp 400w, photos/med/fashion-41.webp 1400w, photos/fashion-41.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 29" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
 
-    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight framed-gold-32" data-label="Image 32" data-num="32" style="left:calc(26.3% - min(3.091cqw, 54.8px)); top:calc(2.5vh - min(1.977cqw, 35.0px));"><img class="photo-img" src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><img class="frame-overlay-img" src="photos/frames/frame-gold-ornate-01.webp" alt="" aria-hidden="true"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-black-thick border-extrude-34" data-num="34" data-label="Image 34" data-subcat="Workplace" style="left:35.4%; top:473.3vh;"><img src="photos/workplace-01.webp" srcset="photos/thumb/workplace-01.webp 400w, photos/med/workplace-01.webp 1400w, photos/workplace-01.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 34" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t1 double-border" data-num="35" data-label="Image 35" style="left:22.0%; top:527.3vh; --db-outer:12px; --db-outer-color:#ffffff; --db-inner:2px; --db-inner-color:#111110;"><div class="db-inner"><img src="photos/portrait-35.webp" srcset="photos/thumb/portrait-35.webp 400w, photos/med/portrait-35.webp 1400w, photos/portrait-35.webp 2200w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 35"></div><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
 
@@ -740,6 +805,11 @@ body.lb-open{ overflow:hidden; }
       { label: 'Interiors 73', ratio: 'landscape', src: 'photos/interiors-73.webp' },
       { label: 'Interiors 75', ratio: 'landscape', src: 'photos/interiors-75.webp' },
       { label: 'Interiors 76', ratio: 'landscape', src: 'photos/interiors-76.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 11', ratio: 'landscape', src: 'photos/interiors-11.webp' },
+      { label: 'Image 26', ratio: 'portrait', src: 'photos/interiors-26.webp' },
+      { label: 'Image 28', ratio: 'portrait', src: 'photos/interiors-38.webp' },
     ],
     'Portrait': [
       { label: 'Portrait 41', ratio: 'portrait', src: 'photos/portrait-41.webp' },
@@ -756,6 +826,12 @@ body.lb-open{ overflow:hidden; }
       { label: 'Portrait 71', ratio: 'portrait', src: 'photos/portrait-71.webp' },
       { label: 'Portrait 72', ratio: 'landscape', src: 'photos/portrait-72.webp' },
       { label: 'Portrait 73', ratio: 'portrait', src: 'photos/portrait-73.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 14', ratio: 'landscape', src: 'photos/portrait-14.webp' },
+      { label: 'Image 15', ratio: 'landscape', src: 'photos/portrait-15.webp' },
+      { label: 'Image 30', ratio: 'portrait', src: 'photos/portrait-30.webp' },
+      { label: 'Image 35', ratio: 'portrait', src: 'photos/portrait-35.webp' },
     ],
     'Fashion': [
       { label: 'Fashion 01', ratio: 'landscape', src: 'photos/fashion-01.webp' },
@@ -775,6 +851,10 @@ body.lb-open{ overflow:hidden; }
       { label: 'Fashion 45', ratio: 'portrait', src: 'photos/fashion-45.webp' },
       { label: 'Fashion 46', ratio: 'portrait', src: 'photos/fashion-46.webp' },
       { label: 'Fashion 47', ratio: 'portrait', src: 'photos/fashion-47.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 21', ratio: 'portrait', src: 'photos/fashion-17.webp' },
+      { label: 'Image 29', ratio: 'landscape', src: 'photos/fashion-41.webp' },
     ],
     'Landscape': [
       { label: 'Landscape 40', ratio: 'landscape', src: 'photos/landscape-40.webp' },
@@ -786,6 +866,10 @@ body.lb-open{ overflow:hidden; }
       { label: 'Landscape 46', ratio: 'landscape', src: 'photos/landscape-46.webp' },
       { label: 'Landscape 47', ratio: 'landscape', src: 'photos/landscape-47.webp' },
       { label: 'Landscape 48', ratio: 'landscape', src: 'photos/landscape-48.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 23', ratio: 'landscape', src: 'photos/landscape-23.webp' },
+      { label: 'Image 27', ratio: 'landscape', src: 'photos/landscape-27.webp' },
     ],
   };
 
@@ -804,6 +888,9 @@ body.lb-open{ overflow:hidden; }
       { label: 'Workplace 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-12.webp' },
       { label: 'Workplace 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-13.webp' },
       { label: 'Workplace 14', cat: 'Commercial', ratio: 'portrait', src: 'photos/workplace-14.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 34', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-01.webp' },
     ],
     'Wellness': [
       { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-05.webp' },
@@ -843,6 +930,9 @@ body.lb-open{ overflow:hidden; }
       { label: 'Bali 26', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-26.webp' },
       { label: 'Bali 28', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-28.webp' },
       { label: 'Bali 29', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-29.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 09', cat: 'Travel', ratio: 'landscape', src: 'photos/personal-image09.webp' },
     ],
     'SriLanka': [
       { label: 'Sri Lanka 01', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-01.webp' },
