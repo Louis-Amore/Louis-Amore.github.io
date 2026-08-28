@@ -436,6 +436,16 @@ body.lb-open{ overflow:hidden; }
 .lb-stage::before{ display:none; }
 /* photos with no assigned caption simply show no tags box */
 .lb-stage.no-tags .lb-tags{ display:none; }
+/* EDIT: the same stacked arrangement the <=1150px breakpoint uses, but
+   applied on demand at any width. Whether the tags box fits beside the photo
+   depends on how long that particular caption is, not only on how wide the
+   window is — the long Unconditional Love captions squeezed the box to its
+   70px floor and then forced the PHOTO down to a fraction of its frame. When
+   fitStage finds that even a minimum-width box and a minimum mat still don't
+   clear the info panel, it adds this class rather than carry on shrinking the
+   photo: the caption drops below the picture and the photo gets its size back. */
+.lb-stage.tags-below{ flex-direction:column; gap:14px; }
+.lb-stage.tags-below .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
 .lb-tags p{
   font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
 }
@@ -1653,12 +1663,28 @@ body.lb-open{ overflow:hidden; }
     const img = frame && frame.querySelector('img');
     const tags = document.querySelector('.lb-tags');
     if (!info || !frame) return;
+    const stage = frame.closest('.lb-stage');
     frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
     frame.style.borderWidth = '';
     if (tags) tags.style.width = '';
-    if (window.innerWidth <= 1150) return; // tags stacks below the photo here (see CSS comment) — nothing to protect
+    if (img) img.style.maxHeight = '';
+    if (stage) stage.classList.remove('tags-below');
+    const wrap = document.querySelector('.lb-stage-wrap');
+    // EDIT: below 1150px the CSS already stacks the box under the photo, so the
+    // horizontal loop has nothing to do — but the box was inheriting the STAGE's
+    // width, which is the full width of the viewport, not the photo's. A long
+    // caption therefore ran straight out under the info panel. Match it to the
+    // photo and leave.
+    if (window.innerWidth <= 1150) {
+      if (tags && window.innerWidth > 760) syncStackedTags(frame, tags);
+      return;
+    }
     const SAFETY = 16;
-    const MIN_TAGS = 70;
+    // EDIT: raised from 70px. A 70px column turns a caption into one or two
+    // words per line, which is what made the Unconditional Love captions look
+    // broken. Below this width the box is no longer worth having beside the
+    // photo at all, so the loop stacks it underneath instead.
+    const MIN_TAGS = 150;
     const MIN_MAT = 60;   // the design's original mat width — never go below it
     // Neither the photo's rendered width nor exactly where it centres is
     // reliably predictable from outside the flex/centring layout (it depends
@@ -1666,14 +1692,29 @@ body.lb-open{ overflow:hidden; }
     // photo and breakpoint) — so measure the real, current overlap after
     // each change and correct again, converging empirically instead of
     // trying to calculate the right answer in one shot.
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 16; i++) {
+      // a stacked box is only ever as wide as the photo it sits under, so keep
+      // the two in step before measuring anything
+      if (stage && stage.classList.contains('tags-below')) syncStackedTags(frame, tags);
       const infoLeft = info.getBoundingClientRect().left;
       const tagsShowing = tags && !frame.closest('.lb-stage').classList.contains('no-tags');
-      const rightEdge = tagsShowing ? tags.getBoundingClientRect().right : frame.getBoundingClientRect().right;
+      // EDIT: was tags.right alone. Once the box drops BELOW the photo it is
+      // narrower than the frame, so measuring only the box let a frame that
+      // genuinely overran the info panel read as fitting. Take whichever of
+      // the two actually reaches furthest right.
+      const rightEdge = tagsShowing
+        ? Math.max(tags.getBoundingClientRect().right, frame.getBoundingClientRect().right)
+        : frame.getBoundingClientRect().right;
       const overlap = rightEdge - infoLeft + SAFETY;
       if (overlap <= 0) break;
       const bw = parseFloat(getComputedStyle(frame).borderLeftWidth || '0');
-      if (tagsShowing && tags.getBoundingClientRect().width > MIN_TAGS) {
+      const stacked = !!(stage && stage.classList.contains('tags-below'));
+      // EDIT: once the box is stacked UNDER the photo, narrowing it moves
+      // nothing — the photo's own edge is what reaches the info panel, and the
+      // sync above widens the box straight back again. Skipping this branch
+      // when stacked stops the loop spending every iteration on a no-op and
+      // never reaching the mat and photo below.
+      if (!stacked && tagsShowing && tags.getBoundingClientRect().width > MIN_TAGS) {
         // first give back room by narrowing the tags box itself, down to a
         // still-readable minimum, before touching the photo at all
         const w = tags.getBoundingClientRect().width;
@@ -1686,6 +1727,16 @@ body.lb-open{ overflow:hidden; }
         // 44px the phone breakpoint already uses. The frame is centred, so
         // taking d off each side moves its right edge in by exactly d.
         frame.style.borderWidth = Math.max(MIN_MAT, bw - overlap) + 'px';
+      } else if (tags && tagsShowing && stage && !stage.classList.contains('tags-below')) {
+        // Tags box AND mat are both at their floor and it still doesn't fit.
+        // Drop the caption below the photo instead of squeezing the picture:
+        // a long caption should cost the photo its position, not its size.
+        // Everything conceded so far was conceded to make room beside the
+        // photo, so hand it all back and let the loop re-measure from scratch.
+        stage.classList.add('tags-below');
+        tags.style.width = '';
+        frame.style.borderWidth = '';
+        frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
       } else {
         // tags box is already as narrow as it should get — shrink the photo
         // instead. It's centred, so its right edge only moves in by about
@@ -1699,6 +1750,25 @@ body.lb-open{ overflow:hidden; }
         if (img) img.style.maxWidth = nextContentW + 'px';
       }
     }
+    // EDIT: stacking buys width back but spends height — photo, gap and caption
+    // now sit in one column. Trim the photo's height cap if the three of them
+    // together run past the bottom of the stage area.
+    if (stage && stage.classList.contains('tags-below') && img && wrap) {
+      for (let i = 0; i < 8; i++) {
+        const bottom = Math.max(frame.getBoundingClientRect().bottom,
+                                tags.getBoundingClientRect().bottom);
+        const over = bottom - wrap.getBoundingClientRect().bottom + 10;
+        if (over <= 0) break;
+        const h = img.getBoundingClientRect().height;
+        const next = Math.max(140, h - over);
+        if (next >= h) break;
+        img.style.maxHeight = next + 'px';
+      }
+    }
+  }
+  function syncStackedTags(frame, tags) {
+    if (!frame || !tags) return;
+    tags.style.width = Math.round(frame.getBoundingClientRect().width) + 'px';
   }
   window.addEventListener('resize', () => setTimeout(fitStage, 120));
 
