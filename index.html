@@ -398,19 +398,26 @@ body.lb-open{ overflow:hidden; }
      (doubled from the original 60px, everything else about the layout —
      centring, the photo's own sizing logic — left exactly as it was). */
   border:120px solid #ffffff; box-sizing:content-box;
+  /* EDIT: the mat was a flat 120px per side — 240px of fixed width that never
+     gave way. On a ~1200px screen that is most of the room between the collage
+     and the info panel, which is why the photo ended up smaller than its own
+     white surround. It now scales with the viewport between the original 60px
+     mat and the current 120px, so the big-screen look is unchanged and mid-size
+     screens keep a mat that is proportionate to the photo instead of eating it. */
+  border-width:clamp(60px, 7vw, 120px);
   height:auto; max-height:calc(61.05vh);
   /* EDIT: cap width to the space BETWEEN the collage (30vw, max 440px on the
      left) and the info panel (320px on the right), minus the 120px mat and
      some breathing room — so on a narrow/snapped window the photo shrinks to
      fit instead of overflowing the panels. */
-  max-width:calc(100vw - 21vw - 320px - 300px);
+  max-width:calc(100vw - 21vw - 320px - 140px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
 /* the image itself carries BOTH caps; width follows naturally but never
    exceeds the available middle space */
 .lb-frame.has-photo img{
   max-height:calc(61.05vh - 120px);
-  max-width:calc(100vw - 21vw - 320px - 300px);
+  max-width:calc(100vw - 21vw - 320px - 140px);
   width:auto; height:auto; display:block;
 }
 /* EDIT: We Shall Remember sized 7% smaller than the other categories */
@@ -438,8 +445,12 @@ body.lb-open{ overflow:hidden; }
   .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
   .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
   .lb-stage-wrap{ padding:20px; }
-  .lb-frame.ratio-landscape{ width:min(58vw, 640px); }
-  .lb-frame.ratio-portrait{ width:min(32vw, 340px); }
+  /* EDIT: scoped to :not(.has-photo) to match the base rules above. These
+     forced a fixed frame width regardless of the actual photo, so a real
+     photo sat off-centre inside an over-wide mat (asymmetric white
+     margins). Placeholders still use the fixed ratio boxes. */
+  .lb-frame.ratio-landscape:not(.has-photo){ width:min(58vw, 640px); }
+  .lb-frame.ratio-portrait:not(.has-photo){ width:min(32vw, 340px); }
   .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
   .lb-info h3{ font-size:28px; }
   .lb-info p{ font-size:13px; }
@@ -508,10 +519,16 @@ body.lb-open{ overflow:hidden; }
   .lb-rail::-webkit-scrollbar-thumb{ background:rgba(17,17,16,0.28); border-radius:4px; }
   .lb-topbar{ grid-template-columns:100px 1fr 100px; }
   .lb-bottombar{ padding-left:28px; padding-right:28px; }
-  .lb-frame{ border-width:44px; }
-  .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); max-width:86vw; }
+  /* EDIT: the base max-width formula assumes the desktop collage + info panel
+     and goes near-zero at phone widths — the old ratio-* rule used to override
+     it, so restore an explicit phone cap now that rule only applies to
+     placeholders. 106px = the 44px mat on each side plus a little air. */
+  .lb-frame{ border-width:44px; max-width:calc(100vw - 106px); }
+  /* EDIT: 86vw did not account for the 44px mat on each side, so the frame
+     overflowed the screen on narrow phones — subtract the mat instead. */
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); max-width:calc(100vw - 106px); }
   .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 44px); }
-  .lb-frame.ratio-landscape, .lb-frame.ratio-portrait{ width:86vw; max-width:86vw; }
+  .lb-frame.ratio-landscape:not(.has-photo), .lb-frame.ratio-portrait:not(.has-photo){ width:86vw; max-width:86vw; }
   /* EDIT: on phones un-pin the stage and stack tags below the photo */
   .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
 }
@@ -564,7 +581,7 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:19.8vh;"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:13.8vh;"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="concept-05/photos/interiors-03.webp" srcset="concept-05/photos/thumb/interiors-03.webp 400w, concept-05/photos/med/interiors-03.webp 1400w, concept-05/photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="concept-05/photos/bali-04.webp" srcset="concept-05/photos/thumb/bali-04.webp 400w, concept-05/photos/med/bali-04.webp 1400w, concept-05/photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
@@ -1579,10 +1596,12 @@ body.lb-open{ overflow:hidden; }
     const tags = document.querySelector('.lb-tags');
     if (!info || !frame) return;
     frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
+    frame.style.borderWidth = '';
     if (tags) tags.style.width = '';
     if (window.innerWidth <= 1150) return; // tags stacks below the photo here (see CSS comment) — nothing to protect
     const SAFETY = 16;
     const MIN_TAGS = 70;
+    const MIN_MAT = 60;   // the design's original mat width — never go below it
     // Neither the photo's rendered width nor exactly where it centres is
     // reliably predictable from outside the flex/centring layout (it depends
     // on the photo's own aspect ratio and box-model details that vary per
@@ -1595,11 +1614,20 @@ body.lb-open{ overflow:hidden; }
       const rightEdge = tagsShowing ? tags.getBoundingClientRect().right : frame.getBoundingClientRect().right;
       const overlap = rightEdge - infoLeft + SAFETY;
       if (overlap <= 0) break;
+      const bw = parseFloat(getComputedStyle(frame).borderLeftWidth || '0');
       if (tagsShowing && tags.getBoundingClientRect().width > MIN_TAGS) {
         // first give back room by narrowing the tags box itself, down to a
         // still-readable minimum, before touching the photo at all
         const w = tags.getBoundingClientRect().width;
         tags.style.width = Math.max(MIN_TAGS, w - overlap) + 'px';
+      } else if (bw > MIN_MAT) {
+        // EDIT: the mat is a fixed 240px of width that never shrank, so on
+        // mid-width screens it ate nearly all the room between the collage and
+        // the info panel and the loop below squeezed the PHOTO down to a
+        // fraction of its own frame. Give the mat back first, down to the same
+        // 44px the phone breakpoint already uses. The frame is centred, so
+        // taking d off each side moves its right edge in by exactly d.
+        frame.style.borderWidth = Math.max(MIN_MAT, bw - overlap) + 'px';
       } else {
         // tags box is already as narrow as it should get — shrink the photo
         // instead. It's centred, so its right edge only moves in by about
