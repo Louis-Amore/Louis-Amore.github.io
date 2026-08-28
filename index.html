@@ -559,6 +559,58 @@ body.lb-open{ overflow:hidden; }
   .corner-nav .links{ gap:10px; }
   .corner-nav a, .corner-nav span{ font-size:9px; }
 }
+
+/* ===================================================================== */
+/* SMALL-SCREEN FRONT PAGE — "column drift"                              */
+/* Below 1500px the scattered field becomes a single drifting column.    */
+/* This is CSS only: the markup is untouched, so every frame keeps its   */
+/* data-label, data-subcat, figcaption and border class, and the         */
+/* lightbox, the shuffle, the border randomiser and the gallery counts   */
+/* all behave exactly as they do on the wide layout. Only position       */
+/* changes. Because the frames sit in normal document flow here, two     */
+/* frames cannot collide and none can land on the fixed name — the whole */
+/* class of overlap bug is impossible at these widths rather than merely */
+/* tuned away. 1500px is the cut so iPads and 13" laptops get this and   */
+/* 15" and up keep the scatter.                                          */
+/* ===================================================================== */
+@media (min-width:761px) and (max-width:1499px){
+  .field{ height:auto !important; }
+  .field-inner{
+    position:static; left:auto; right:auto;
+    display:flex; flex-direction:column; align-items:flex-start;
+    margin:0 5vw 0 calc(clamp(250px, calc(16.2vw + 76px), 300px) + 20px);
+    padding-top:8vh;
+  }
+  .field-frame{
+    position:static !important; left:auto !important; top:auto !important;
+    margin-bottom:14vh; flex:0 0 auto;
+  }
+  /* Frame 32 opens the page, pinned to the right-hand third — that band is
+     clear of the centred name at every width in this range, so the name
+     always reads on load whatever the window height. Frame 18 then takes a
+     deliberate 44vh drop: measured against the shortest window this range
+     will realistically see, that is enough for it to start BELOW the name
+     rather than across it, without needing to know its rendered height. */
+  .field-inner .field-frame[data-num="18"]{ margin-top:44vh; }
+  .field-inner .field-frame:last-of-type{ margin-bottom:6vh; }
+  .field-inner .field-frame[data-num="32"]{ order:1; width:30% !important; margin-left:68%; }
+  .field-inner .field-frame[data-num="18"]{ order:2; width:62% !important; margin-left:2%; }
+  .field-inner .field-frame[data-num="25"]{ order:3; width:28% !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="10"]{ order:4; width:56% !important; margin-left:30%; }
+  .field-inner .field-frame[data-num="05"]{ order:5; width:30% !important; margin-left:6%; }
+  .field-inner .field-frame[data-num="04"]{ order:6; width:58% !important; margin-left:24%; }
+  .field-inner .field-frame[data-num="33"]{ order:7; width:26% !important; margin-left:70%; }
+  .field-inner .field-frame[data-num="08"]{ order:8; width:64% !important; margin-left:4%; }
+  .field-inner .field-frame[data-num="16"]{ order:9; width:30% !important; margin-left:44%; }
+  .field-inner .field-frame[data-num="20"]{ order:10; width:56% !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="07"]{ order:11; width:28% !important; margin-left:10%; }
+  .field-inner .field-frame[data-num="03"]{ order:12; width:56% !important; margin-left:28%; }
+  .field-inner .field-frame[data-num="19"]{ order:13; width:30% !important; margin-left:66%; }
+  .field-inner .field-frame[data-num="13"]{ order:14; width:60% !important; margin-left:0%; }
+  .field-inner .field-frame[data-num="12"]{ order:15; width:26% !important; margin-left:36%; }
+  .field-inner .field-frame[data-num="24"]{ order:16; width:68% !important; margin-left:30%; }
+  .field-inner .field-frame[data-num="02"]{ order:17; width:54% !important; margin-left:8%; }
+}
 </style>
 </head>
 <body>
