@@ -597,7 +597,13 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="32"]{ order:1; width:30% !important; margin-left:68%; }
   .field-inner .field-frame[data-num="18"]{ order:2; width:62% !important; margin-left:2%; }
   .field-inner .field-frame[data-num="25"]{ order:3; width:28% !important; margin-left:40%; }
-  .field-inner .field-frame[data-num="10"]{ order:4; width:56% !important; margin-left:30%; }
+  /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
+     below it; this takes 5vh back off the top of 10 only, leaving a 9vh
+     gap to Image 25 above. Kept as a negative TOP margin rather than
+     shrinking 25's bottom margin so the change is scoped to one frame and
+     the rest of the column's rhythm is untouched. Net gap stays positive,
+     so the two can still never touch. */
+  .field-inner .field-frame[data-num="10"]{ order:4; width:56% !important; margin-left:30%; margin-top:-5vh; }
   .field-inner .field-frame[data-num="05"]{ order:5; width:30% !important; margin-left:6%; }
   .field-inner .field-frame[data-num="04"]{ order:6; width:58% !important; margin-left:24%; }
   .field-inner .field-frame[data-num="33"]{ order:7; width:26% !important; margin-left:70%; }
