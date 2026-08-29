@@ -584,7 +584,17 @@ body.lb-open{ overflow:hidden; }
 /* tuned away. 1500px is the cut so iPads and 13" laptops get this and   */
 /* 15" and up keep the scatter.                                          */
 /* ===================================================================== */
-@media (min-width:761px) and (max-width:1499px){
+/* EDIT: also applied to any short window, not just narrow ones. The scatter
+   positions frames in vh but their heights come from their width, so squeezing
+   the window vertically slides the two out of step and frames start meeting —
+   measured on the untouched live site, five different pairs collide at
+   1500-1920px wide once the viewport drops below ~900px tall, and Image 02
+   reaches the name again. That is most of a 15" Windows laptop's browser
+   window. So the scatter now needs BOTH the width and the height to work in:
+   1500px across and 900px down. The column has no such failure mode, so it takes over whenever the
+   scatter hasn't got the vertical room to work. */
+@media (min-width:761px) and (max-width:1499px),
+       (min-width:761px) and (max-height:899px){
   .field{ height:auto !important; }
   .field-inner{
     position:static; left:auto; right:auto;
@@ -654,7 +664,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:88.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:91.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10" style="left:61.63%; top:47.8vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
