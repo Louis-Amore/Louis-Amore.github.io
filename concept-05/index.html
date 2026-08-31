@@ -1102,7 +1102,12 @@ body.lb-open{ overflow:hidden; }
   })();
 
   (function shuffleFieldPhotos() {
-    const PROTECTED_LABELS = new Set(['Image 20', 'Image 08']);
+    // EDIT: emptied on request — Image 20 and Image 08 were previously held
+    // back from the shuffle so the same two photographs always greeted
+    // people. Nothing on the field is fixed now; every frame draws from its
+    // own pool. Whichever photo lands in a frame still opens that frame's
+    // own gallery, so only the picture changes, never where it goes.
+    const PROTECTED_LABELS = new Set();
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
     // (landscape) — a frame's own class is ground truth for the SHAPE it
     // needs, so a photo of the wrong orientation never gets swapped in,
@@ -1512,6 +1517,18 @@ body.lb-open{ overflow:hidden; }
       subcat: 'Bali',
       body: [
         "Beyond the familiar image of Bali lies a quieter island, shaped by work, tradition and the rhythms of everyday life. Travelling across the island, I photographed the people and places I encountered away from the usual paths \u2014 fishermen, builders, families and young dancers, alongside the landscapes they call home. These photographs are my attempt to capture something less polished, more intimate and far more human."
+      ],
+      images: []
+    },
+    'truckers': {
+      title: 'Truckers',
+      subcat: 'Truckers',
+      body: [
+        "I began photographing truck drivers while travelling through Seattle, drawn initially to the sheer scale of the vehicles and the people behind the wheel.",
+        "These trucks are more than machines. For many drivers they become workplaces, bedrooms and temporary homes. Days are measured in miles and hours, with long stretches of road spent alone and often far from family and the people they love.",
+        "I became interested in that contrast. The enormous physical presence of the truck against the quiet, solitary life inside it. A job that keeps everything moving, but asks its drivers to spend so much of their lives away from home.",
+        "Truckers is an ongoing portrait of the people behind these machines and a working life that is largely invisible to those of us they pass every day.",
+        "Seattle, Washington."
       ],
       images: []
     },
