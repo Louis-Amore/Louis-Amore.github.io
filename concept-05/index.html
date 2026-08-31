@@ -117,7 +117,28 @@ a{ color:inherit; text-decoration:none; }
    two 36px borders. Taking a flat 10% off that would have shrunk the border
    too. Instead the picture's own share is scaled to 0.9 and the 72px of border
    added back at full thickness, so only the photograph gets smaller. */
-.field-frame[data-num="18"]{ width:calc((min(42cqw, 540px) - 72px) * 0.9 + 72px); }
+/* EDIT: Image 18's white border thickened to 48px to match Image 10, growing
+   OUTWARD so the photograph itself is untouched — same size, same crop, same
+   position on the page. Three things are needed for that:
+     - content-box, so the width names the picture and the border sits outside
+       it rather than eating into it (the old width included 36px each side,
+       hence the -72px);
+     - an explicit height, because aspect-ratio:3/2 applies to whichever box is
+       being sized. It used to shape the border box; applied to the content box
+       instead it would have made the picture taller and changed the crop, so
+       the height is stated outright as the value it previously worked out to;
+     - -12px on left and top, since an absolutely positioned frame is placed by
+       its outer edge and the extra 12px of border per side would otherwise
+       nudge the picture down and right.
+   The selector carries the border class as well so it outranks the 24px rule
+   further down the sheet. */
+.field-frame.border-white-thick[data-num="18"]{
+  box-sizing:content-box;
+  border-width:48px;
+  aspect-ratio:auto;
+  width:calc((min(42cqw, 540px) - 72px) * 0.9);
+  height:calc((min(42cqw, 540px) - 72px) * 0.6 - 24px);
+}
 
 /* The one piece of prose on the front page. Identity, not a service list —
    the category index and its counts already do the commercial job. It lives
@@ -202,6 +223,13 @@ a{ color:inherit; text-decoration:none; }
   container-type:inline-size;
 }
 @media (max-width:760px){
+  /* EDIT: on phones every frame is a flat 82vw, which used to include the
+     border. Now that the border sits outside, width and height name the
+     picture directly — the same picture as before, with a wider surround. */
+  .field-frame.border-white-thick[data-num="18"]{
+    width:calc(82vw - 72px) !important;
+    height:calc(82vw / 1.5 - 72px) !important;
+  }
   .field-inner{ position:static; left:auto; right:auto; }
 }
 .field-frame{
@@ -264,7 +292,14 @@ a{ color:inherit; text-decoration:none; }
      reduction therefore applies straight to the width here, with no border to
      subtract first — using the border-box arithmetic would have taken the 10%
      off a figure that never included the border. */
-  .field-frame[data-num="18"]{ width:calc(min(42cqw, 540px) * 0.9); }
+  /* above 2000px the frame was already content-box, so its width was already
+     the picture alone and 3/2 already shaped the picture correctly — restore
+     the ratio here and let the height follow from it, as it did before. */
+  .field-frame.border-white-thick[data-num="18"]{
+    width:calc(min(42cqw, 540px) * 0.9);
+    aspect-ratio:3/2;
+    height:auto;
+  }
 }
 .field-frame.in{ opacity:1; transform:translateY(0); }
 .field-frame span{ padding:14px; }
@@ -656,7 +691,18 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="32"]{ order:1; width:30% !important; margin-left:68%; }
   /* EDIT: same 10% picture reduction as the wide layout, border untouched:
      0.9 of the picture's share of the 62%, plus the full 72px of border. */
-  .field-inner .field-frame[data-num="18"]{ order:2; width:calc((62% - 72px) * 0.9 + 72px) !important; margin-left:2%; }
+  /* same treatment in the column layout: width and height both name the
+     picture, so it keeps the exact size it had and the border grows outward */
+  .field-inner .field-frame[data-num="18"]{
+    order:2; margin-left:2%;
+    /* cqw, not %, for the height: a percentage height resolves against the
+       container's HEIGHT, which here is auto and would make the value
+       meaningless. Container query units resolve against its width whichever
+       property they are used in, so both dimensions stay tied to the same
+       measurement. */
+    width:calc((62cqw - 72px) * 0.9) !important;
+    height:calc((62cqw - 72px) * 0.6 - 24px) !important;
+  }
   .field-inner .field-frame[data-num="25"]{ order:3; width:28% !important; margin-left:40%; }
   /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
      below it; this takes 5vh back off the top of 10 only, leaving a 9vh
@@ -709,7 +755,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10" style="left:61.63%; top:47.8vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali" style="left:62.1%; top:0.7vh; border-width:36px;"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali" style="left:calc(62.1% - 12px); top:calc(0.7vh - 12px);"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
