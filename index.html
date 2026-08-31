@@ -1482,6 +1482,26 @@ body.lb-open{ overflow:hidden; }
   // under it. Add more image labels to "images" as you tag more photos
   // into the same project.
   const projects = {
+    'bali': {
+      title: 'Bali',
+      // EDIT: keyed by SUBCATEGORY rather than by a list of image labels (see
+      // subcatProjects below). Every Bali photo picks this up automatically,
+      // including ones added later — no list to keep in step.
+      subcat: 'Bali',
+      body: [
+        "Beyond the familiar image of Bali lies a quieter island, shaped by work, tradition and the rhythms of everyday life. Travelling across the island, I photographed the people and places I encountered away from the usual paths \u2014 fishermen, builders, families and young dancers, alongside the landscapes they call home. These photographs are my attempt to capture something less polished, more intimate and far more human."
+      ],
+      images: []
+    },
+    'sri-lanka': {
+      title: 'Sri Lanka',
+      subcat: 'Sri Lanka',
+      body: [
+        "Sri Lanka is a place where the past and present seem to exist side by side. Travelling through the country, I encountered communities still carrying the memory of the 2004 tsunami, when homes, livelihoods and lives were swept away along the coast. Yet what I found was not a landscape defined by loss, but by recovery.",
+        "I photographed the people I met along the way \u2014 fishermen, workers, families, a young monk and strangers on roadsides and railway tracks. In their everyday lives I found humour, affection, dignity and resilience. These photographs are less about what was taken away and more about what remained: people rebuilding, adapting and simply carrying on."
+      ],
+      images: []
+    },
     'unconditional-love': {
       title: 'Unconditional Love',
       body: [
@@ -1521,6 +1541,11 @@ body.lb-open{ overflow:hidden; }
   Object.values(projects).forEach(p => {
     p.images.forEach(label => { imageToProject[label] = p; });
   });
+  // EDIT: and a second lookup by subcategory. A project declaring `subcat`
+  // covers every photo in that set, so adding photos to Bali or Sri Lanka
+  // later doesn't mean editing an image list to keep the write-up showing.
+  const subcatToProject = {};
+  Object.values(projects).forEach(p => { if (p.subcat) subcatToProject[p.subcat] = p; });
 
   // EDIT: a shared generic subtitle per category — sits in the same spot as
   // "Image NN" in the lightbox title, but reads as one line describing the
@@ -1664,7 +1689,8 @@ body.lb-open{ overflow:hidden; }
     lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
     lbInfoCat.textContent = info.cat || displayCat;
 
-    const story = imageToProject[info.label];
+    // per-photo project wins; otherwise fall back to the subcategory's own
+    const story = imageToProject[info.label] || subcatToProject[displayCat];
     // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
     // no default text, no category eyebrow; single hyphen separator throughout.
     // Categories with a shared generic subtitle (genericSubtitles) show that
