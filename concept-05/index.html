@@ -114,13 +114,14 @@ a{ color:inherit; text-decoration:none; }
    text over text is just unreadable. Here it cannot happen at any size. */
 .fixed-name .name-note{
   font-family:var(--font-mono); color:var(--muted);
-  font-size:12px; letter-spacing:.05em; line-height:2.0;
-  text-align:center; margin-top:16px;
+  font-size:12px; letter-spacing:.04em; line-height:1.85;
+  text-align:center; margin:18px auto 0;
+  /* EDIT: now a paragraph rather than three short lines, so it needs a measure.
+     Capped in ch so the line length stays readable rather than stretching to
+     whatever the window happens to be. */
+  max-width:52ch;
 }
-.fixed-name .name-note span{ display:block; }
-.fixed-name .name-note span:first-child{
-  color:var(--ink); font-weight:700; letter-spacing:.16em; text-transform:uppercase;
-}
+.fixed-name .name-note p{ margin:0; }
 /* fixed corner nav, same blend trick so it's always legible */
 .corner-nav{
   position:fixed; top:26px; left:0; right:0; z-index:41; pointer-events:none;
@@ -659,11 +660,7 @@ body.lb-open{ overflow:hidden; }
 
 <div class="fixed-name">
   <h1>Louis Amore</h1>
-  <div class="name-note">
-    <span>Photographer, London.</span>
-    <span>People, places, and the stories behind them.</span>
-    <span>Honest, considered, human.</span>
-  </div>
+  <div class="name-note"><p>London-based photographer drawn to people, places and the stories found in everyday life. My work moves between portraiture, documentary and commercial photography, always looking for something honest, considered and human.</p></div>
 </div>
 
 <div class="corner-nav">
@@ -679,7 +676,7 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:13.8vh;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:9.8vh;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
