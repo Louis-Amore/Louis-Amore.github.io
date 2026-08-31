@@ -98,7 +98,13 @@ a{ color:inherit; text-decoration:none; }
 /* the fixed, unmoving name — always readable via blend-mode, whatever
    scrolls beneath it */
 .fixed-name{
-  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  position:fixed; top:50%; left:50%;
+  /* EDIT: the -44px puts the name back exactly where it sat before the
+     paragraph was added. With the note out of flow the lockup is just the
+     name, which would centre it lower than it used to be; 44px is the offset
+     the old three-line block produced, and it works out the same at every
+     width because the name's own height cancels out of the sum. */
+  transform:translate(-50%, calc(-50% - 44px));
   z-index:5; pointer-events:none;
 }
 .fixed-name h1{
@@ -115,11 +121,15 @@ a{ color:inherit; text-decoration:none; }
 .fixed-name .name-note{
   font-family:var(--font-mono); color:var(--muted);
   font-size:12px; letter-spacing:.04em; line-height:1.85;
-  text-align:center; margin:18px auto 0;
-  /* EDIT: now a paragraph rather than three short lines, so it needs a measure.
-     Capped in ch so the line length stays readable rather than stretching to
-     whatever the window happens to be. */
-  max-width:52ch;
+  text-align:center;
+  /* EDIT: taken OUT of the lockup's flow and hung beneath the name instead.
+     The lockup is centred on the screen, so while the paragraph counted toward
+     its height it pushed the name upward — and by a different amount at each
+     width, since the text wraps to a different number of lines. Out of flow,
+     the name's position no longer depends on how long this paragraph is or how
+     it wraps, so it can be edited freely without the name drifting. */
+  position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  margin-top:18px; width:52ch; max-width:min(52ch, 86vw);
 }
 .fixed-name .name-note p{ margin:0; }
 /* fixed corner nav, same blend trick so it's always legible */
@@ -680,7 +690,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:91.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:95.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10" style="left:61.63%; top:47.8vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
@@ -688,7 +698,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:8%; top:53.5vh;"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:8%; top:57.5vh;"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
 
   <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16" style="left:65.9%; top:147.2vh;"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
