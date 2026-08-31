@@ -112,6 +112,13 @@ a{ color:inherit; text-decoration:none; }
   font-size:clamp(25px, 4.41vw, 60px); text-align:center; letter-spacing:-0.02em;
   line-height:0.95; margin:0; text-transform:uppercase; white-space:nowrap;
 }
+/* EDIT: Image 18's picture reduced by 10% with its white border left at 36px.
+   The frame is border-box, so its declared width covers the picture AND the
+   two 36px borders. Taking a flat 10% off that would have shrunk the border
+   too. Instead the picture's own share is scaled to 0.9 and the 72px of border
+   added back at full thickness, so only the photograph gets smaller. */
+.field-frame[data-num="18"]{ width:calc((min(42cqw, 540px) - 72px) * 0.9 + 72px); }
+
 /* The one piece of prose on the front page. Identity, not a service list —
    the category index and its counts already do the commercial job. It lives
    inside the name lockup rather than out in the field: the name is fixed to
@@ -252,6 +259,12 @@ a{ color:inherit; text-decoration:none; }
 }
 @media (min-width:2000px){
   .field-frame.border-extrude-18-wide{ box-sizing:content-box; }
+  /* EDIT: above 2000px this frame switches to content-box, so its declared
+     width is the picture alone and the border sits outside it. The 10%
+     reduction therefore applies straight to the width here, with no border to
+     subtract first — using the border-box arithmetic would have taken the 10%
+     off a figure that never included the border. */
+  .field-frame[data-num="18"]{ width:calc(min(42cqw, 540px) * 0.9); }
 }
 .field-frame.in{ opacity:1; transform:translateY(0); }
 .field-frame span{ padding:14px; }
@@ -641,7 +654,9 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="18"]{ margin-top:44vh; }
   .field-inner .field-frame:last-of-type{ margin-bottom:6vh; }
   .field-inner .field-frame[data-num="32"]{ order:1; width:30% !important; margin-left:68%; }
-  .field-inner .field-frame[data-num="18"]{ order:2; width:62% !important; margin-left:2%; }
+  /* EDIT: same 10% picture reduction as the wide layout, border untouched:
+     0.9 of the picture's share of the 62%, plus the full 72px of border. */
+  .field-inner .field-frame[data-num="18"]{ order:2; width:calc((62% - 72px) * 0.9 + 72px) !important; margin-left:2%; }
   .field-inner .field-frame[data-num="25"]{ order:3; width:28% !important; margin-left:40%; }
   /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
      below it; this takes 5vh back off the top of 10 only, leaving a 9vh
@@ -696,7 +711,7 @@ body.lb-open{ overflow:hidden; }
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali" style="left:62.1%; top:0.7vh; border-width:36px;"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:8%; top:57.5vh;"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
 
@@ -1145,7 +1160,12 @@ body.lb-open{ overflow:hidden; }
     }
 
     frames.forEach(f => {
-      const subcat = f.dataset.subcat || null;
+      // EDIT: data-pool lets one frame opt out of its own subcategory's pool and
+      // draw from a wider one instead — Image 20 uses it to pull from the whole
+      // of Personal rather than just Unconditional Love. Scoped to the frames
+      // that ask for it, so Personal's subcategories stay separate everywhere
+      // else, as intended.
+      const subcat = f.dataset.pool || f.dataset.subcat || null;
       const cat = f.querySelector('figcaption')?.textContent || null;
       const orientation = orientationOf(f);
       const img = f.querySelector('img');
@@ -1160,7 +1180,14 @@ body.lb-open{ overflow:hidden; }
       extraCategoryPhotos[cat].forEach(e => addToPool(poolKeyFor(null, cat, e.ratio || 'landscape'), e.src));
     });
     Object.keys(extraSubcatPhotos).forEach(subcat => {
-      extraSubcatPhotos[subcat].forEach(e => addToPool(poolKeyFor(subcat, null, e.ratio || 'landscape'), e.src));
+      extraSubcatPhotos[subcat].forEach(e => {
+        addToPool(poolKeyFor(subcat, null, e.ratio || 'landscape'), e.src);
+        // EDIT: and into the parent category's pool, so a frame asking for
+        // 'Personal' can reach every photo across UL, WSR, Vape, Street and
+        // Truckers. These category-wide pools are only ever read by a frame
+        // that names one via data-pool, so nothing else changes.
+        if (e.cat) addToPool(poolKeyFor(null, e.cat, e.ratio || 'landscape'), e.src);
+      });
     });
 
     function shuffleArr(arr) {
