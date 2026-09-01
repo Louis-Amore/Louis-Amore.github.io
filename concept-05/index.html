@@ -208,7 +208,11 @@ a{ color:inherit; text-decoration:none; }
   .idx-subs.reserve.open{ display:block; }
 }
 
-.field{ position:relative; height:386vh; margin-top:6vh; }
+.field{ position:relative; /* EDIT: was 386vh. The frames are positioned in width units now, so the
+     field has to be measured the same way or the two drift apart — which is
+     the whole bug this refactor exists to remove. 2.42 is the lowest frame
+     plus a margin, expressed as a multiple of the field width. */
+  height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.60); margin-top:6vh; }
 /* EDIT: the nav is a fixed 163px wide (right edge 191px) at every viewport,
    so the photos need a fixed PIXEL inset to clear it, not a percentage.
    Every frame's left:% resolves against this band instead of the full page,
@@ -223,6 +227,8 @@ a{ color:inherit; text-decoration:none; }
   container-type:inline-size;
 }
 @media (max-width:760px){
+  /* the width-derived field height is for the scatter; the phone stack sizes itself */
+  .field{ height:auto !important; }
   /* EDIT: on phones every frame is a flat 82vw, which used to include the
      border. Now that the border sits outside, width and height name the
      picture directly — the same picture as before, with a wider surround. */
@@ -233,6 +239,7 @@ a{ color:inherit; text-decoration:none; }
   .field-inner{ position:static; left:auto; right:auto; }
 }
 .field-frame{
+  --eb:var(--b);          /* border to remove from column-layout widths */
   position:absolute; z-index:10; background:#d8d4cb; overflow:hidden;
   display:flex; align-items:flex-end;
   font-family:var(--font-mono); font-size:10px; color:var(--muted); text-transform:uppercase;
@@ -343,11 +350,11 @@ a{ color:inherit; text-decoration:none; }
 }
 .field-frame:hover figcaption{ opacity:1; }
 
-.w-t1{ width:min(17cqw, 220px); aspect-ratio:2/3; }
-.w-t2{ width:min(24cqw, 310px); aspect-ratio:2/3; }
-.w-l1{ width:min(30cqw, 390px); aspect-ratio:3/2; }
-.w-l2{ width:min(42cqw, 540px); aspect-ratio:3/2; }
-.w-l2-big{ width:min(18.2cqw, 340px); aspect-ratio:3/2; } /* Image 10 only — the cqw term keeps it safely small at narrow widths, but the cap was too conservative for wider screens where there's much more genuine room — raised to actually use that space */
+.w-t1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-t2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l2-big{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ } /* Image 10 only — the cqw term keeps it safely small at narrow widths, but the cap was too conservative for wider screens where there's much more genuine room — raised to actually use that space */
 .w-l3{ width:min(54cqw, 700px); aspect-ratio:3/2; }
 /* EDIT: Image 02 and Image 32 sit close enough (left:2.1% / left:26.3%,
    top:19.8vh / top:2.5vh) that at laptop-width viewports the shared w-l1
@@ -356,7 +363,75 @@ a{ color:inherit; text-decoration:none; }
    than other w-l1 frames — same 390px ceiling at wide widths, just a
    tighter scaling curve so they clear each other well before the overlap
    would happen. No other frame is affected. */
-.w-l1-tight{ width:min(22cqw, 390px) !important; }
+.w-l1-tight{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+
+/* ============================================================================
+   FIELD CONTROL BLOCK — the whole front-page composition, one line per photo.
+
+     --w   width of the PICTURE          --b   border thickness
+     --x   distance across               --bc  border colour
+     --y   distance down                 --ar  picture shape (width ÷ height)
+
+   cqw = one hundredth of the field's width. Sizes AND positions now share that
+   one measure, so the composition scales as a single piece. Previously sizes
+   were width-based and positions height-based, and shortening a window pulled
+   them apart — which is what made frames collide.
+
+   To move a photo a little without disturbing the numbers, add --nx / --ny:
+       .field-frame[data-num="08"]{ --nx:-20px; --ny:8px; }
+
+   The border is subtracted back out of the position below, so changing --b
+   grows the surround outward and never moves or resizes the photograph.
+
+   min(Ncqw, Npx) keeps each frame's original pixel ceiling — the composition
+   stops growing at the same point it always did.
+   ========================================================================== */
+  .field-frame[data-num="02"]{ --w:calc(min(22cqw, 390px) - 24px); --x:5.391cqw; --y:8.09cqw; --ar:1.5; --b:12px; --bc:#111110; }
+  .field-frame[data-num="03"]{ --eb:0px; --w:min(30cqw, 390px); --x:73.795cqw; --y:173.043cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="04"]{ --eb:0px; --w:min(42cqw, 540px); --x:22.95cqw; --y:159.368cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+  .field-frame[data-num="05"]{ --w:calc(min(24cqw, 310px) - 12px); --x:77.911cqw; --y:62.532cqw; --ar:0.6667; --b:6px; --bc:#b8952f; }
+  .field-frame[data-num="07"]{ --w:calc(min(17cqw, 220px) - 48px); --x:47.95cqw; --y:127.719cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
+  /* pushed down to clear frame 25 above it. One value covers every width,
+     because the spacing no longer changes with window height. */
+  .field-frame[data-num="08"]{ --ny:60px; --w:calc(min(30cqw, 390px) - 4px); --x:16.958cqw; --y:66.106cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="10"]{ --eb:0px; --w:min(18.2cqw, 340px); --x:67.326cqw; --y:36.471cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="12"]{ --w:calc(min(17cqw, 220px) - 48px); --x:4.151cqw; --y:177.686cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="13"]{ --w:calc(min(30cqw, 390px) - 4px); --x:46.657cqw; --y:206.096cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="16"]{ --w:calc(min(24cqw, 310px) - 24px); --x:69.191cqw; --y:102.009cqw; --ar:0.6667; --b:12px; --bc:#b8952f; }
+  .field-frame[data-num="18"]{ --eb:0px; --w:calc((min(42cqw, 540px) - 72px) * 0.9); --x:66.91cqw; --y:3.39cqw; --ar:1.5; --b:48px; --bc:#ffffff; }
+  .field-frame[data-num="19"]{ --w:calc(min(24cqw, 310px) - 24px); --x:12.19cqw; --y:93.656cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="20"]{ --w:calc(min(30cqw, 390px) - 4px); --x:37.058cqw; --y:92.793cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="24"]{ --w:calc(min(42cqw, 540px) - 4px); --x:4.658cqw; --y:217.037cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  /* nudged down so it clears the name at every width — this is what a
+     positional tweak looks like now: one value, no knock-on effects */
+  .field-frame[data-num="25"]{ --w:calc(min(17cqw, 220px) - 24px); --x:1.4cqw; --y:40.696cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+
+/* One rule drives every frame from the values above. One box model, so the
+   border always sits outside the picture. */
+.field-frame{
+  --eb:var(--b);          /* border to remove from column-layout widths */
+  position:absolute;
+  /* the old field gave every frame a 40px left margin on top of its `left`
+     value, so a photo's position was two numbers added together and nudging
+     one could be undone by the other. --x now carries the whole thing. */
+  margin:0;
+  box-sizing:content-box;
+  width:var(--w);
+  aspect-ratio:var(--ar);
+  height:auto;
+  border:var(--b) solid var(--bc);
+  left:calc(var(--x) - var(--b) + var(--nx, 0px));
+  top:calc(var(--y) - var(--b) + var(--ny, 0px));
+}
+.field-frame.double-border{ border:var(--b) solid var(--bc); }
+.field-frame.double-border .db-inner{
+  width:100%; height:100%; box-sizing:border-box;
+  border:var(--inner, 2px) solid var(--inner-c, #ffffff);
+  overflow:hidden;
+}
+
 
 .field-frame.border-thick{ border:12px solid #111110; }
 .field-frame.border-thin{ border:2px solid #111110; }
@@ -639,7 +714,8 @@ body.lb-open{ overflow:hidden; }
   .field{ height:auto; }
   .field-frame{
     position:static !important; left:auto !important; top:auto !important;
-    width:82vw !important; margin:0 auto 20px; display:flex;
+    /* border now sits outside the width, so take it off */
+    width:calc(82vw - var(--eb) * 2) !important; margin:0 auto 20px; display:flex;
   }
   .corner-nav .links{ gap:10px; }
   .corner-nav a, .corner-nav span{ font-size:9px; }
@@ -688,7 +764,7 @@ body.lb-open{ overflow:hidden; }
      rather than across it, without needing to know its rendered height. */
   .field-inner .field-frame[data-num="18"]{ margin-top:44vh; }
   .field-inner .field-frame:last-of-type{ margin-bottom:6vh; }
-  .field-inner .field-frame[data-num="32"]{ order:1; width:30% !important; margin-left:68%; }
+  .field-inner .field-frame[data-num="32"]{ order:1; width:calc(30% - var(--eb) * 2) !important; margin-left:68%; }
   /* EDIT: same 10% picture reduction as the wide layout, border untouched:
      0.9 of the picture's share of the 62%, plus the full 72px of border. */
   /* same treatment in the column layout: width and height both name the
@@ -703,27 +779,27 @@ body.lb-open{ overflow:hidden; }
     width:calc((62cqw - 72px) * 0.9) !important;
     height:calc((62cqw - 72px) * 0.6 - 24px) !important;
   }
-  .field-inner .field-frame[data-num="25"]{ order:3; width:28% !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="25"]{ order:3; width:calc(28% - var(--eb) * 2) !important; margin-left:40%; }
   /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
      below it; this takes 5vh back off the top of 10 only, leaving a 9vh
      gap to Image 25 above. Kept as a negative TOP margin rather than
      shrinking 25's bottom margin so the change is scoped to one frame and
      the rest of the column's rhythm is untouched. Net gap stays positive,
      so the two can still never touch. */
-  .field-inner .field-frame[data-num="10"]{ order:4; width:56% !important; margin-left:30%; margin-top:-5vh; }
-  .field-inner .field-frame[data-num="05"]{ order:5; width:30% !important; margin-left:6%; }
-  .field-inner .field-frame[data-num="04"]{ order:6; width:58% !important; margin-left:24%; }
-  .field-inner .field-frame[data-num="33"]{ order:7; width:26% !important; margin-left:70%; }
-  .field-inner .field-frame[data-num="08"]{ order:8; width:64% !important; margin-left:4%; }
-  .field-inner .field-frame[data-num="16"]{ order:9; width:30% !important; margin-left:44%; }
-  .field-inner .field-frame[data-num="20"]{ order:10; width:56% !important; margin-left:40%; }
-  .field-inner .field-frame[data-num="07"]{ order:11; width:28% !important; margin-left:10%; }
-  .field-inner .field-frame[data-num="03"]{ order:12; width:56% !important; margin-left:28%; }
-  .field-inner .field-frame[data-num="19"]{ order:13; width:30% !important; margin-left:66%; }
-  .field-inner .field-frame[data-num="13"]{ order:14; width:60% !important; margin-left:0%; }
-  .field-inner .field-frame[data-num="12"]{ order:15; width:26% !important; margin-left:36%; }
-  .field-inner .field-frame[data-num="24"]{ order:16; width:68% !important; margin-left:30%; }
-  .field-inner .field-frame[data-num="02"]{ order:17; width:54% !important; margin-left:8%; }
+  .field-inner .field-frame[data-num="10"]{ order:4; width:calc(56% - var(--eb) * 2) !important; margin-left:30%; margin-top:-5vh; }
+  .field-inner .field-frame[data-num="05"]{ order:5; width:calc(30% - var(--eb) * 2) !important; margin-left:6%; }
+  .field-inner .field-frame[data-num="04"]{ order:6; width:calc(58% - var(--eb) * 2) !important; margin-left:24%; }
+  .field-inner .field-frame[data-num="33"]{ order:7; width:calc(26% - var(--eb) * 2) !important; margin-left:70%; }
+  .field-inner .field-frame[data-num="08"]{ order:8; width:calc(64% - var(--eb) * 2) !important; margin-left:4%; }
+  .field-inner .field-frame[data-num="16"]{ order:9; width:calc(30% - var(--eb) * 2) !important; margin-left:44%; }
+  .field-inner .field-frame[data-num="20"]{ order:10; width:calc(56% - var(--eb) * 2) !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="07"]{ order:11; width:calc(28% - var(--eb) * 2) !important; margin-left:10%; }
+  .field-inner .field-frame[data-num="03"]{ order:12; width:calc(56% - var(--eb) * 2) !important; margin-left:28%; }
+  .field-inner .field-frame[data-num="19"]{ order:13; width:calc(30% - var(--eb) * 2) !important; margin-left:66%; }
+  .field-inner .field-frame[data-num="13"]{ order:14; width:calc(60% - var(--eb) * 2) !important; margin-left:0%; }
+  .field-inner .field-frame[data-num="12"]{ order:15; width:calc(26% - var(--eb) * 2) !important; margin-left:36%; }
+  .field-inner .field-frame[data-num="24"]{ order:16; width:calc(68% - var(--eb) * 2) !important; margin-left:30%; }
+  .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
 }
 </style>
 </head>
@@ -747,25 +823,25 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02" style="left:2.1%; top:9.8vh;"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03" style="left:68.1%; top:247.6vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali" style="left:18.9%; top:calc(247.5vh - 5cm);"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street" style="left:75%; top:90vh;"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace" style="left:14.3%; top:95.6vh;"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10" style="left:61.63%; top:47.8vh; --db-outer:48px; --db-outer-color:#111110; --db-inner:2px; --db-inner-color:#ffffff;"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12" style="left:0.1%; top:256.8vh;"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13" style="left:44.0%; top:300.4vh;"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali" style="left:calc(62.1% - 12px); top:calc(0.7vh - 12px);"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19" style="left:8.9%; top:127.2vh;"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal" style="left:34.4%; top:128.0vh;"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24" style="left:2.0%; top:314.0vh;"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25" style="left:8%; top:57.5vh;"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
 
-  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07" style="left:43.9%; top:183.7vh;"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16" style="left:65.9%; top:147.2vh;"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
 
-    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32" style="left:26.3%; top:2.5vh;"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33" style="left:54.8%; top:80.6vh;"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
 
