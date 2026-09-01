@@ -400,7 +400,7 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="24"]{ --w:calc(min(42cqw, 540px) - 4px); --x:4.658cqw; --y:217.037cqw; --ar:1.5; --b:2px; --bc:#111110; }
   /* nudged down so it clears the name at every width — this is what a
      positional tweak looks like now: one value, no knock-on effects */
-  .field-frame[data-num="25"]{ --w:calc(min(17cqw, 220px) - 24px); --x:1.4cqw; --y:40.696cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="25"]{ --ny:-7.18cqw; --nx:11.96cqw; --w:calc(min(17cqw, 220px) - 24px); --x:1.4cqw; --y:40.696cqw; --ar:0.6667; --b:12px; --bc:#111110; }
   .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
   .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
 
@@ -796,6 +796,14 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="12"]{ order:15; width:calc(26% - var(--eb) * 2) !important; margin-left:36%; }
   .field-inner .field-frame[data-num="24"]{ order:16; width:calc(68% - var(--eb) * 2) !important; margin-left:30%; }
   .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
+}
+
+/* EDIT: a frame can hold a different position for a given range of widths.
+   Image 25 takes its full move right at 1920 and up, where there is room for
+   it beside the name. Between 1500 and 1919 there isn't, so it steps back
+   into the open space on the left instead of shrinking anything else. */
+@media (min-width:1500px) and (max-width:1919px){
+  .field-frame[data-num="25"]{ --nx:0cqw; }
 }
 </style>
 </head>
