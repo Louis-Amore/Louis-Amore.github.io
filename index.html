@@ -1339,7 +1339,7 @@ body.lb-open{ overflow:hidden; }
         if (deck.length === 0) deck = shuffleArr(pool.slice());
         const pick = deck.pop();
         const img = f.querySelector('img');
-        const thumbSrc = pick.replace('concept-05/photos/', 'concept-05/photos/thumb/');
+        const thumbSrc = pick.replace('photos/', 'photos/thumb/');
         img.setAttribute('src', pick);
         img.setAttribute('srcset', thumbSrc + ' 400w, ' + pick + ' 1900w');
       });
@@ -1555,7 +1555,10 @@ body.lb-open{ overflow:hidden; }
   // This swaps a full-size path for its smaller sibling.
   function variantSrc(src, kind) {
     if (!src) return src;
-    return src.replace(/photos\//, 'concept-05/photos/' + kind + '/');
+    // NOTE: src already begins concept-05/photos/ on this page, so only the
+    // variant folder is inserted — adding the prefix again produced
+    // concept-05/concept-05/photos/... and every thumbnail 404'd.
+    return src.replace(/photos\//, 'photos/' + kind + '/');
   }
 
   function buildRail() {
