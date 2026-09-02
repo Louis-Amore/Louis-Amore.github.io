@@ -819,26 +819,45 @@ body.lb-open{ overflow:hidden; }
    single-column layout takes over untouched.
    ========================================================================== */
 @media (min-width:1500px) and (min-height:900px){
-  .field-frame[data-num="32"]{ --w:25.41cqw !important; --x:70.72cqw !important; --y:3.29cqw !important; --ar:1.066 !important; }
-  .field-frame[data-num="18"]{ --w:29.59cqw !important; --x:2.43cqw !important; --y:6.62cqw !important; --ar:1.349 !important; }
-  /* EDIT: --nx added on 02, 25, 33 and 10 below. The name now sits dead
-     centre on the viewport (top:50%/left:50%) at every width in this range,
-     while every frame's position tracks the FIELD, which is inset unevenly
-     (a wide clearance for the category list on the left, a narrow one on the
-     right) and scales with window width, not height. Those two coordinate
-     spaces drift apart as the window is resized, which is why the old single
-     band-switch at 1920px (kept the previous fix for 25 working at only one
-     width) no longer held once the name moved to centre: 25, 33 and 10 sat
-     on the name at nearly every width, and 02 cleared it by only ~13px at
-     1500 — close enough to read as touching. Rather than another width band,
-     each of the four gets a single constant horizontal nudge, solved to hold
-     an 18px clearance from the name's box at every width from 1500 up to
-     3840 and every window height (the separation is horizontal-only, so it
-     doesn't depend on height at all). Checked against every other frame on
-     the field across that same range — the only overlaps these nudges touch
+  /* EDIT (Sep 2): 25.41cqw/1.066 was measured from Layer 2's FULL bounding
+     box, which — like every other layer in this file, it turns out — is
+     really two photos baked into one flattened image: the main landscape
+     shot plus a small tucked accent photo in the corner (same pattern as
+     #4's Layer 3, just not flagged at the time). Measuring the combined box
+     as if it were one photo squashed the main shot into a near-square crop.
+     Re-measured using just the main photo's own rectangle within Layer 2
+     (2028,111)-(2405,363) in PSD pixels, same conversion formula as always.
+     Matches almost exactly what this frame used BEFORE the PSD conversion
+     (ar:1.5 in the untouched base rule above) — a good sign this is right. */
+  .field-frame[data-num="32"]{ --w:16.98cqw !important; --x:77.84cqw !important; --y:5.00cqw !important; --ar:1.496 !important; }
+  /* EDIT (Sep 2): same combined-box mistake as #32 above — measured from
+     Layer 1's full bbox (main London-bridge photo + a tucked white-mat inset
+     bottom-right), not the main photo alone. Re-measured just the main
+     photo's rectangle (0,0)-(430,256) local to the layer. */
+  .field-frame[data-num="18"]{ --w:19.37cqw !important; --x:2.43cqw !important; --y:6.62cqw !important; --ar:1.680 !important; }
+  /* EDIT: --nx added on 02, 25 and 33 below (10 originally needed one too,
+     but it was solved for 10's old, wrong, too-large size — once 10 was
+     re-measured down to its real main-photo size below, it cleared the name
+     on its own and the nudge was removed, since keeping it would have
+     pushed the now-smaller frame off the right edge of the page). The name
+     sits dead centre on the viewport (top:50%/left:50%) at every width in
+     this range, while every frame's position tracks the FIELD, which is
+     inset unevenly (a wide clearance for the category list on the left, a
+     narrow one on the right) and scales with window width, not height.
+     Those two coordinate spaces drift apart as the window is resized, which
+     is why the old single band-switch at 1920px (kept the previous fix for
+     25 working at only one width) no longer held once the name moved to
+     centre: 25, 33 and 10 sat on the name at nearly every width, and 02
+     cleared it by only ~13px at 1500 — close enough to read as touching.
+     Rather than another width band, each gets a single constant horizontal
+     nudge, solved to hold an 18px clearance from the name's box at every
+     width from 1500 up to 3840 and every window height (the separation is
+     horizontal-only, so it doesn't depend on height at all). Checked against
+     every other frame on the field across that same range — the only
+     overlaps these nudges touch
      (10/05, 18/25, 32/02, all only past ~3700px width) were already there
      before this change; nothing new was introduced. */
-  .field-frame[data-num="02"]{ --w:31.85cqw !important; --x:58.56cqw !important; --y:26.13cqw !important; --ar:1.452 !important; --nx:0.5cqw !important; }
+  .field-frame[data-num="02"]{ --w:19.73cqw !important; --x:68.02cqw !important; --y:28.47cqw !important; --ar:1.377 !important; --nx:0.5cqw !important; }
   .field-frame[data-num="25"]{ --w:17.84cqw !important; --x:9.82cqw !important; --y:29.23cqw !important; --ar:0.925 !important; --nx:-9.1cqw !important; }
   /* EDIT: real measurement, replacing the earlier guess. Louis separated the
      second portrait onto its own layer (Layer 15) in the PSD; this is that
@@ -859,12 +878,19 @@ body.lb-open{ overflow:hidden; }
      width range and every height: still clears with room to spare (23px+,
      vs 25's own 18px). */
   .field-frame[data-num="33"]{ --w:5.59cqw !important; --x:21.67cqw !important; --y:45.63cqw !important; --ar:0.685 !important; --nx:-9.1cqw !important; --ny:-7.18cqw !important; }
-  .field-frame[data-num="10"]{ --w:45.00cqw !important; --x:49.32cqw !important; --y:54.10cqw !important; --ar:1.614 !important; --nx:12.8cqw !important; }
-  .field-frame[data-num="08"]{ --w:37.16cqw !important; --x:7.39cqw !important; --y:63.83cqw !important; --ar:1.208 !important; }
-  .field-frame[data-num="05"]{ --w:28.51cqw !important; --x:63.65cqw !important; --y:76.31cqw !important; --ar:0.695 !important; }
-  .field-frame[data-num="19"]{ --w:37.61cqw !important; --x:4.23cqw !important; --y:102.66cqw !important; --ar:0.936 !important; }
-  .field-frame[data-num="20"]{ --w:46.76cqw !important; --x:44.59cqw !important; --y:126.53cqw !important; --ar:1.438 !important; }
-  .field-frame[data-num="16"]{ --w:27.21cqw !important; --x:8.60cqw !important; --y:149.55cqw !important; --ar:0.712 !important; }
+  /* EDIT (Sep 2): 10, 08, 05, 19, 20 and 16 all had the same combined-box
+     problem as 32/18/02/25 above — every one of these layers turns out to be
+     a main photo plus a small tucked accent, and only the combined outline
+     of both was ever measured. Re-measured each from just its own main
+     photo's rectangle within its layer, same conversion formula throughout.
+     07 is the one layer in this set that's genuinely a single photo with no
+     tucked accent — left untouched. */
+  .field-frame[data-num="10"]{ --w:29.05cqw !important; --x:62.84cqw !important; --y:54.10cqw !important; --ar:1.466 !important; }
+  .field-frame[data-num="08"]{ --w:28.02cqw !important; --x:9.10cqw !important; --y:65.54cqw !important; --ar:1.492 !important; }
+  .field-frame[data-num="05"]{ --w:19.59cqw !important; --x:71.31cqw !important; --y:81.71cqw !important; --ar:0.813 !important; }
+  .field-frame[data-num="19"]{ --w:20.18cqw !important; --x:17.75cqw !important; --y:102.66cqw !important; --ar:0.655 !important; }
+  .field-frame[data-num="20"]{ --w:35.59cqw !important; --x:55.77cqw !important; --y:126.53cqw !important; --ar:1.519 !important; }
+  .field-frame[data-num="16"]{ --w:16.67cqw !important; --x:11.08cqw !important; --y:150.00cqw !important; --ar:0.651 !important; }
   .field-frame[data-num="07"]{ --w:30.45cqw !important; --x:53.06cqw !important; --y:161.44cqw !important; --ar:0.834 !important; }
 
   /* five frames stood down from the front page — every photograph
