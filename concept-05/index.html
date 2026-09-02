@@ -846,8 +846,19 @@ body.lb-open{ overflow:hidden; }
      x_cqw = (psd_x - 300) * 100/2220, y_cqw = psd_y * 100/2220, same for w,
      ar = w/h. Also came out much smaller than the guess (5.59cqw vs the old
      13.51cqw), which is why it no longer needs nearly as large a nudge to
-     clear the name. */
-  .field-frame[data-num="33"]{ --w:5.59cqw !important; --x:21.67cqw !important; --y:45.63cqw !important; --ar:0.685 !important; --nx:-8.7cqw !important; }
+     clear the name.
+     EDIT 2: 33 is Louis's second portrait tucked against the bottom-right
+     corner of 25 (that's the whole point of #4 above) — their PSD positions
+     confirm it, 33 ends almost exactly where 25's right edge does. Giving
+     each frame its OWN independently-solved name-clearance nudge broke that:
+     25 got nx:-9.1cqw AND ny:-7.18cqw, but 33 only got nx:-8.7cqw with no ny,
+     so 25 moved up and left while 33 only moved left — pulling the pair
+     apart and losing the tucked-corner look. Fix: give 33 the exact same
+     nudge vector as 25, so they move together as one rigid pair instead of
+     drifting apart. Re-checked against the name across the full 1500-3840px
+     width range and every height: still clears with room to spare (23px+,
+     vs 25's own 18px). */
+  .field-frame[data-num="33"]{ --w:5.59cqw !important; --x:21.67cqw !important; --y:45.63cqw !important; --ar:0.685 !important; --nx:-9.1cqw !important; --ny:-7.18cqw !important; }
   .field-frame[data-num="10"]{ --w:45.00cqw !important; --x:49.32cqw !important; --y:54.10cqw !important; --ar:1.614 !important; --nx:12.8cqw !important; }
   .field-frame[data-num="08"]{ --w:37.16cqw !important; --x:7.39cqw !important; --y:63.83cqw !important; --ar:1.208 !important; }
   .field-frame[data-num="05"]{ --w:28.51cqw !important; --x:63.65cqw !important; --y:76.31cqw !important; --ar:0.695 !important; }
