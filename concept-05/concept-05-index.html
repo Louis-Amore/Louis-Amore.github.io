@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<!-- EDIT: title changed from "Louis Amore — Concept 05" for SEO — the
+     <title> tag is the single most important on-page ranking signal, and
+     "Concept 05" is internal build labelling that would work against
+     search results once this goes live. Flagged to Louis rather than
+     silently changed — easy to revert if he'd rather keep the build
+     label visible. -->
+<title>Louis Amore — Photographer | London</title>
+<meta name="description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="canonical" href="https://louis-amore.github.io/concept-05/">
+<!-- EDIT: this is the working copy of the site, identical in content to the
+     root. Two indexable copies of the same portfolio compete with each other
+     and split whatever ranking signal there is, so this one is kept out of
+     search results. "follow" still lets the links be crawled. -->
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph — how a shared link looks on iMessage, LinkedIn, Instagram, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Louis Amore">
+<meta property="og:title" content="Louis Amore — Photographer | London">
+<meta property="og:description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
+<meta property="og:url" content="https://louis-amore.github.io/concept-05/">
+<meta property="og:image" content="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg">
+<meta property="og:image:width" content="1900">
+<meta property="og:image:height" content="1266">
+<meta property="og:locale" content="en_GB">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Louis Amore — Photographer | London">
+<meta name="twitter:description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
+<meta name="twitter:image" content="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<!-- Structured data — tells Google this page IS a photographer, not just
+     a page that mentions one; a step toward richer search results. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Louis Amore",
+  "jobTitle": "Photographer",
+  "url": "https://louis-amore.github.io/concept-05/",
+  "image": "https://louis-amore.github.io/concept-05/photos/fashion-18.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "London",
+    "addressRegion": "Greater London",
+    "addressCountry": "GB"
+  },
+  "sameAs": [
+    "https://www.instagram.com/louis_amore_photographer/",
+    "https://www.linkedin.com/in/louisamore/"
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=EB+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap">
+<style>
+
+:root{
+  --bg:#efece6;
+  --ink:#111110;
+  --muted:#79766e;
+  --font-display:'Archivo', sans-serif;
+  --font-body:'Public Sans', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+  --font-serif:'Fraunces', serif;
+}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; overflow-x:clip; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+body{
+  /* EDIT: a few frames deliberately bleed past the right edge; clip rather
+     than scroll so they read as a bleed instead of producing a stray
+     horizontal scrollbar. 'clip' (not 'hidden') avoids creating a scroll
+     container, which would break the fixed name/nav/footer/lightbox. */
+  overflow-x:clip;
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+a{ color:inherit; text-decoration:none; }
+
+/* the fixed, unmoving name — always readable via blend-mode, whatever
+   scrolls beneath it */
+.fixed-name{
+  position:fixed; top:50%; left:50%;
+  /* EDIT: the -44px puts the name back exactly where it sat before the
+     paragraph was added. With the note out of flow the lockup is just the
+     name, which would centre it lower than it used to be; 44px is the offset
+     the old three-line block produced, and it works out the same at every
+     width because the name's own height cancels out of the sum. */
+  transform:translate(-50%, calc(-50% - 44px));
+  z-index:5; pointer-events:none;
+}
+.fixed-name h1{
+  font-family:var(--font-display); font-weight:900; color:var(--ink);
+  font-size:clamp(25px, 4.41vw, 60px); text-align:center; letter-spacing:-0.02em;
+  line-height:0.95; margin:0; text-transform:uppercase; white-space:nowrap;
+}
+/* EDIT: Image 18's picture reduced by 10% with its white border left at 36px.
+   The frame is border-box, so its declared width covers the picture AND the
+   two 36px borders. Taking a flat 10% off that would have shrunk the border
+   too. Instead the picture's own share is scaled to 0.9 and the 72px of border
+   added back at full thickness, so only the photograph gets smaller. */
+/* EDIT: Image 18's white border thickened to 48px to match Image 10, growing
+   OUTWARD so the photograph itself is untouched — same size, same crop, same
+   position on the page. Three things are needed for that:
+     - content-box, so the width names the picture and the border sits outside
+       it rather than eating into it (the old width included 36px each side,
+       hence the -72px);
+     - an explicit height, because aspect-ratio:3/2 applies to whichever box is
+       being sized. It used to shape the border box; applied to the content box
+       instead it would have made the picture taller and changed the crop, so
+       the height is stated outright as the value it previously worked out to;
+     - -12px on left and top, since an absolutely positioned frame is placed by
+       its outer edge and the extra 12px of border per side would otherwise
+       nudge the picture down and right.
+   The selector carries the border class as well so it outranks the 24px rule
+   further down the sheet. */
+.field-frame.border-white-thick[data-num="18"]{
+  box-sizing:content-box;
+  border-width:48px;
+  aspect-ratio:auto;
+  width:calc((min(42cqw, 540px) - 72px) * 0.9);
+  height:calc((min(42cqw, 540px) - 72px) * 0.6 - 24px);
+}
+
+/* The one piece of prose on the front page. Identity, not a service list —
+   the category index and its counts already do the commercial job. It lives
+   inside the name lockup rather than out in the field: the name is fixed to
+   the screen while the field scrolls, so anything placed in the field slides
+   across the name sooner or later. Photographs doing that is the design;
+   text over text is just unreadable. Here it cannot happen at any size. */
+.fixed-name .name-note{
+  font-family:var(--font-mono); color:var(--muted);
+  font-size:12px; letter-spacing:.04em; line-height:1.85;
+  text-align:center;
+  /* EDIT: taken OUT of the lockup's flow and hung beneath the name instead.
+     The lockup is centred on the screen, so while the paragraph counted toward
+     its height it pushed the name upward — and by a different amount at each
+     width, since the text wraps to a different number of lines. Out of flow,
+     the name's position no longer depends on how long this paragraph is or how
+     it wraps, so it can be edited freely without the name drifting. */
+  position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  margin-top:18px; width:52ch; max-width:min(52ch, 86vw);
+}
+.fixed-name .name-note p{ margin:0; }
+/* fixed corner nav, same blend trick so it's always legible */
+.corner-nav{
+  position:fixed; top:26px; left:0; right:0; z-index:41; pointer-events:none;
+  display:flex; justify-content:space-between; padding:0 28px; mix-blend-mode:difference;
+}
+.corner-nav a, .corner-nav span{ color:#fff; font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; pointer-events:auto; }
+.corner-nav .links{ display:flex; gap:18px; }
+
+/* scrolling field of scattered work */
+/* ---------- INDEX (permanent left column) ----------
+   The category list sits fixed on the left of the main screen at all times.
+   Photos never reach it because .field-inner is inset past it — see
+   --field-left below, which is sized to the widest row. */
+.idx-list{
+  position:fixed; left:40px; top:50%; transform:translateY(-50%);
+  z-index:41; pointer-events:auto;
+}
+.idx-row{
+  display:block; width:100%; text-align:left; background:none; border:0; cursor:pointer;
+  color:var(--ink); font-family:var(--font-display); font-weight:900; text-transform:uppercase;
+  font-size:clamp(19px, 1.9vw, 27px); line-height:1.0; letter-spacing:-.02em;
+  padding:2px 0; opacity:.5; transition:opacity .22s;
+}
+.idx-row:hover, .idx-row.on{ opacity:1; }
+.idx-row .idx-n{
+  font-family:var(--font-mono); font-weight:400; font-size:10px; letter-spacing:.1em;
+  vertical-align:super; margin-left:9px; color:#8a7132;
+}
+.idx-subs{ display:none; padding:3px 0 9px; }
+.idx-subs.open{ display:block; }
+.idx-sub{
+  display:block; background:none; border:0; cursor:pointer; color:#5f5c55;
+  font-family:var(--font-display); font-weight:900; letter-spacing:-.02em;
+  text-transform:uppercase; font-size:15px; padding:6px 0 6px 2px; transition:color .2s;
+}
+.idx-sub:hover, .idx-sub.on{ color:#b8a082; }
+.idx-sub i{ font-style:normal; font-family:var(--font-mono); font-weight:400; color:#8a7132;
+  margin-left:7px; font-size:10px; letter-spacing:.1em; }
+@media (max-width:820px){
+  .idx-list{ position:static; transform:none; padding:66px 24px 10px; }
+  .idx-row{ font-size:24px; opacity:1; }
+  /* the reserved-space trick exists purely to protect a hovering mouse —
+     touch has no such thing, and a permanently blank gap here just looks
+     like a layout bug, so fall back to plain show/hide on tap */
+  .idx-subs.reserve{ display:none; opacity:1; pointer-events:auto; }
+  .idx-subs.reserve.open{ display:block; }
+}
+
+.field{ position:relative; /* EDIT: was 386vh. The frames are positioned in width units now, so the
+     field has to be measured the same way or the two drift apart — which is
+     the whole bug this refactor exists to remove. 2.42 is the lowest frame
+     plus a margin, expressed as a multiple of the field width. */
+  height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.60); margin-top:6vh; }
+/* EDIT: the nav is a fixed 163px wide (right edge 191px) at every viewport,
+   so the photos need a fixed PIXEL inset to clear it, not a percentage.
+   Every frame's left:% resolves against this band instead of the full page,
+   which pulls the whole field in from both edges. --field-left is the
+   clearance from the nav; --field-right keeps wide frames on screen. */
+.field-inner{
+  position:absolute; top:0; bottom:0;
+  /* the gutter tracks the list's own scaling (rows are clamp(19,1.9vw,27)),
+     so the photos give up exactly as much room as the type needs and no more */
+  left:var(--field-left, clamp(250px, calc(16.2vw + 76px), 300px));
+  right:var(--field-right, 40px);
+  container-type:inline-size;
+}
+@media (max-width:760px){
+  /* the width-derived field height is for the scatter; the phone stack sizes itself */
+  .field{ height:auto !important; }
+  /* EDIT: on phones every frame is a flat 82vw, which used to include the
+     border. Now that the border sits outside, width and height name the
+     picture directly — the same picture as before, with a wider surround. */
+  .field-frame.border-white-thick[data-num="18"]{
+    width:calc(82vw - 72px) !important;
+    height:calc(82vw / 1.5 - 72px) !important;
+  }
+  .field-inner{ position:static; left:auto; right:auto; }
+}
+.field-frame{
+  --eb:var(--b);          /* border to remove from column-layout widths */
+  position:absolute; z-index:10; background:#d8d4cb; overflow:hidden;
+  display:flex; align-items:flex-end;
+  font-family:var(--font-mono); font-size:10px; color:var(--muted); text-transform:uppercase;
+  opacity:0; transform:translateY(26px);
+  /* EDIT: reverted per request — back to inheriting border-box from the
+     universal * reset (borders eat into the photo's own size again,
+     frame footprint never grows). User compared both side by side and
+     preferred this. */
+  /* EDIT: every frame's left/top/width is a %, vh or cqw value, so they
+     already reflow continuously as the window resizes — the only thing
+     missing was motion. Adding left/top/width/border-width to the
+     transition list means a resize (or an intermediate width where two
+     frames would otherwise overlap) now animates smoothly instead of
+     snapping — frames visibly float to their new spot, and a mid-drag
+     resize keeps re-targeting the animation rather than jumping. Kept
+     slower and floatier than the .7s entrance fade so it reads as its own
+     distinct motion rather than a copy of it.
+  */
+  transition:
+    opacity .7s ease,
+    transform .7s ease,
+    left .9s cubic-bezier(.16,1,.3,1),
+    top .9s cubic-bezier(.16,1,.3,1),
+    width .9s cubic-bezier(.16,1,.3,1),
+    border-width .5s ease;
+}
+/* EDIT: scoped fix for the thick-bordered landscape frames specifically
+   (Images 10, 14, 15, 18, 27, 34 — the ones with a visibly heavy border
+   class: double-border/border-white-thick/border-black-thick/border-thick).
+   These are the only ones where border-box's "eats into the photo"
+   behaviour is actually noticeable, since a thick border shrinks the photo
+   by a lot more than a thin one does. Applied ONLY to this named set, not
+   every .field-frame — positions are left completely untouched. Only
+   14/27/34 carry it so far — 10/15/18 bleed off the right edge if grown
+   without repositioning, held back pending a decision. */
+.field-frame.border-extrude{ box-sizing:content-box; }
+/* EDIT: Image 15 only has ~15-22px of safe room (not the full 48px a plain
+   extrude would add), so it gets its own scoped treatment: extrude the
+   border AND shrink its base width formula to compensate, landing net
+   growth safely inside the measured budget rather than the full amount. */
+.field-frame.border-extrude-15{ box-sizing:content-box; width:min(calc(30cqw - 36px), 354px) !important; }
+.field-frame.border-extrude-34{ box-sizing:content-box; width:min(calc(30cqw - 36px), 354px) !important; }
+/* EDIT: Images 10 and 18 have essentially no safe room to grow at
+   laptop/tablet widths without repositioning (measured: Image 10 needs
+   1900px+, Image 18 needs 2000px+ before there's genuinely enough
+   clearance) — so give each its OWN width-gated extrude: the border only
+   grows once the screen is wide enough to fit it safely, and stays
+   exactly as it is now below that threshold. Position is never touched,
+   at any width. */
+@media (min-width:1900px){
+  .field-frame.border-extrude-10-wide{ box-sizing:content-box; }
+}
+@media (min-width:2000px){
+  .field-frame.border-extrude-18-wide{ box-sizing:content-box; }
+  /* EDIT: above 2000px this frame switches to content-box, so its declared
+     width is the picture alone and the border sits outside it. The 10%
+     reduction therefore applies straight to the width here, with no border to
+     subtract first — using the border-box arithmetic would have taken the 10%
+     off a figure that never included the border. */
+  /* above 2000px the frame was already content-box, so its width was already
+     the picture alone and 3/2 already shaped the picture correctly — restore
+     the ratio here and let the height follow from it, as it did before. */
+  .field-frame.border-white-thick[data-num="18"]{
+    width:calc(min(42cqw, 540px) * 0.9);
+    aspect-ratio:3/2;
+    height:auto;
+  }
+}
+.field-frame.in{ opacity:1; transform:translateY(0); }
+.field-frame span{ padding:14px; }
+.field-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+
+/* Double-border: an outer border on the frame itself, plus an inner border
+   on a wrapping div around the photo — no gap between them since the inner
+   border sits flush against the outer one. Customize per-photo with inline
+   CSS variables, e.g.:
+   style="--db-outer:12px; --db-outer-color:#fff; --db-inner:2px; --db-inner-color:#111110;" */
+.field-frame.double-border{
+  border: var(--db-outer, 12px) solid var(--db-outer-color, #ffffff);
+}
+.field-frame.double-border .db-inner{
+  width:100%; height:100%; box-sizing:border-box;
+  border: var(--db-inner, 2px) solid var(--db-inner-color, #111110);
+  overflow:hidden;
+}
+.field-frame::before{
+  content: 'Image ' attr(data-num);
+  position:absolute; top:0; left:0; z-index:20;
+  background:rgba(17,17,16,0.78); color:#fff;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.04em;
+  padding:5px 9px; pointer-events:none;
+  /* EDIT: hidden by default per request — visitors no longer see the
+     "Image NN" tag sitting on every photo. It still exists in the markup
+     and still appears on hover, purely so Louis can mouse over any photo
+     to read off its number when he wants to reference it in a request —
+     same reveal-on-hover pattern already used for the category figcaption
+     below, just without the touch-device fallback since this one's a
+     reference aid rather than visitor-facing content. */
+  opacity:0; transition:opacity .2s ease;
+}
+.field-frame:hover::before{ opacity:1; }
+.field-frame figcaption{
+  position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
+  background:linear-gradient(0deg, rgba(0,0,0,0.45), transparent);
+  color:#fff; font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  opacity:0; transition:opacity .2s ease;
+}
+.field-frame:hover figcaption{ opacity:1; }
+
+.w-t1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-t2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+.w-l2-big{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ } /* Image 10 only — the cqw term keeps it safely small at narrow widths, but the cap was too conservative for wider screens where there's much more genuine room — raised to actually use that space */
+.w-l3{ width:min(54cqw, 700px); aspect-ratio:3/2; }
+/* EDIT: Image 02 and Image 32 sit close enough (left:2.1% / left:26.3%,
+   top:19.8vh / top:2.5vh) that at laptop-width viewports the shared w-l1
+   cap (30cqw, max 390px) makes them big enough to overlap. Positions are
+   staying exactly as designed, so instead these two shrink a bit sooner
+   than other w-l1 frames — same 390px ceiling at wide widths, just a
+   tighter scaling curve so they clear each other well before the overlap
+   would happen. No other frame is affected. */
+.w-l1-tight{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
+
+/* ============================================================================
+   FIELD CONTROL BLOCK — the whole front-page composition, one line per photo.
+
+     --w   width of the PICTURE          --b   border thickness
+     --x   distance across               --bc  border colour
+     --y   distance down                 --ar  picture shape (width ÷ height)
+
+   cqw = one hundredth of the field's width. Sizes AND positions now share that
+   one measure, so the composition scales as a single piece. Previously sizes
+   were width-based and positions height-based, and shortening a window pulled
+   them apart — which is what made frames collide.
+
+   To move a photo a little without disturbing the numbers, add --nx / --ny:
+       .field-frame[data-num="08"]{ --nx:-20px; --ny:8px; }
+
+   The border is subtracted back out of the position below, so changing --b
+   grows the surround outward and never moves or resizes the photograph.
+
+   min(Ncqw, Npx) keeps each frame's original pixel ceiling — the composition
+   stops growing at the same point it always did.
+   ========================================================================== */
+  .field-frame[data-num="02"]{ --w:calc(min(22cqw, 390px) - 24px); --x:5.391cqw; --y:8.09cqw; --ar:1.5; --b:12px; --bc:#111110; }
+  .field-frame[data-num="03"]{ --eb:0px; --w:min(30cqw, 390px); --x:73.795cqw; --y:173.043cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="04"]{ --eb:0px; --w:min(42cqw, 540px); --x:22.95cqw; --y:159.368cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+  .field-frame[data-num="05"]{ --w:calc(min(24cqw, 310px) - 12px); --x:77.911cqw; --y:62.532cqw; --ar:0.6667; --b:6px; --bc:#b8952f; }
+  .field-frame[data-num="07"]{ --w:calc(min(17cqw, 220px) - 48px); --x:47.95cqw; --y:127.719cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
+  /* pushed down to clear frame 25 above it. One value covers every width,
+     because the spacing no longer changes with window height. */
+  .field-frame[data-num="08"]{ --ny:60px; --w:calc(min(30cqw, 390px) - 4px); --x:16.958cqw; --y:66.106cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="10"]{ --eb:0px; --w:min(18.2cqw, 340px); --x:67.326cqw; --y:36.471cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="12"]{ --w:calc(min(17cqw, 220px) - 48px); --x:4.151cqw; --y:177.686cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="13"]{ --w:calc(min(30cqw, 390px) - 4px); --x:46.657cqw; --y:206.096cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="16"]{ --w:calc(min(24cqw, 310px) - 24px); --x:69.191cqw; --y:102.009cqw; --ar:0.6667; --b:12px; --bc:#b8952f; }
+  .field-frame[data-num="18"]{ --eb:0px; --w:calc((min(42cqw, 540px) - 72px) * 0.9); --x:66.91cqw; --y:3.39cqw; --ar:1.5; --b:48px; --bc:#ffffff; }
+  .field-frame[data-num="19"]{ --w:calc(min(24cqw, 310px) - 24px); --x:12.19cqw; --y:93.656cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="20"]{ --w:calc(min(30cqw, 390px) - 4px); --x:37.058cqw; --y:92.793cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="24"]{ --w:calc(min(42cqw, 540px) - 4px); --x:4.658cqw; --y:217.037cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  /* nudged down so it clears the name at every width — this is what a
+     positional tweak looks like now: one value, no knock-on effects */
+  .field-frame[data-num="25"]{ --ny:-7.18cqw; --nx:11.96cqw; --w:calc(min(17cqw, 220px) - 24px); --x:1.4cqw; --y:40.696cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+
+/* One rule drives every frame from the values above. One box model, so the
+   border always sits outside the picture. */
+.field-frame{
+  --eb:var(--b);          /* border to remove from column-layout widths */
+  position:absolute;
+  /* the old field gave every frame a 40px left margin on top of its `left`
+     value, so a photo's position was two numbers added together and nudging
+     one could be undone by the other. --x now carries the whole thing. */
+  margin:0;
+  box-sizing:content-box;
+  width:var(--w);
+  aspect-ratio:var(--ar);
+  height:auto;
+  border:var(--b) solid var(--bc);
+  left:calc(var(--x) - var(--b) + var(--nx, 0px));
+  top:calc(var(--y) - var(--b) + var(--ny, 0px));
+}
+.field-frame.double-border{ border:var(--b) solid var(--bc); }
+.field-frame.double-border .db-inner{
+  width:100%; height:100%; box-sizing:border-box;
+  border:var(--inner, 2px) solid var(--inner-c, #ffffff);
+  overflow:hidden;
+}
+
+
+.field-frame.border-thick{ border:12px solid #111110; }
+.field-frame.border-thin{ border:2px solid #111110; }
+.field-frame.border-gold{ border:6px solid #a9852f; }
+.field-frame.border-white{ border:12px solid #ffffff; }
+.field-frame.border-white-thin{ border:2px solid #ffffff; }
+.field-frame.border-white-thick{ border:24px solid #ffffff; }
+/* ---------- rare heavy-border tier ----------
+   Doubles of the existing weights, kept deliberately scarce. box-sizing is
+   border-box on .field-frame, so a heavier border eats into the photo
+   rather than growing the frame's outer box — safe on any frame with zero
+   effect on position/overlap. Gold-thick is only ever applied to a frame
+   that already carries gold, doubling its weight rather than introducing
+   gold onto a photo that never had it. */
+.field-frame.border-black-thick{ border:24px solid #111110; }
+.field-frame.border-gold-thick{ border:12px solid #a9852f; }
+
+
+.statement{ text-align:center; padding:8vh 28px 20vh; position:relative; z-index:1; }
+.statement p{
+  font-family:var(--font-display); font-weight:800; font-size:clamp(20px,3vw,32px);
+  max-width:20ch; margin:0 auto; text-transform:uppercase; letter-spacing:-0.01em; line-height:1.2;
+}
+
+footer{
+  position:fixed; left:0; right:0; bottom:0; z-index:45;
+  background:rgba(239,236,230,0.92); backdrop-filter:blur(6px);
+  padding:16px 28px; border-top:1px solid rgba(17,17,16,0.14);
+  display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex-wrap:wrap; gap:12px;
+}
+/* --------------------------------------------------------------------- */
+/* Lightbox — white rail + main image view                                */
+/* --------------------------------------------------------------------- */
+
+body.lb-open{ overflow:hidden; }
+
+#lightbox{
+  position:fixed; inset:0; z-index:100; background:var(--bg);
+  opacity:0; pointer-events:none; visibility:hidden;
+  transition:opacity .3s ease, visibility 0s linear .3s;
+  display:flex; flex-direction:column;
+}
+#lightbox.open{
+  opacity:1; pointer-events:auto; visibility:visible;
+  transition:opacity .3s ease, visibility 0s linear 0s;
+}
+
+.lb-topbar{
+  display:grid; grid-template-columns:150px 1fr 150px; align-items:center;
+  position:relative; z-index:5;
+  padding:22px 28px; border-bottom:1px solid rgba(17,17,16,0.12);
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  flex:0 0 auto;
+}
+.lb-topbar #lb-cat{ text-align:left; }
+.lb-topbar .lb-count{ text-align:center; }
+.lb-topbar #lb-close{ justify-self:end; }
+.lb-topbar button{ background:none; border:none; color:var(--ink); font:inherit; cursor:pointer; }
+.lb-topbar button:hover{ color:var(--muted); }
+.lb-count{ color:var(--ink); }
+
+.lb-body{ flex:1 1 auto; display:flex; min-height:0; }
+
+.lb-rail{
+  width:21vw; max-width:310px; flex:0 0 21vw; overflow-y:auto; padding:20px;
+  display:block; position:relative; border-right:1px solid rgba(17,17,16,0.12);
+  height:100%; min-height:0;
+  /* invisible scrollbar — still scrolls, just no visible bar */
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.lb-rail::-webkit-scrollbar{ width:0; height:0; display:none; }
+.lb-thumb{
+  position:absolute; margin:0; padding:0; background:#fff; cursor:pointer;
+  box-shadow:0 6px 16px rgba(20,19,16,.14); opacity:1; border:none;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.lb-thumb:hover{ transform:scale(1.03); box-shadow:0 14px 30px rgba(20,19,16,.26); z-index:5; }
+.lb-thumb.active{ opacity:1; }
+.lb-thumb .ph{
+  display:flex; align-items:center; justify-content:center; width:100%; height:100%;
+  font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; background:#e7e4dc;
+}
+.lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.lb-stage-wrap{
+  /* pin to the whole viewport so the photo is dead-centre of the SCREEN
+     (matching the approved layout); click-through except on the photo */
+  position:fixed; inset:0; z-index:3; pointer-events:none;
+  display:flex; align-items:center; justify-content:center; padding:40px;
+}
+#lightbox.open .lb-stage-wrap .lb-stage,
+#lightbox.open .lb-stage-wrap .lb-frame,
+#lightbox.open .lb-stage-wrap .lb-tags{ pointer-events:auto; }
+/* keep the centring spacer hidden but SHOW the small tags box again, pinned
+   to the top beside the photo */
+.lb-stage::before{ display:none !important; }
+.lb-stage{
+  position:relative; max-width:100%; max-height:100%;
+  display:flex; align-items:center; justify-content:center; gap:24px;
+  transform:scale(.97); opacity:0; transition:transform .3s ease, opacity .3s ease;
+}
+#lightbox.open .lb-stage{ transform:scale(1); opacity:1; }
+
+.lb-frame{
+  background:#e7e4dc; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-size:11px; color:var(--muted); text-transform:uppercase;
+  flex:0 0 auto; min-width:0;
+  /* EDIT: bold white mat that expands AROUND the photo (content-box), so the
+     border never crops into the image. Sizing is HEIGHT-driven: the frame
+     height-caps the photo and its width follows the photo's own ratio — so
+     portrait and standard photos no longer balloon to full width, and every
+     ratio stays centred over the counter. The mat adds 120px on every side
+     (doubled from the original 60px, everything else about the layout —
+     centring, the photo's own sizing logic — left exactly as it was). */
+  border:120px solid #ffffff; box-sizing:content-box;
+  /* EDIT: the mat was a flat 120px per side — 240px of fixed width that never
+     gave way. On a ~1200px screen that is most of the room between the collage
+     and the info panel, which is why the photo ended up smaller than its own
+     white surround. It now scales with the viewport between the original 60px
+     mat and the current 120px, so the big-screen look is unchanged and mid-size
+     screens keep a mat that is proportionate to the photo instead of eating it. */
+  border-width:clamp(60px, 7vw, 120px);
+  height:auto; max-height:calc(61.05vh);
+  /* EDIT: cap width to the space BETWEEN the collage (30vw, max 440px on the
+     left) and the info panel (320px on the right), minus the 120px mat and
+     some breathing room — so on a narrow/snapped window the photo shrinks to
+     fit instead of overflowing the panels. */
+  max-width:calc(100vw - 21vw - 320px - 140px);
+  box-shadow:0 24px 60px rgba(17,17,16,0.14);
+}
+/* the image itself carries BOTH caps; width follows naturally but never
+   exceeds the available middle space */
+.lb-frame.has-photo img{
+  max-height:calc(61.05vh - 120px);
+  max-width:calc(100vw - 21vw - 320px - 140px);
+  width:auto; height:auto; display:block;
+}
+/* EDIT: We Shall Remember sized 7% smaller than the other categories */
+.lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 120px); }
+.lb-frame.ratio-landscape:not(.has-photo){ width:min(70vw, 900px); aspect-ratio:3/2; }
+.lb-frame.ratio-portrait:not(.has-photo){ width:min(38vw, 480px); aspect-ratio:2/3; }
+.lb-frame.has-photo{ width:auto; aspect-ratio:auto; }
+.lb-frame span{ padding:16px; }
+.lb-frame:not(.has-photo) img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.lb-tags{
+  /* float to the right of the centred photo without pushing it off-centre */
+  position:absolute; left:100%; top:0; margin-left:14px; width:220px;
+}
+/* no left spacer needed now the photo is screen-centred */
+.lb-stage::before{ display:none; }
+/* photos with no assigned caption simply show no tags box */
+.lb-stage.no-tags .lb-tags{ display:none; }
+/* EDIT: the same stacked arrangement the <=1150px breakpoint uses, but
+   applied on demand at any width. Whether the tags box fits beside the photo
+   depends on how long that particular caption is, not only on how wide the
+   window is — the long Unconditional Love captions squeezed the box to its
+   70px floor and then forced the PHOTO down to a fraction of its frame. When
+   fitStage finds that even a minimum-width box and a minimum mat still don't
+   clear the info panel, it adds this class rather than carry on shrinking the
+   photo: the caption drops below the picture and the photo gets its size back. */
+.lb-stage.tags-below{ flex-direction:column; gap:14px; }
+.lb-stage.tags-below .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
+.lb-tags p{
+  font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
+}
+.lb-tags strong{ display:block; margin-bottom:8px; color:var(--ink); }
+
+@media (min-width:761px) and (max-width:1150px){
+  .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
+  .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
+  .lb-stage-wrap{ padding:20px; }
+  /* EDIT: scoped to :not(.has-photo) to match the base rules above. These
+     forced a fixed frame width regardless of the actual photo, so a real
+     photo sat off-centre inside an over-wide mat (asymmetric white
+     margins). Placeholders still use the fixed ratio boxes. */
+  .lb-frame.ratio-landscape:not(.has-photo){ width:min(58vw, 640px); }
+  .lb-frame.ratio-portrait:not(.has-photo){ width:min(32vw, 340px); }
+  .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
+  .lb-info h3{ font-size:28px; }
+  .lb-info p{ font-size:13px; }
+  .lb-frame{ border-width:80px; max-width:calc(100vw - 100px - 220px - 280px); }
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
+  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
+  .lb-tags{ width:120px; margin-left:10px; }
+  .lb-stage::before{ flex-basis:120px; min-width:120px; }
+}
+
+.lb-info{
+  width:320px; flex:0 0 320px; overflow-y:auto; padding:36px 32px;
+  border-left:1px solid rgba(17,17,16,0.12);
+  /* the stage-wrap is position:fixed (out of flow), so without this the info
+     panel would slide left next to the collage — pin it to the far right */
+  margin-left:auto;
+}
+.lb-info .eyebrow{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px;
+}
+.lb-info h3{
+  font-family:'EB Garamond', serif; font-weight:700; font-size:33px; letter-spacing:-0.005em; margin:0 0 20px; line-height:1.16;
+}
+.lb-info h3 em{ font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted); }
+.lb-info p{
+  font-family:var(--font-body); font-size:15px; line-height:1.7; color:#3a3a38; margin:0;
+}
+.lb-info p + p{ margin-top:14px; }
+
+.lb-bottombar{
+  display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
+  flex:0 0 auto; position:relative; z-index:5;
+}
+.lb-bottombar button{
+  background:none; border:none; cursor:pointer;
+  font-family:var(--font-display); font-weight:800; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink);
+}
+.lb-bottombar button:hover{ color:var(--muted); }
+
+@media (max-width:760px){
+  .lb-topbar{ display:flex; justify-content:space-between; }
+  .lb-body{ flex-direction:column; }
+  .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12);
+    /* EDIT: the real, deeper fix behind the scroll-hint work above — a
+       swipe on the rail was scrolling the WHOLE PAGE instead of just the
+       rail itself (confirmed via screen recording: repeated swipes on the
+       rail kept landing on the stage photo below rather than revealing
+       more thumbnails). overscroll-behavior-y:contain stops the gesture
+       from "chaining" through to the page once the rail's own scroll hits
+       its start/end — the rail now properly owns its own scroll instead
+       of handing it off. -webkit-overflow-scrolling adds native momentum
+       scrolling on iOS specifically, so it also feels right, not just
+       behaves right. */
+    overscroll-behavior-y:contain; -webkit-overflow-scrolling:touch; }
+  /* EDIT: on mobile the rail is a SEPARATE, independently-scrolling area
+     stacked above the page's own scroll — with the scrollbar hidden (the
+     desktop/tablet default), there's nothing telling a visitor this box
+     scrolls on its own, so a downward swipe on it can easily be mistaken
+     for scrolling the whole page instead. Restore a thin, subtle scrollbar
+     here specifically (kept invisible elsewhere, where this ambiguity
+     doesn't really come up) as a clear, standard, universally-understood
+     "this scrolls" signal. */
+  .lb-rail{ scrollbar-width:thin; -ms-overflow-style:auto; }
+  .lb-rail::-webkit-scrollbar{ width:4px; height:4px; display:block; }
+  .lb-rail::-webkit-scrollbar-track{ background:transparent; }
+  .lb-rail::-webkit-scrollbar-thumb{ background:rgba(17,17,16,0.28); border-radius:4px; }
+  .lb-topbar{ grid-template-columns:100px 1fr 100px; }
+  .lb-bottombar{ padding-left:28px; padding-right:28px; }
+  /* EDIT: the base max-width formula assumes the desktop collage + info panel
+     and goes near-zero at phone widths — the old ratio-* rule used to override
+     it, so restore an explicit phone cap now that rule only applies to
+     placeholders. 106px = the 44px mat on each side plus a little air. */
+  .lb-frame{ border-width:44px; max-width:calc(100vw - 106px); }
+  /* EDIT: 86vw did not account for the 44px mat on each side, so the frame
+     overflowed the screen on narrow phones — subtract the mat instead. */
+  .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); max-width:calc(100vw - 106px); }
+  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 44px); }
+  .lb-frame.ratio-landscape:not(.has-photo), .lb-frame.ratio-portrait:not(.has-photo){ width:86vw; max-width:86vw; }
+  /* EDIT: on phones un-pin the stage and stack tags below the photo */
+  .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
+}
+
+/* Below 1024px there just isn't room for the tags box to float beside the
+   photo without either the photo or the box being squeezed uncomfortably
+   small, or the two overlapping — confirmed by measuring the real available
+   space at these widths, not assumed. Stack it below the photo instead,
+   same as it already does on true mobile. */
+@media (max-width:1150px){
+  /* raised from 1024px — the narrow 1025-1150px band genuinely doesn't
+     have room to float the tags box beside the photo AND clear the info
+     panel, even with the photo and tags both shrunk to their readable
+     minimums (verified: photo hit its floor, tags hit their floor, and a
+     real ~14px overlap still remained) — stacking here instead of forcing
+     a side-by-side squeeze that can't actually fit. */
+  .lb-stage{ flex-direction:column; gap:14px; }
+  .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
+}
+
+@media (max-width:760px){
+  .fixed-name{ display:none; }
+  .field{ height:auto; }
+  .field-frame{
+    position:static !important; left:auto !important; top:auto !important;
+    /* border now sits outside the width, so take it off */
+    width:calc(82vw - var(--eb) * 2) !important; margin:0 auto 20px; display:flex;
+  }
+  .corner-nav .links{ gap:10px; }
+  .corner-nav a, .corner-nav span{ font-size:9px; }
+}
+
+/* ===================================================================== */
+/* SMALL-SCREEN FRONT PAGE — "column drift"                              */
+/* Below 1500px the scattered field becomes a single drifting column.    */
+/* This is CSS only: the markup is untouched, so every frame keeps its   */
+/* data-label, data-subcat, figcaption and border class, and the         */
+/* lightbox, the shuffle, the border randomiser and the gallery counts   */
+/* all behave exactly as they do on the wide layout. Only position       */
+/* changes. Because the frames sit in normal document flow here, two     */
+/* frames cannot collide and none can land on the fixed name — the whole */
+/* class of overlap bug is impossible at these widths rather than merely */
+/* tuned away. 1500px is the cut so iPads and 13" laptops get this and   */
+/* 15" and up keep the scatter.                                          */
+/* ===================================================================== */
+/* EDIT: also applied to any short window, not just narrow ones. The scatter
+   positions frames in vh but their heights come from their width, so squeezing
+   the window vertically slides the two out of step and frames start meeting —
+   measured on the untouched live site, five different pairs collide at
+   1500-1920px wide once the viewport drops below ~900px tall, and Image 02
+   reaches the name again. That is most of a 15" Windows laptop's browser
+   window. So the scatter now needs BOTH the width and the height to work in:
+   1500px across and 900px down. The column has no such failure mode, so it takes over whenever the
+   scatter hasn't got the vertical room to work. */
+@media (min-width:761px) and (max-width:1499px),
+       (min-width:761px) and (max-height:899px){
+  /* EDIT: the name is fixed to the screen at every width above 760px (it's
+     only hidden below that, on true mobile) — it was never actually immune
+     to the frames in this range despite the comment above; a scrolled photo
+     passing through the vertical centre sits on top of it exactly as it does
+     on the wide layout. Same fix as true mobile: hide it here too, since a
+     fixed name has no safe place to live once the photos are back in normal
+     document flow and can be anywhere on screen at any scroll position. */
+  .fixed-name{ display:none; }
+  .field{ height:auto !important; }
+  .field-inner{
+    position:static; left:auto; right:auto;
+    display:flex; flex-direction:column; align-items:flex-start;
+    margin:0 5vw 0 calc(clamp(250px, calc(16.2vw + 76px), 300px) + 20px);
+    padding-top:8vh;
+  }
+  .field-frame{
+    position:static !important; left:auto !important; top:auto !important;
+    margin-bottom:14vh; flex:0 0 auto;
+  }
+  /* Frame 32 opens the page, pinned to the right-hand third — that band is
+     clear of the centred name at every width in this range, so the name
+     always reads on load whatever the window height. Frame 18 then takes a
+     deliberate 44vh drop: measured against the shortest window this range
+     will realistically see, that is enough for it to start BELOW the name
+     rather than across it, without needing to know its rendered height. */
+  .field-inner .field-frame[data-num="18"]{ margin-top:44vh; }
+  .field-inner .field-frame:last-of-type{ margin-bottom:6vh; }
+  .field-inner .field-frame[data-num="32"]{ order:1; width:calc(30% - var(--eb) * 2) !important; margin-left:68%; }
+  /* EDIT: same 10% picture reduction as the wide layout, border untouched:
+     0.9 of the picture's share of the 62%, plus the full 72px of border. */
+  /* same treatment in the column layout: width and height both name the
+     picture, so it keeps the exact size it had and the border grows outward */
+  .field-inner .field-frame[data-num="18"]{
+    order:2; margin-left:2%;
+    /* cqw, not %, for the height: a percentage height resolves against the
+       container's HEIGHT, which here is auto and would make the value
+       meaningless. Container query units resolve against its width whichever
+       property they are used in, so both dimensions stay tied to the same
+       measurement. */
+    width:calc((62cqw - 72px) * 0.9) !important;
+    height:calc((62cqw - 72px) * 0.6 - 24px) !important;
+  }
+  .field-inner .field-frame[data-num="25"]{ order:3; width:calc(28% - var(--eb) * 2) !important; margin-left:40%; }
+  /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
+     below it; this takes 5vh back off the top of 10 only, leaving a 9vh
+     gap to Image 25 above. Kept as a negative TOP margin rather than
+     shrinking 25's bottom margin so the change is scoped to one frame and
+     the rest of the column's rhythm is untouched. Net gap stays positive,
+     so the two can still never touch. */
+  .field-inner .field-frame[data-num="10"]{ order:4; width:calc(56% - var(--eb) * 2) !important; margin-left:30%; margin-top:-5vh; }
+  .field-inner .field-frame[data-num="05"]{ order:5; width:calc(30% - var(--eb) * 2) !important; margin-left:6%; }
+  .field-inner .field-frame[data-num="04"]{ order:6; width:calc(58% - var(--eb) * 2) !important; margin-left:24%; }
+  .field-inner .field-frame[data-num="33"]{ order:7; width:calc(26% - var(--eb) * 2) !important; margin-left:70%; }
+  .field-inner .field-frame[data-num="08"]{ order:8; width:calc(64% - var(--eb) * 2) !important; margin-left:4%; }
+  .field-inner .field-frame[data-num="16"]{ order:9; width:calc(30% - var(--eb) * 2) !important; margin-left:44%; }
+  .field-inner .field-frame[data-num="20"]{ order:10; width:calc(56% - var(--eb) * 2) !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="07"]{ order:11; width:calc(28% - var(--eb) * 2) !important; margin-left:10%; }
+  .field-inner .field-frame[data-num="03"]{ order:12; width:calc(56% - var(--eb) * 2) !important; margin-left:28%; }
+  .field-inner .field-frame[data-num="19"]{ order:13; width:calc(30% - var(--eb) * 2) !important; margin-left:66%; }
+  .field-inner .field-frame[data-num="13"]{ order:14; width:calc(60% - var(--eb) * 2) !important; margin-left:0%; }
+  .field-inner .field-frame[data-num="12"]{ order:15; width:calc(26% - var(--eb) * 2) !important; margin-left:36%; }
+  .field-inner .field-frame[data-num="24"]{ order:16; width:calc(68% - var(--eb) * 2) !important; margin-left:30%; }
+  .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
+}
+
+/* ============================================================================
+   FRONT-PAGE COMPOSITION — laid out by Louis in Photoshop, measured from the
+   PSD and converted here. Positions, sizes and shapes are his; nothing is
+   generated by a spacing rule.
+
+   Scoped to the wide layout. Below 1500px, or on a short window, the
+   single-column layout takes over untouched.
+   ========================================================================== */
+@media (min-width:1500px) and (min-height:900px){
+  .field-frame[data-num="32"]{ --w:25.41cqw !important; --x:70.72cqw !important; --y:3.29cqw !important; --ar:1.066 !important; }
+  .field-frame[data-num="18"]{ --w:29.59cqw !important; --x:2.43cqw !important; --y:6.62cqw !important; --ar:1.349 !important; }
+  /* EDIT: --nx added on 02, 25, 33 and 10 below. The name now sits dead
+     centre on the viewport (top:50%/left:50%) at every width in this range,
+     while every frame's position tracks the FIELD, which is inset unevenly
+     (a wide clearance for the category list on the left, a narrow one on the
+     right) and scales with window width, not height. Those two coordinate
+     spaces drift apart as the window is resized, which is why the old single
+     band-switch at 1920px (kept the previous fix for 25 working at only one
+     width) no longer held once the name moved to centre: 25, 33 and 10 sat
+     on the name at nearly every width, and 02 cleared it by only ~13px at
+     1500 — close enough to read as touching. Rather than another width band,
+     each of the four gets a single constant horizontal nudge, solved to hold
+     an 18px clearance from the name's box at every width from 1500 up to
+     3840 and every window height (the separation is horizontal-only, so it
+     doesn't depend on height at all). Checked against every other frame on
+     the field across that same range — the only overlaps these nudges touch
+     (10/05, 18/25, 25/33, 32/02, all only past ~3700px width) were already
+     there before this change; nothing new was introduced. */
+  .field-frame[data-num="02"]{ --w:31.85cqw !important; --x:58.56cqw !important; --y:26.13cqw !important; --ar:1.452 !important; --nx:0.5cqw !important; }
+  .field-frame[data-num="25"]{ --w:17.84cqw !important; --x:9.82cqw !important; --y:29.23cqw !important; --ar:0.925 !important; --nx:-9.1cqw !important; }
+  .field-frame[data-num="33"]{ --w:13.51cqw !important; --x:26.13cqw !important; --y:36.04cqw !important; --ar:0.882 !important; --nx:-21.1cqw !important; }
+  .field-frame[data-num="10"]{ --w:45.00cqw !important; --x:49.32cqw !important; --y:54.10cqw !important; --ar:1.614 !important; --nx:12.8cqw !important; }
+  .field-frame[data-num="08"]{ --w:37.16cqw !important; --x:7.39cqw !important; --y:63.83cqw !important; --ar:1.208 !important; }
+  .field-frame[data-num="05"]{ --w:28.51cqw !important; --x:63.65cqw !important; --y:76.31cqw !important; --ar:0.695 !important; }
+  .field-frame[data-num="19"]{ --w:37.61cqw !important; --x:4.23cqw !important; --y:102.66cqw !important; --ar:0.936 !important; }
+  .field-frame[data-num="20"]{ --w:46.76cqw !important; --x:44.59cqw !important; --y:126.53cqw !important; --ar:1.438 !important; }
+  .field-frame[data-num="16"]{ --w:27.21cqw !important; --x:8.60cqw !important; --y:149.55cqw !important; --ar:0.712 !important; }
+  .field-frame[data-num="07"]{ --w:30.45cqw !important; --x:53.06cqw !important; --y:161.44cqw !important; --ar:0.834 !important; }
+
+  /* five frames stood down from the front page — every photograph
+     remains in its gallery; this only changes what the field shows */
+  .field-frame[data-num="03"], .field-frame[data-num="04"], .field-frame[data-num="13"], .field-frame[data-num="24"], .field-frame[data-num="12"]{ display:none !important; }
+
+  /* the name sits in the middle of the first screen, and the category list
+     at the vertical centre on the left, as asked */
+  .fixed-name{ top:50% !important;
+    transform:translate(-50%, -50%) !important; }
+
+  /* his composition ends higher than the old one, so the field is shorter */
+  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.10) !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="fixed-name">
+  <h1>Louis Amore</h1>
+  <div class="name-note"><p>London-based photographer drawn to people, places and the stories found in everyday life. My work moves between portraiture, documentary and commercial photography, always looking for something honest, considered and human.</p></div>
+</div>
+
+<div class="corner-nav">
+  <span>Portfolio ↓</span>
+  <div class="links">
+    <a href="https://www.instagram.com/louis_amore_photographer/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/louisamore/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<nav class="idx-list" id="idx-list"></nav>
+
+<div class="field" id="field">
+<div class="field-inner">
+    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+
+  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
+
+    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+</div>
+</div>
+
+<div class="statement">
+  <p>Every frame is a decision — the people, places and moments behind the work.</p>
+</div>
+
+<footer id="contact">
+  <span>© Louis Amore</span>
+  <a href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
+  <span>Concept 05 — not yet live</span>
+</footer>
+
+<div id="lightbox" aria-hidden="true">
+  <div class="lb-topbar">
+    <span id="lb-cat">Category</span>
+    <span class="lb-count" id="lb-count">01 / 05</span>
+    <button id="lb-close">Close ✕</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-rail" id="lb-rail"></div>
+    <div class="lb-stage-wrap">
+      <div class="lb-stage">
+        <div class="lb-frame" id="lb-frame"><span id="lb-frame-label">Image</span></div>
+        <div class="lb-tags">
+          <!-- EDIT: a few short words about this specific image — mood,
+               location, lighting, whatever's useful at a glance. -->
+          <p id="lb-tags-text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="lb-info">
+      <p class="eyebrow" id="lb-info-cat">Category</p>
+      <h3 id="lb-info-title">Unconditional Love</h3>
+      <div id="lb-info-body"></div>
+    </div>
+  </div>
+  <div class="lb-bottombar">
+    <button id="lb-back">Back</button>
+  </div>
+</div>
+
+<script>
+  // -------------------- Reveal + Lightbox --------------------
+  const frames = document.querySelectorAll('.field-frame');
+  // EDIT: rootMargin grows the trigger area beyond the viewport, so a frame
+  // starts fading in while it's still below the fold and has finished by the
+  // time you reach it. Bottom value = how far ahead (as % of screen height).
+  // threshold 0 fires as soon as any sliver enters that area — with 0.2 a
+  // large frame had to be a fifth on-screen before it even began.
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0, rootMargin: '10% 0px 60% 0px' });
+
+  // -------------------- Lightbox --------------------
+  const frameList = Array.from(frames);
+  const lightbox = document.getElementById('lightbox');
+  const lbFrame = document.getElementById('lb-frame');
+  const lbCat = document.getElementById('lb-cat');
+  const lbCount = document.getElementById('lb-count');
+  const lbRail = document.getElementById('lb-rail');
+
+  // EDIT: overscroll-behavior-y:contain (added earlier) is the
+  // theoretically-correct CSS fix for scroll chaining, but iOS Safari has
+  // long-documented gaps in its support for this property — specifically
+  // around the rubber-band/bounce effect at a scroll boundary, which can
+  // still chain through to the page even with "contain" set. Confirmed via
+  // user report that the CSS-only fix genuinely wasn't enough in practice.
+  // This is the more reliable, browser-independent backup: track touch
+  // direction manually, and only when the rail is ALREADY at its scroll
+  // boundary in that direction do we stop the swipe from continuing on to
+  // scroll the page — normal scrolling within the rail is untouched.
+  (function railTouchContain() {
+    if (!lbRail) return;
+    let lastY = 0;
+    lbRail.addEventListener('touchstart', (e) => {
+      if (e.touches.length) lastY = e.touches[0].clientY;
+    }, { passive: true });
+    lbRail.addEventListener('touchmove', (e) => {
+      if (!e.touches.length) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - lastY; // >0: finger moving down (wants content ABOVE); <0: wants content BELOW
+      const atTop = lbRail.scrollTop <= 0;
+      const atBottom = Math.ceil(lbRail.scrollTop + lbRail.clientHeight) >= lbRail.scrollHeight;
+      if ((deltaY > 0 && atTop) || (deltaY < 0 && atBottom)) {
+        e.preventDefault();
+      }
+      lastY = currentY;
+    }, { passive: false });
+  })();
+
+  const lbInfoCat = document.getElementById('lb-info-cat');
+  const lbInfoTitle = document.getElementById('lb-info-title');
+  const lbInfoBody = document.getElementById('lb-info-body');
+  const lbTagsText = document.getElementById('lb-tags-text');
+  let currentCategoryItems = [];
+  let currentPos = 0;
+  let currentBrowseSubcat = null; // set only when actually browsing a subcategory, not just because one photo has one
+
+  // frameInfo() reads img.src (a DOM property, always a full resolved URL);
+  // the data arrays and getAttribute('src') calls elsewhere give back the
+  // raw relative "photos/xxx.jpg" string instead — same photo, two
+  // different-looking strings. Strip down to "photos/xxx.jpg" on both sides
+  // before ever comparing two src values for equality.
+  function normalizeSrc(src) {
+    if (!src) return src;
+    const i = src.indexOf('photos/');
+    return i === -1 ? src : src.slice(i);
+  }
+
+  function frameInfo(frame) {
+    const cat = frame.querySelector('figcaption').textContent;
+    const spanEl = frame.querySelector('span');
+    const imgEl = frame.querySelector('img');
+    const label = frame.dataset.label || (spanEl ? spanEl.textContent : '');
+    const subcat = frame.dataset.subcat || null;
+    const isPortrait = Array.from(frame.classList).some(c => /^w-t/.test(c));
+    return { cat, label, subcat, ratio: isPortrait ? 'portrait' : 'landscape', src: imgEl ? imgEl.src : null };
+  }
+
+  // EDIT: photos listed here don't need a spot on the homepage field at
+  // all — they only ever show up in this category's rail when someone
+  // clicks into it. Good for adding more photos to a category without
+  // touching the homepage. Give each one a label (used for project/
+  // caption lookups too) and a ratio ('landscape' or 'portrait').
+  const extraCategoryPhotos = {
+    'Interiors': [
+      { label: 'Interiors 35', ratio: 'landscape', src: 'photos/interiors-35.webp' },
+      { label: 'Interiors 36', ratio: 'landscape', src: 'photos/interiors-36.webp' },
+      { label: 'Interiors 37', ratio: 'landscape', src: 'photos/interiors-37.webp' },
+      { label: 'Interiors 39', ratio: 'landscape', src: 'photos/interiors-39.webp' },
+      { label: 'Interiors 40', ratio: 'landscape', src: 'photos/interiors-40.webp' },
+      { label: 'Interiors 67', ratio: 'landscape', src: 'photos/interiors-67.webp' },
+      { label: 'Interiors 68', ratio: 'landscape', src: 'photos/interiors-68.webp' },
+      { label: 'Interiors 69', ratio: 'landscape', src: 'photos/interiors-69.webp' },
+      { label: 'Interiors 70', ratio: 'portrait', src: 'photos/interiors-70.webp' },
+      { label: 'Interiors 71', ratio: 'landscape', src: 'photos/interiors-71.webp' },
+      { label: 'Interiors 72', ratio: 'landscape', src: 'photos/interiors-72.webp' },
+      { label: 'Interiors 73', ratio: 'landscape', src: 'photos/interiors-73.webp' },
+      { label: 'Interiors 75', ratio: 'landscape', src: 'photos/interiors-75.webp' },
+      { label: 'Interiors 76', ratio: 'landscape', src: 'photos/interiors-76.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 11', ratio: 'landscape', src: 'photos/interiors-11.webp' },
+      { label: 'Image 26', ratio: 'portrait', src: 'photos/interiors-26.webp' },
+      { label: 'Image 28', ratio: 'portrait', src: 'photos/interiors-38.webp' },
+    ],
+    'Portrait': [
+      { label: 'Portrait 41', ratio: 'portrait', src: 'photos/portrait-41.webp' },
+      { label: 'Portrait 43', ratio: 'portrait', src: 'photos/portrait-43.webp' },
+      { label: 'Portrait 49', ratio: 'landscape', src: 'photos/portrait-49.webp' },
+      { label: 'Portrait 51', ratio: 'landscape', src: 'photos/portrait-51.webp' },
+      { label: 'Portrait 56', ratio: 'landscape', src: 'photos/portrait-56.webp' },
+      { label: 'Portrait 60', ratio: 'portrait', src: 'photos/portrait-60.webp' },
+      { label: 'Portrait 65', ratio: 'portrait', src: 'photos/portrait-65.webp' },
+      { label: 'Portrait 67', ratio: 'portrait', src: 'photos/portrait-67.webp' },
+      { label: 'Portrait 68', ratio: 'portrait', src: 'photos/portrait-68.webp' },
+      { label: 'Portrait 69', ratio: 'portrait', src: 'photos/portrait-69.webp' },
+      { label: 'Portrait 70', ratio: 'portrait', src: 'photos/portrait-70.webp' },
+      { label: 'Portrait 71', ratio: 'portrait', src: 'photos/portrait-71.webp' },
+      { label: 'Portrait 72', ratio: 'landscape', src: 'photos/portrait-72.webp' },
+      { label: 'Portrait 73', ratio: 'portrait', src: 'photos/portrait-73.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 14', ratio: 'landscape', src: 'photos/portrait-14.webp' },
+      { label: 'Image 15', ratio: 'landscape', src: 'photos/portrait-15.webp' },
+      { label: 'Image 30', ratio: 'portrait', src: 'photos/portrait-30.webp' },
+      { label: 'Image 35', ratio: 'portrait', src: 'photos/portrait-35.webp' },
+    ],
+    'Fashion': [
+      { label: 'Fashion 01', ratio: 'landscape', src: 'photos/fashion-01.webp' },
+      { label: 'Fashion 05', ratio: 'portrait', src: 'photos/fashion-05.webp' },
+      { label: 'Fashion 06', ratio: 'landscape', src: 'photos/fashion-image06.webp' },
+      { label: 'Fashion 07', ratio: 'landscape', src: 'photos/fashion-07.webp' },
+      { label: 'Fashion 09', ratio: 'portrait', src: 'photos/fashion-09.webp' },
+      { label: 'Fashion 11', ratio: 'portrait', src: 'photos/fashion-11.webp' },
+      { label: 'Fashion 12', ratio: 'landscape', src: 'photos/fashion-12.webp' },
+      { label: 'Fashion 13', ratio: 'portrait', src: 'photos/fashion-13.webp' },
+      { label: 'Fashion 15', ratio: 'portrait', src: 'photos/fashion-15.webp' },
+      { label: 'Fashion 19', ratio: 'portrait', src: 'photos/fashion-19.webp' },
+      { label: 'Fashion 40', ratio: 'portrait', src: 'photos/fashion-40.webp' },
+      { label: 'Fashion 42', ratio: 'portrait', src: 'photos/fashion-42.webp' },
+      { label: 'Fashion 43', ratio: 'portrait', src: 'photos/fashion-43.webp' },
+      { label: 'Fashion 44', ratio: 'portrait', src: 'photos/fashion-44.webp' },
+      { label: 'Fashion 45', ratio: 'portrait', src: 'photos/fashion-45.webp' },
+      { label: 'Fashion 46', ratio: 'portrait', src: 'photos/fashion-46.webp' },
+      { label: 'Fashion 47', ratio: 'portrait', src: 'photos/fashion-47.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 21', ratio: 'portrait', src: 'photos/fashion-17.webp' },
+      { label: 'Image 29', ratio: 'landscape', src: 'photos/fashion-41.webp' },
+      { label: 'Fashion 48', ratio: 'portrait', src: 'photos/fashion-48.webp' },
+      { label: 'Fashion 49', ratio: 'portrait', src: 'photos/fashion-49.webp' },
+      { label: 'Fashion 50', ratio: 'portrait', src: 'photos/fashion-50.webp' },
+      { label: 'Fashion 51', ratio: 'portrait', src: 'photos/fashion-51.webp' },
+      { label: 'Fashion 52', ratio: 'portrait', src: 'photos/fashion-52.webp' },
+      { label: 'Fashion 53', ratio: 'portrait', src: 'photos/fashion-53.webp' },
+      { label: 'Fashion 54', ratio: 'portrait', src: 'photos/fashion-54.webp' },
+      { label: 'Fashion 55', ratio: 'portrait', src: 'photos/fashion-55.webp' },
+      { label: 'Fashion 56', ratio: 'portrait', src: 'photos/fashion-56.webp' },
+      { label: 'Fashion 57', ratio: 'portrait', src: 'photos/fashion-57.webp' },
+    ],
+    'Landscape': [
+      { label: 'Landscape 40', ratio: 'landscape', src: 'photos/landscape-40.webp' },
+      { label: 'Landscape 41', ratio: 'landscape', src: 'photos/landscape-41.webp' },
+      { label: 'Landscape 42', ratio: 'landscape', src: 'photos/landscape-42.webp' },
+      { label: 'Landscape 43', ratio: 'landscape', src: 'photos/landscape-43.webp' },
+      { label: 'Landscape 44', ratio: 'landscape', src: 'photos/landscape-44.webp' },
+      { label: 'Landscape 45', ratio: 'landscape', src: 'photos/landscape-45.webp' },
+      { label: 'Landscape 46', ratio: 'landscape', src: 'photos/landscape-46.webp' },
+      { label: 'Landscape 47', ratio: 'landscape', src: 'photos/landscape-47.webp' },
+      { label: 'Landscape 48', ratio: 'landscape', src: 'photos/landscape-48.webp' },
+      { label: 'Landscape 51', ratio: 'landscape', src: 'photos/landscape-51.webp' },
+      { label: 'Landscape 52', ratio: 'landscape', src: 'photos/landscape-52.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 23', ratio: 'landscape', src: 'photos/landscape-23.webp' },
+      { label: 'Image 27', ratio: 'landscape', src: 'photos/landscape-27.webp' },
+    ],
+  };
+
+  // EDIT: same idea as extraCategoryPhotos, but for a subcategory's rail —
+  // add a "cat" so the info panel still knows the main category too.
+  const extraSubcatPhotos = {
+    'Workplace': [
+      { label: 'Workplace 02', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-02.webp' },
+      { label: 'Workplace 03', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-03.webp' },
+      { label: 'Workplace 04', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-04.webp' },
+      { label: 'Workplace 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-05.webp' },
+      { label: 'Workplace 06', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-06.webp' },
+      { label: 'Workplace 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-09.webp' },
+      { label: 'Workplace 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-10.webp' },
+      { label: 'Workplace 11', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-11.webp' },
+      { label: 'Workplace 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-12.webp' },
+      { label: 'Workplace 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-13.webp' },
+      { label: 'Workplace 14', cat: 'Commercial', ratio: 'portrait', src: 'photos/workplace-14.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 34', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-01.webp' },
+    ],
+    'Wellness': [
+      { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-05.webp' },
+      { label: 'Wellness 08', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-08.webp' },
+      { label: 'Wellness 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-09.webp' },
+      { label: 'Wellness 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-10.webp' },
+      { label: 'Wellness 11', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-11.webp' },
+      { label: 'Wellness 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-12.webp' },
+      { label: 'Wellness 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-13.webp' },
+      { label: 'Wellness 14', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-14.webp' },
+      { label: 'Wellness 15', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-15.webp' },
+      { label: 'Wellness 16', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-16.webp' },
+      { label: 'Wellness 17', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-17.webp' },
+      { label: 'Wellness 18', cat: 'Commercial', ratio: 'portrait', src: 'photos/wellness-18.webp' },
+      { label: 'Wellness 19', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-19.webp' },
+      { label: 'Wellness 20', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-20.webp' },
+      { label: 'Wellness 21', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-21.webp' },
+      { label: 'Wellness 22', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-22.webp' },
+    ],
+    'Street': [
+      { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-40.webp' },
+    ],
+    'Bali': [
+      { label: 'Bali 05', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-05.webp' },
+      { label: 'Bali 07', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-07.webp' },
+      { label: 'Bali 10', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-10.webp' },
+      { label: 'Bali 11', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-11.webp' },
+      { label: 'Bali 12', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-12.webp' },
+      { label: 'Bali 14', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-14.webp' },
+      { label: 'Bali 19', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-19.webp' },
+      { label: 'Bali 20', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-20.webp' },
+      { label: 'Bali 21', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-21.webp' },
+      { label: 'Bali 22', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-22.webp' },
+      { label: 'Bali 23', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-23.webp' },
+      { label: 'Bali 24', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-24.webp' },
+      { label: 'Bali 25', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-25.webp' },
+      { label: 'Bali 26', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-26.webp' },
+      { label: 'Bali 28', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-28.webp' },
+      { label: 'Bali 29', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-29.webp' },
+      // EDIT: moved off the homepage field when the collage was shortened —
+      // still fully browsable here in the category rail
+      { label: 'Image 09', cat: 'Travel', ratio: 'landscape', src: 'photos/personal-image09.webp' },
+    ],
+    'SriLanka': [
+      { label: 'Sri Lanka 01', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-01.webp' },
+      { label: 'Sri Lanka 02', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-02.webp' },
+      { label: 'Sri Lanka 03', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-03.webp' },
+      { label: 'Sri Lanka 04', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-04.webp' },
+      { label: 'Sri Lanka 05', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-05.webp' },
+      { label: 'Sri Lanka 06', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-06.webp' },
+      { label: 'Sri Lanka 07', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-07.webp' },
+      { label: 'Sri Lanka 08', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-08.webp' },
+      { label: 'Sri Lanka 09', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-09.webp' },
+      { label: 'Sri Lanka 10', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-10.webp' },
+    ],
+    'Truckers': [
+      { label: 'Truckers 01', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-01.webp' },
+      { label: 'Truckers 02', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-02.webp' },
+      { label: 'Truckers 03', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-03.webp' },
+      { label: 'Truckers 04', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-04.webp' },
+      { label: 'Truckers 05', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-05.webp' },
+      { label: 'Truckers 06', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-06.webp' },
+      { label: 'Truckers 07', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-07.webp' },
+      { label: 'Truckers 08', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-08.webp' },
+      { label: 'Truckers 09', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-09.webp' },
+      { label: 'Truckers 10', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-10.webp' },
+      { label: 'Truckers 11', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-11.webp' },
+      { label: 'Truckers 12', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-12.webp' },
+      { label: 'Truckers 13', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-13.webp' },
+    ],
+    'UL': [
+      { label: 'UL 02', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-02.webp' },
+      { label: 'UL 03', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-03.webp' },
+      { label: 'UL 04', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-04.webp' },
+      { label: 'UL 05', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-05.webp' },
+      { label: 'UL 09', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-09.webp' },
+      { label: 'UL 12', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-12.webp' },
+      { label: 'UL 41', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-41.webp' },
+    ],
+    'WSR': [
+      { label: 'WSR 01', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-01.webp' },
+      { label: 'WSR 02', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-02.webp' },
+      { label: 'WSR 03', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-03.webp' },
+      { label: 'WSR 04', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-04.webp' },
+      { label: 'WSR 05', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-05.webp' },
+      { label: 'WSR 06', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-06.webp' },
+      { label: 'WSR 07', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-07.webp' },
+      { label: 'WSR 08', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-08.webp' },
+      { label: 'WSR 09', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-09.webp' },
+      { label: 'WSR 10', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-10.webp' },
+      { label: 'WSR 11', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-11.webp' },
+      { label: 'WSR 12', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-12.webp' },
+      { label: 'WSR 13', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-13.webp' },
+      { label: 'WSR 14', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-14.webp' },
+      { label: 'WSR 15', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-15.webp' },
+      { label: 'WSR 16', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-16.webp' },
+      { label: 'WSR 17', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-17.webp' },
+      { label: 'WSR 18', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-18.webp' },
+      { label: 'WSR 19', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-19.webp' },
+      { label: 'WSR 20', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-20.webp' },
+      { label: 'WSR 21', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-21.webp' },
+      { label: 'WSR 22', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-22.webp' },
+      { label: 'WSR 23', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-23.webp' },
+      { label: 'WSR 24', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-24.webp' },
+      { label: 'WSR 25', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-25.webp' },
+    ],
+    'Vape': [
+      { label: 'Vape 01', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-01.webp' },
+      { label: 'Vape 02', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-02.webp' },
+      { label: 'Vape 03', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-03.webp' },
+      { label: 'Vape 04', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-04.webp' },
+      { label: 'Vape 05', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-05.webp' },
+      { label: 'Vape 06', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-06.webp' },
+      { label: 'Vape 07', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-07.webp' },
+      { label: 'Vape 08', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-08.webp' },
+    ],
+  };
+
+  // -------------------- Home-field shuffle --------------------
+  // Every visit, each home-field photo (except Image 20, whose caption and
+  // the Unconditional Love write-up are tied to that specific photo) is
+  // swapped for a DIFFERENT photo from the exact same category or
+  // subcategory — a Fashion frame only ever shows another Fashion photo, a
+  // Bali frame only another Bali photo, etc. The frame itself (position,
+  // size, border, its own "Image NN" identity) never changes, only which
+  // photo happens to be sitting in it right now. Assignment is done as a
+  // proper shuffle-and-deal per group (not independent random picks per
+  // frame), so the same photo can never land on two frames at once.
+  // Complete photo set per category/subcategory (label+ratio+src for
+  // EVERY known photo, whether it normally lives on a home-field frame or
+  // only in a category's rail) — captured once, before the shuffle touches
+  // anything, so the rail can always be rebuilt completely regardless of
+  // which photo the shuffle later puts on which frame. Keyed by subcat if
+  // the frame/entry has one, else by top-level category.
+  const categoryFullSet = {};
+  function addToFullSet(key, entry) {
+    if (!key || !entry.src) return;
+    if (!categoryFullSet[key]) categoryFullSet[key] = [];
+    categoryFullSet[key].push(entry);
+  }
+  (function captureFullSet() {
+    frames.forEach(f => {
+      const subcat = f.dataset.subcat || null;
+      const cat = f.querySelector('figcaption')?.textContent || null;
+      const isPortrait = Array.from(f.classList).some(c => /^w-t/.test(c));
+      const img = f.querySelector('img');
+      const src = img && img.getAttribute('src');
+      addToFullSet(subcat || cat, { src, label: f.dataset.label, ratio: isPortrait ? 'portrait' : 'landscape', cat });
+    });
+    Object.keys(extraCategoryPhotos).forEach(cat => {
+      extraCategoryPhotos[cat].forEach(e => addToFullSet(cat, { src: e.src, label: e.label, ratio: e.ratio, cat }));
+    });
+    Object.keys(extraSubcatPhotos).forEach(subcat => {
+      extraSubcatPhotos[subcat].forEach(e => addToFullSet(subcat, { src: e.src, label: e.label, ratio: e.ratio, cat: e.cat }));
+    });
+  })();
+
+  (function shuffleFieldPhotos() {
+    // EDIT: emptied on request — Image 20 and Image 08 were previously held
+    // back from the shuffle so the same two photographs always greeted
+    // people. Nothing on the field is fixed now; every frame draws from its
+    // own pool. Whichever photo lands in a frame still opens that frame's
+    // own gallery, so only the picture changes, never where it goes.
+    const PROTECTED_LABELS = new Set();
+    // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
+    // (landscape) — a frame's own class is ground truth for the SHAPE it
+    // needs, so a photo of the wrong orientation never gets swapped in,
+    // however well it matches on category.
+    function orientationOf(frame) {
+      return /\bw-t\d/.test(frame.className) ? 'portrait' : 'landscape';
+    }
+    // combine category/subcat with orientation so pools never mix shapes
+    // EDIT: for the home-field SHUFFLE specifically (not the browsable
+    // galleries, which are untouched by this and still show each
+    // subcategory's own photos only), sibling subcategories under the same
+    // thematically-close top-level category share one merged pool for more
+    // variety — Workplace+Wellness, Bali+SriLanka. Personal's 6 subcats
+    // were deliberately left unmerged (too different thematically) on
+    // request.
+    const MERGE_GROUPS = {
+      'Workplace': 'Workplace+Wellness',
+      'Wellness': 'Workplace+Wellness',
+      'Bali': 'Bali+SriLanka',
+      'SriLanka': 'Bali+SriLanka',
+    };
+    function poolKeyFor(subcat, cat, orientation) {
+      const base = subcat || cat;
+      const merged = MERGE_GROUPS[base] || base;
+      return merged + '|' + orientation;
+    }
+
+    const pools = {};        // key -> Set of every known photo src in that group+orientation
+    const groupFrames = {};  // key -> [frame elements needing a photo from that group+orientation]
+
+    function addToPool(key, src) {
+      if (!key || !src) return;
+      if (!pools[key]) pools[key] = new Set();
+      pools[key].add(src);
+    }
+
+    frames.forEach(f => {
+      // EDIT: data-pool lets one frame opt out of its own subcategory's pool and
+      // draw from a wider one instead — Image 20 uses it to pull from the whole
+      // of Personal rather than just Unconditional Love. Scoped to the frames
+      // that ask for it, so Personal's subcategories stay separate everywhere
+      // else, as intended.
+      const subcat = f.dataset.pool || f.dataset.subcat || null;
+      const cat = f.querySelector('figcaption')?.textContent || null;
+      const orientation = orientationOf(f);
+      const img = f.querySelector('img');
+      const src = img && img.getAttribute('src');
+      const key = poolKeyFor(subcat, cat, orientation);
+      addToPool(key, src);
+      if (!PROTECTED_LABELS.has(f.dataset.label)) {
+        (groupFrames[key] = groupFrames[key] || []).push(f);
+      }
+    });
+    Object.keys(extraCategoryPhotos).forEach(cat => {
+      extraCategoryPhotos[cat].forEach(e => addToPool(poolKeyFor(null, cat, e.ratio || 'landscape'), e.src));
+    });
+    Object.keys(extraSubcatPhotos).forEach(subcat => {
+      extraSubcatPhotos[subcat].forEach(e => {
+        addToPool(poolKeyFor(subcat, null, e.ratio || 'landscape'), e.src);
+        // EDIT: and into the parent category's pool, so a frame asking for
+        // 'Personal' can reach every photo across UL, WSR, Vape, Street and
+        // Truckers. These category-wide pools are only ever read by a frame
+        // that names one via data-pool, so nothing else changes.
+        if (e.cat) addToPool(poolKeyFor(null, e.cat, e.ratio || 'landscape'), e.src);
+      });
+    });
+
+    function shuffleArr(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    Object.keys(groupFrames).forEach(key => {
+      const fs = groupFrames[key];
+      const pool = pools[key] ? Array.from(pools[key]) : [];
+      if (pool.length < 2 || fs.length === 0) return;
+
+      // deal distinct photos to each frame in this group, no repeats within
+      // the pass — if the pool is smaller than the number of frames, cycle
+      // through a second shuffled pass rather than leaving any frame blank
+      let deck = shuffleArr(pool.slice());
+      shuffleArr(fs).forEach(f => {
+        if (deck.length === 0) deck = shuffleArr(pool.slice());
+        const pick = deck.pop();
+        const img = f.querySelector('img');
+        const thumbSrc = pick.replace('photos/', 'photos/thumb/');
+        img.setAttribute('src', pick);
+        img.setAttribute('srcset', thumbSrc + ' 400w, ' + pick + ' 1900w');
+      });
+    });
+  })();
+
+  frames.forEach(f => io.observe(f));
+
+  // EDIT: full display names for subcategory abbreviations used in data-subcat.
+  const subcatNames = {
+    'Workplace': 'Workplace',
+    'Wellness': 'Wellness',
+    'UL': 'Unconditional Love',
+    'Bali': 'Bali',
+    'WSR': 'We Shall Remember',
+    'Vape': 'Vape',
+    'Street': 'Street',
+    'SriLanka': 'Sri Lanka',
+    'Truckers': 'Truckers',
+  };
+
+  // EDIT: since the Commercial/Travel shuffle-pool merge can put a sibling
+  // subcategory's photo onto a frame (a Bali-tagged frame can show a Sri
+  // Lanka photo, etc.), a frame's own data-subcat is no longer a reliable
+  // guide to what someone is actually looking at when they click it —
+  // clicking a visibly Sri Lanka photo was opening the Bali gallery
+  // instead, since that's the FRAME's static tag, not the CURRENT photo's
+  // real origin. Build a one-time reverse lookup (photo -> its true
+  // subcategory) from the pre-shuffle full set, so a click always opens
+  // the gallery the photo on screen actually belongs to.
+  const srcToTrueSubcat = {};
+  Object.keys(categoryFullSet).forEach(key => {
+    if (!subcatNames.hasOwnProperty(key)) return; // only real subcategory keys, not top-level cats
+    categoryFullSet[key].forEach(e => {
+      if (e.src) srcToTrueSubcat[normalizeSrc(e.src)] = key;
+    });
+  });
+
+  // EDIT: keep the address bar in sync with whatever's open in the
+  // lightbox, so browsing to a category/subcategory produces a real,
+  // copyable, shareable URL and the back button closes it instead of
+  // leaving the URL and the screen out of sync. suppressHistory guards the
+  // cases where we're already responding to a URL change (initial load,
+  // popstate) and shouldn't push yet another entry on top of it.
+  let suppressHistory = false;
+
+  function setURLForOpen(kind, value) {
+    if (suppressHistory) return;
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.searchParams.set(kind, value);
+    history.pushState({ [kind]: value }, '', url.pathname + '?' + url.searchParams.toString());
+  }
+
+  function setURLForClose() {
+    if (suppressHistory || !window.location.search) return;
+    const url = new URL(window.location.href);
+    url.search = '';
+    history.pushState(null, '', url.pathname);
+  }
+
+  function openLightbox(index) {
+    const info = frameInfo(frameList[index]);
+    const trueSubcat = info.src ? srcToTrueSubcat[normalizeSrc(info.src)] : undefined;
+    const effectiveSubcat = trueSubcat || info.subcat;
+    if (effectiveSubcat) {
+      // when the photo actually belongs to a SIBLING subcategory (not the
+      // clicked frame's own static tag), match by the photo's own src
+      // instead of the frame's index — the frame itself won't appear
+      // in that subcategory's own item list, so landing on the exact
+      // photo needs matching by what's actually showing, not by frame.
+      openLightboxBySubcat(effectiveSubcat, trueSubcat ? undefined : index, trueSubcat ? info.src : undefined);
+      return;
+    }
+    currentBrowseSubcat = null;
+    // build the set of every photo in this same category, in page order
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.cat === info.cat);
+
+    // the rail = every field frame's CURRENT photo, plus every OTHER known
+    // category photo (from the full pre-shuffle set) not currently showing
+    // on any of this category's field frames — guarantees the full count
+    // every time, since the shuffle can move a field frame away from its
+    // own original photo and nothing else would otherwise show it.
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
+    const extras = (categoryFullSet[info.cat] || [])
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
+      .map(e => ({ i: -1, info: { cat: info.cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    // Same shuffle as browsing via the menu, so a category looks the same
+    // whether you clicked a field frame directly or opened it from the list.
+    // Shuffle BEFORE finding the clicked photo's new position.
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+    }
+
+    currentPos = currentCategoryItems.findIndex(x => x.i === index);
+
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+    setURLForOpen('cat', info.cat);
+  }
+
+  // Open a full category from the quick-cats menu — always shows every photo
+  // in that category, regardless of whether the first one happens to have
+  // its own subcategory tag (that redirect only applies to direct photo clicks).
+  function openLightboxByCategory(cat) {
+    currentBrowseSubcat = null;
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.cat === cat);
+
+    // the rail = every field frame's CURRENT photo, plus every OTHER known
+    // category photo (from the full pre-shuffle set) not currently showing
+    // on any of this category's field frames — guarantees the full count
+    // every time, since the shuffle can move a field frame away from its
+    // own original photo and nothing else would otherwise show it.
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
+    const extras = (categoryFullSet[cat] || [])
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
+      .map(e => ({ i: -1, info: { cat, label: e.label, ratio: e.ratio, src: e.src || null } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    // Every category browses in a fresh shuffled order each time — the
+    // whole set (home-field photos and rail-only extras alike) mixed
+    // together, not just field-frames-then-extras. Fisher-Yates.
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+    }
+
+    if (currentCategoryItems.length === 0) return;
+
+    currentPos = 0;
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+    setURLForOpen('cat', cat);
+  }
+
+  // Open the lightbox filtered to a subcategory (e.g. "UL"). If startIndex is
+  // given (a real field photo was clicked), open on that photo; otherwise
+  // open on the first photo found in the subcategory.
+  function openLightboxBySubcat(subcat, startIndex, startSrc) {
+    currentBrowseSubcat = subcat;
+    const fullSet = categoryFullSet[subcat] || [];
+    // EDIT: a subcat-tagged frame's CURRENT photo can legitimately be a
+    // SIBLING subcategory's photo now (the Commercial/Travel shuffle-pool
+    // merge lets e.g. a Bali-tagged frame occasionally show a Sri Lanka
+    // photo) — only count a frame's live photo here if it's genuinely a
+    // member of THIS subcategory's own full set, so browsing "Bali"
+    // directly never shows a Sri Lanka photo just because a frame's
+    // shuffle happened to land there this load. Any frame excluded this
+    // way is simply backfilled from its own subcategory's extras below,
+    // same as it would be if that frame didn't exist at all.
+    const belongsHere = (src) => fullSet.some(e => normalizeSrc(e.src) === normalizeSrc(src));
+    currentCategoryItems = frameList
+      .map((f, i) => ({ i, info: frameInfo(f) }))
+      .filter(x => x.info.subcat === subcat && belongsHere(x.info.src));
+
+    // the rail = every field frame's CURRENT (genuinely-this-subcategory)
+    // photo, plus every OTHER known subcategory photo (from the full
+    // pre-shuffle set) not currently showing on any of this subcategory's
+    // field frames — guarantees the full count every time, matching the
+    // category-level fix above.
+    const onFieldNow = new Set(currentCategoryItems.map(x => normalizeSrc(x.info.src)));
+    const extras = fullSet
+      .filter(e => !onFieldNow.has(normalizeSrc(e.src)))
+      .map(e => ({ i: -1, info: { cat: e.cat, label: e.label, subcat, ratio: e.ratio, src: e.src || null } }));
+    currentCategoryItems = currentCategoryItems.concat(extras);
+
+    // Every subcategory browses in a fresh shuffled order each time —
+    // Fisher-Yates over the whole set (field frames + extras mixed together).
+    for (let i = currentCategoryItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
+    }
+
+    if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
+
+    currentPos = startSrc !== undefined
+      ? currentCategoryItems.findIndex(x => normalizeSrc(x.info.src) === normalizeSrc(startSrc))
+      : (startIndex !== undefined
+          ? currentCategoryItems.findIndex(x => x.i === startIndex)
+          : 0);
+    if (currentPos === -1) currentPos = 0;
+
+    buildRail();
+    render();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lb-open');
+    setURLForOpen('subcat', subcat);
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lb-open');
+    setURLForClose();
+  }
+
+  // EDIT: photos/ holds the full-size file (used by the lightbox stage).
+  // photos/med/ (1400px) and photos/thumb/ (400px) hold display copies.
+  // This swaps a full-size path for its smaller sibling.
+  function variantSrc(src, kind) {
+    if (!src) return src;
+    return src.replace(/photos\//, 'photos/' + kind + '/');
+  }
+
+  function buildRail() {
+    lbRail.innerHTML = '';
+    currentCategoryItems.forEach((item, pos) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'lb-thumb ratio-' + item.info.ratio;
+      const localNum = String(pos + 1).padStart(2, '0');
+      if (item.info.src) {
+        // The whole rail is already fully visible the instant a category
+        // opens (it's a small on-screen panel, not off-screen content), so
+        // loading="lazy" was deferring images that never actually needed
+        // deferring — browsers vary in how conservative their "near
+        // viewport" heuristic is (Safari/mobile especially), which could
+        // add a real, felt delay before thumbnails start appearing even
+        // though nothing here needs scrolling into view. Removed; kept
+        // decoding="async" so decoding still doesn't block the main thread.
+        thumb.innerHTML = `<img src="${variantSrc(item.info.src, 'thumb')}" alt="Image ${localNum}" decoding="async">`;
+        const tImg = thumb.querySelector('img');
+        const fitThumb = () => { if (tImg.naturalWidth) thumb.style.aspectRatio = tImg.naturalWidth + ' / ' + tImg.naturalHeight; };
+        if (tImg.complete) fitThumb(); else tImg.addEventListener('load', fitThumb);
+      } else {
+        thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
+      }
+      thumb.addEventListener('click', () => { currentPos = pos; render(); });
+      lbRail.appendChild(thumb);
+    });
+    layoutCollageRail();
+  }
+
+  // Masonry layout for the collage rail: 2 columns, stacked by real image
+  // ratio so nothing overlaps. Recomputes on resize.
+  function layoutCollageRail() {
+    if (!lbRail || lbRail.offsetParent === null) return;
+    const tiles = [...lbRail.querySelectorAll('.lb-thumb')];
+    if (!tiles.length) return;
+    const pad = 20, gap = 12;
+    const railW = lbRail.clientWidth - pad * 2;
+    const visibleH = lbRail.clientHeight - pad * 2;
+
+    const ratios = tiles.map(t => {
+      const img = t.querySelector('img');
+      if (img && img.naturalWidth) return img.naturalWidth / img.naturalHeight;
+      return t.classList.contains('ratio-portrait') ? 2 / 3 : 1.5;
+    });
+
+    // pack tiles into n columns at a given tile width (shortest column wins)
+    function pack(ncols, colW) {
+      const colH = new Array(ncols).fill(0);
+      const pos = ratios.map(r => {
+        const th = colW / r;
+        let c = 0; for (let k = 1; k < ncols; k++) if (colH[k] < colH[c]) c = k;
+        const top = colH[c];
+        colH[c] += th + gap;
+        return { c, top, h: th };
+      });
+      return { pos, height: Math.max(...colH) - gap };
+    }
+
+    let ncols = railW > 300 ? 2 : 1;
+    let colW = (railW - gap * (ncols - 1)) / ncols;
+    let laid = pack(ncols, colW);
+
+    // EDIT: a short series used to leave the rail half empty, which made a
+    // tight edit look thin rather than deliberate. If a set doesn't fill the
+    // panel, fall back to fewer, LARGER tiles sized to fill the height.
+    // Big sets are untouched — they still scroll at the normal tile size.
+    if (laid.height < visibleH) {
+      for (let n = 1; n < ncols; n++) {
+        const maxW = (railW - gap * (n - 1)) / n;
+        const base = pack(n, maxW);
+        if (!base.height) continue;
+        const w = Math.min(maxW, maxW * (visibleH / base.height));
+        if (w > colW) { ncols = n; colW = w; laid = pack(n, w); }
+      }
+    }
+
+    // centre a short set rather than stranding it at the top of the panel
+    const offset = Math.max(0, (visibleH - laid.height) / 2);
+    const totalW = ncols * colW + gap * (ncols - 1);
+    const left0 = pad + Math.max(0, (railW - totalW) / 2);
+
+    tiles.forEach((t, i) => {
+      const q = laid.pos[i];
+      t.style.width = colW + 'px';
+      t.style.height = q.h + 'px';
+      t.style.left = (left0 + q.c * (colW + gap)) + 'px';
+      t.style.top = (offset + q.top) + 'px';
+    });
+
+    let spacer = lbRail.querySelector('.rail-spacer');
+    if (!spacer) { spacer = document.createElement('div'); spacer.className = 'rail-spacer'; lbRail.appendChild(spacer); }
+    spacer.style.cssText = 'position:absolute; left:0; top:0; width:1px; pointer-events:none;';
+    spacer.style.height = (offset + laid.height + pad) + 'px';
+    lbRail.style.minHeight = '';
+  }
+
+  // relayout when images finish loading (ratios become known) and on resize
+  window.addEventListener('resize', () => setTimeout(layoutCollageRail, 120));
+  document.addEventListener('load', (e) => {
+    if (e.target && e.target.tagName === 'IMG' && e.target.closest('#lb-rail')) layoutCollageRail();
+  }, true);
+
+  // EDIT: a "project" is a story that can span several photos — its title
+  // and write-up always show in the info panel for every image listed
+  // under it. Add more image labels to "images" as you tag more photos
+  // into the same project.
+  const projects = {
+    'bali': {
+      title: 'Bali',
+      // EDIT: keyed by SUBCATEGORY rather than by a list of image labels (see
+      // subcatProjects below). Every Bali photo picks this up automatically,
+      // including ones added later — no list to keep in step.
+      subcat: 'Bali',
+      body: [
+        "Beyond the familiar image of Bali lies a quieter island, shaped by work, tradition and the rhythms of everyday life. Travelling across the island, I photographed the people and places I encountered away from the usual paths \u2014 fishermen, builders, families and young dancers, alongside the landscapes they call home. These photographs are my attempt to capture something less polished, more intimate and far more human."
+      ],
+      images: []
+    },
+    'truckers': {
+      title: 'Truckers',
+      subcat: 'Truckers',
+      body: [
+        "I began photographing truck drivers while travelling through Seattle, drawn initially to the sheer scale of the vehicles and the people behind the wheel.",
+        "These trucks are more than machines. For many drivers they become workplaces, bedrooms and temporary homes. Days are measured in miles and hours, with long stretches of road spent alone and often far from family and the people they love.",
+        "I became interested in that contrast. The enormous physical presence of the truck against the quiet, solitary life inside it. A job that keeps everything moving, but asks its drivers to spend so much of their lives away from home.",
+        "Truckers is an ongoing portrait of the people behind these machines and a working life that is largely invisible to those of us they pass every day.",
+        "Seattle, Washington."
+      ],
+      images: []
+    },
+    'sri-lanka': {
+      title: 'Sri Lanka',
+      subcat: 'Sri Lanka',
+      body: [
+        "Sri Lanka is a place where the past and present seem to exist side by side. Travelling through the country, I encountered communities still carrying the memory of the 2004 tsunami, when homes, livelihoods and lives were swept away along the coast. Yet what I found was not a landscape defined by loss, but by recovery.",
+        "I photographed the people I met along the way \u2014 fishermen, workers, families, a young monk and strangers on roadsides and railway tracks. In their everyday lives I found humour, affection, dignity and resilience. These photographs are less about what was taken away and more about what remained: people rebuilding, adapting and simply carrying on."
+      ],
+      images: []
+    },
+    'unconditional-love': {
+      title: 'Unconditional Love',
+      body: [
+        "In October 2017 I visited a good friend in Seattle, Washington who runs an international animal rescue organisation. Animals can have a positive impact on people's lives. Unfortunately, I also saw and learned how much animals suffer abuse around the world.",
+        "During my visit I saw that many homeless people kept animals with them and it gave me an idea to document their connection and dependence on each other. I approached and sought permission to photograph in Tent City 3 — a non-sanctioned temporary homeless encampment — and also other homeless people throughout the area.",
+        "Animals accept us as we are. They love unconditionally and without reserve. They bring joy, love and reassurance during our best and worst times. I felt compelled to use this connection; the unwavering bond between human and animal as the basis for this series — \"Unconditional Love\"."
+      ],
+      images: ['Image 20', 'UL 02', 'UL 03', 'UL 04', 'UL 05', 'UL 09', 'UL 12', 'UL 41']
+    },
+    'vaper': {
+      title: 'VAPER \u2014 The Phenomenon of Vaping',
+      body: [
+        "What started as curiosity about vaping's sudden popularity turned into something else once I got close to it. This wasn't just a replacement for smoking \u2014 it was almost a sport. People blew clouds into shapes, chased bigger exhales, entered competitions. A whole subculture with its own style, its own language, its own cool kids.",
+        "The series was shot at Prohibition Vapes on Old Street, London \u2014 part shop, part hangout, where the regulars let me photograph them in their own haze."
+      ],
+      images: ['Vape 01', 'Vape 02', 'Vape 03', 'Vape 04', 'Vape 05', 'Vape 06', 'Vape 07', 'Vape 08']
+    },
+    'we-shall-remember': {
+      title: 'We Shall Remember',
+      body: [
+        "A few years ago I was watching the Remembrance parade at the Cenotaph on television. The faces of the men and women who had gone through so much stopped me \u2014 they made me question what I had done with my own life. I jumped up, grabbed my camera and a light, and got on the train into London.",
+        "I felt I had to record these men and women for posterity. It was my way of saying thank you \u2014 the only way I could, through my camera. I wanted to preserve them digitally, for what they had done for this country and for many others."
+      ],
+      images: ['WSR 01', 'WSR 02', 'WSR 03', 'WSR 04', 'WSR 05', 'WSR 06', 'WSR 07', 'WSR 08', 'WSR 09', 'WSR 10', 'WSR 11', 'WSR 12', 'WSR 13', 'WSR 14', 'WSR 15', 'WSR 16', 'WSR 17', 'WSR 18', 'WSR 19', 'WSR 20', 'WSR 21', 'WSR 22', 'WSR 23', 'WSR 24', 'WSR 25']
+    },
+    'wellness': {
+      title: 'Wellness — In Practice',
+      body: [
+        "This series follows a day at The Massage Lab, a London studio specialising in sports and remedial massage. The work moves fast and close — assisted stretches, deep tissue release, trigger point work — each treatment built around how a client actually moves, rather than a fixed routine."
+      ],
+      images: ['Wellness 05', 'Wellness 08', 'Wellness 09', 'Wellness 10', 'Wellness 11', 'Wellness 12', 'Wellness 13', 'Wellness 14', 'Wellness 15', 'Wellness 16', 'Wellness 17', 'Wellness 18', 'Wellness 19', 'Wellness 20', 'Wellness 21', 'Wellness 22']
+    }
+  };
+
+  // Build a quick lookup: image label -> project
+  const imageToProject = {};
+  Object.values(projects).forEach(p => {
+    p.images.forEach(label => { imageToProject[label] = p; });
+  });
+  // EDIT: and a second lookup by subcategory. A project declaring `subcat`
+  // covers every photo in that set, so adding photos to Bali or Sri Lanka
+  // later doesn't mean editing an image list to keep the write-up showing.
+  const subcatToProject = {};
+  Object.values(projects).forEach(p => { if (p.subcat) subcatToProject[p.subcat] = p; });
+
+  // EDIT: a shared generic subtitle per category — sits in the same spot as
+  // "Image NN" in the lightbox title, but reads as one line describing the
+  // whole set rather than a photo number. Only used when the photo has no
+  // bespoke project story of its own (see titleText below).
+  const genericSubtitles = {
+    'Interiors': 'Light, space, and stillness',
+    'Landscape': 'The land in changing light',
+    'Street': 'Unplanned moments, real people',
+    'Bali': 'A visual journal of Bali',
+    'Sri Lanka': 'Colour, culture, and coastline',
+    'Truckers': 'Life on the road',
+    'Workplace': 'Healthcare, tech, and daily work',
+    'Fashion': 'Editorial fashion work'
+  };
+
+  // EDIT: a short per-photo caption for the small box beside the image —
+  // who's in it, a name, a detail, and optionally a bit more text below
+  // it. Falls back to generic mood words if a photo doesn't have one yet.
+  const photoCaptions = {
+    'Vape 01': {
+      name: 'The Phenomenon',
+      text: "Where the series begins \u2014 one cloud, one stare, a subculture in full view."
+    },
+    'Vape 02': {
+      name: 'Low Risk, Loud Cloud',
+      text: "Shop talk and thick vapour in the back room at Wick Liquor."
+    },
+    'Vape 03': {
+      name: 'Prohibition',
+      text: "Sat beneath the old warnings, entirely unbothered by them."
+    },
+    'Vape 04': {
+      name: 'Exhale',
+      text: "Close enough to lose the face in the cloud."
+    },
+    'Vape 05': {
+      name: 'Critical Mass',
+      text: "Two of a movement that stopped asking permission."
+    },
+    'Vape 06': {
+      name: 'Vice & Vice',
+      text: "A mod in one hand, a Coke in the other \u2014 small habits, held close."
+    },
+    'Vape 07': {
+      name: 'Slow Smoke',
+      text: "Fedora, braids, and a room that's seen a hundred clouds before this one."
+    },
+    'Vape 08': {
+      name: 'The Throne',
+      text: "Stretched out on the chesterfield, cloud drifting to the ceiling."
+    },
+    'WSR 01': { name: 'We Shall Remember', text: "Wreaths and small wooden crosses at the memorial \u2014 where the series takes its name." },
+    'WSR 02': { name: 'A18', text: "Waiting for the parade to begin, medals worn on the fleece." },
+    'WSR 03': { name: 'Never Surrender', text: "Head up, moustache immaculate, ready to march." },
+    'WSR 04': { name: "We'll Meet Again", text: "A hand over the medals, and a song everyone of his generation knows." },
+    'WSR 05': { name: 'Scarlet', text: "The unmistakable coat and tricorn of the Royal Hospital Chelsea." },
+    'WSR 06': { name: 'Gunner', text: "Royal Artillery beret, blanket over the knees, poppy at the collar." },
+    'WSR 07': { name: 'Best Suit', text: "Bowler on his lap, medals polished, waiting on the stone." },
+    'WSR 08': { name: "The Mothers' Sons", text: "Beneath the memorial, in remembrance red." },
+    'WSR 09': { name: 'Three Medals and a Poppy', text: "The detail says it all \u2014 no face needed." },
+    'WSR 10': { name: 'Two Poppies', text: "Ninety-something and standing unaided for the photograph." },
+    'WSR 11': { name: 'Still Standing', text: "Grey suit, gold medals, and a smile that's seen everything." },
+    'WSR 12': { name: 'Let Us Pray for Peace', text: "In the sunshine at the memorial, campaigns carved in stone behind him." },
+    'WSR 13': { name: 'Green Beret', text: "Commando bearing, hands folded, quietly proud." },
+    'WSR 14': { name: 'Whitehall', text: "Korea on his chest, the Cenotaph over his shoulder." },
+    'WSR 15': { name: 'At the Gates', text: "Gloved hands folded, medals catching the morning light." },
+    'WSR 16': { name: "Two Nations' Thanks", text: "British and Soviet decorations worn together on a winter coat." },
+    'WSR 17': { name: 'Pennant Flying', text: "Regimental colours mounted proudly on the scooter." },
+    'WSR 18': { name: 'A Debt Never Fully Repaid', text: "A pointed look from a man who was there." },
+    'WSR 19': { name: 'Tweed and Bronze', text: "Stars from three campaigns, worn to the Cenotaph one more time." },
+    'WSR 20': { name: 'Still Serving', text: "The next generation, in uniform among the veterans." },
+    'WSR 21': { name: 'Desert Colours', text: "Two comrades in shemaghs, regimental ties beneath." },
+    'WSR 22': { name: 'The Young Veteran', text: "Green beret, sharp suit \u2014 service isn't only history." },
+    'WSR 23': { name: 'Watch Chain', text: "Sunday best and steady eyes against the old stone wall." },
+    'WSR 24': { name: 'The Marks of War', text: "He carries his service on his face, and stands tall with it." },
+    'WSR 25': { name: 'By the Railings', text: "Wrapped up against the cold, medals still on the outside." },
+    'UL 04': {
+      name: 'Candi & Calli',
+      text: "Calli was rescued by Candi two and a half years ago from an abusive home. She nurtured her back to health and the bond between the two of them has grown very strong. Calli, a great support to Candi, has been trained to be her seizure dog. Originally from New Orleans, Candi and her husband moved to Tent City 3 eight months ago. Candi was the first person we met at the site, advocating for us to be allowed into the camp."
+    },
+    'Image 20': {
+      name: 'Alicia, Braylen & Drew',
+      text: "\u201cI got Drew for my son Braylen, I wanted him to have someone to play with,\u201d Alicia said. \u201cHe always roamed the encampment finding objects to keep himself entertained.\u201d They have lived at Tent City 3 for the past four months."
+    },
+    'UL 02': {
+      name: 'Jamie & Meatball',
+      text: "Jamie had found Meatball less than 24 hours before this photo was taken. Her previous dog, Nemesis, was purchased on the recommendation of her doctor as treatment for her schizoaffective disorder. \u201cMeatball provides me with motivation; life without animals would be much harder,\u201d she says."
+    },
+    'UL 05': {
+      name: 'Sonny & Houdini',
+      text: "Sonny has been living in Tent City 3 for 9 months. Houdini is Sonny's companion. He says, \u201che calms me down when I get my panic and anxiety attacks. I can get to my medicine because of Houdini. He calms me down when I get excited. Houdini gives me responsibility and pride.\u201d"
+    },
+    'UL 09': {
+      name: 'Maranda & Bully',
+      text: "Maranda has been in Seattle for 5 years and has owned Bully since she was a puppy. Bully provides love and safety and a sense of security while Maranda's husband is away."
+    },
+    'UL 12': {
+      name: 'Tent City 3',
+      text: ""
+    },
+    'UL 41': {
+      name: 'Sonny & Houdini',
+      text: "Sonny has been living in Tent City 3 for 9 months. Houdini is Sonny's companion. He says, \u201che calms me down when I get my panic and anxiety attacks. I can get to my medicine because of Houdini. He calms me down when I get excited. Houdini gives me responsibility and pride.\u201d"
+    },
+  };
+
+  const defaultStory = {
+    title: null, // falls back to "Category — Image N"
+    body: [
+      "A short paragraph about this project — the brief, the location, who it was for, or anything you want visitors to know.",
+      "A second paragraph if you need more room to talk through the shoot, the client, or the story behind it."
+    ]
+  };
+
+  function render() {
+    const active = currentCategoryItems[currentPos];
+    const info = active.info;
+    lbFrame.className = 'lb-frame ratio-' + info.ratio;
+    // EDIT: tag the frame with the current subcategory so specific series
+    // (e.g. WSR) can carry their own size cap
+    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
+    lbFrame.style.aspectRatio = '';
+    lbFrame.style.removeProperty('--ar');
+    const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
+    if (info.src) {
+      lbFrame.classList.add('has-photo');
+      lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}" decoding="async">`;
+      const _img = lbFrame.querySelector('img');
+      if (_img.complete) { /* already cached — fitStage() below covers it */ }
+      else _img.addEventListener('load', fitStage, { once: true });
+      // EDIT: real photos size the frame by their own height (max-height on the
+      // img), so any ratio — landscape, portrait, cinematic — displays fully and
+      // stays centred. No forced aspect-ratio on the frame.
+    } else {
+      lbFrame.classList.remove('has-photo');
+      lbFrame.innerHTML = `<span>${localLabel}</span>`;
+    }
+    const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
+    lbCat.textContent = displayCat;
+    lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
+    lbInfoCat.textContent = info.cat || displayCat;
+
+    // per-photo project wins; otherwise fall back to the subcategory's own
+    const story = imageToProject[info.label] || subcatToProject[displayCat];
+    // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
+    // no default text, no category eyebrow; single hyphen separator throughout.
+    // Categories with a shared generic subtitle (genericSubtitles) show that
+    // phrase instead of the per-photo "Image NN" — one consistent line for
+    // every photo in the set.
+    const titleText = (story && story.title) || displayCat;
+    const generic = !story && genericSubtitles[displayCat];
+    const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
+    lbInfoTitle.innerHTML = titleText + ' <em>- ' + suffix + '</em>';
+    lbInfoCat.style.display = '';
+    lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
+
+    const caption = photoCaptions[info.label];
+    const stageEl = lbFrame.closest('.lb-stage');
+    // small per-photo caption floats beside the photo (info panel keeps the
+    // big series write-up on the far right)
+    if (caption) {
+      stageEl.classList.remove('no-tags');
+      lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
+    } else {
+      stageEl.classList.add('no-tags');
+      lbTagsText.innerHTML = '';
+    }
+
+    Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
+    const activeThumb = lbRail.children[currentPos];
+    if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    fitStage();
+  }
+
+  // Measures the real, current gap between the rail and the info panel and
+  // subtracts the tags box's real rendered footprint (when it's showing),
+  // then caps the photo to whatever's left — guaranteed not to overlap
+  // either neighbour, at any viewport width, rather than a hand-derived
+  // pixel formula that has to be re-verified every time anything nearby changes.
+  function fitStage() {
+    const info = document.querySelector('.lb-info');
+    const frame = document.querySelector('.lb-frame');
+    const img = frame && frame.querySelector('img');
+    const tags = document.querySelector('.lb-tags');
+    if (!info || !frame) return;
+    const stage = frame.closest('.lb-stage');
+    frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
+    frame.style.borderWidth = '';
+    if (tags) tags.style.width = '';
+    if (img) img.style.maxHeight = '';
+    if (stage) stage.classList.remove('tags-below');
+    const wrap = document.querySelector('.lb-stage-wrap');
+    // EDIT: below 1150px the CSS already stacks the box under the photo, so the
+    // horizontal loop has nothing to do — but the box was inheriting the STAGE's
+    // width, which is the full width of the viewport, not the photo's. A long
+    // caption therefore ran straight out under the info panel. Match it to the
+    // photo and leave.
+    if (window.innerWidth <= 1150) {
+      if (tags && window.innerWidth > 760) syncStackedTags(frame, tags);
+      return;
+    }
+    const SAFETY = 16;
+    // EDIT: raised from 70px. A 70px column turns a caption into one or two
+    // words per line, which is what made the Unconditional Love captions look
+    // broken. Below this width the box is no longer worth having beside the
+    // photo at all, so the loop stacks it underneath instead.
+    const MIN_TAGS = 150;
+    const MIN_MAT = 60;   // the design's original mat width — never go below it
+    // Neither the photo's rendered width nor exactly where it centres is
+    // reliably predictable from outside the flex/centring layout (it depends
+    // on the photo's own aspect ratio and box-model details that vary per
+    // photo and breakpoint) — so measure the real, current overlap after
+    // each change and correct again, converging empirically instead of
+    // trying to calculate the right answer in one shot.
+    for (let i = 0; i < 16; i++) {
+      // a stacked box is only ever as wide as the photo it sits under, so keep
+      // the two in step before measuring anything
+      if (stage && stage.classList.contains('tags-below')) syncStackedTags(frame, tags);
+      const infoLeft = info.getBoundingClientRect().left;
+      const tagsShowing = tags && !frame.closest('.lb-stage').classList.contains('no-tags');
+      // EDIT: was tags.right alone. Once the box drops BELOW the photo it is
+      // narrower than the frame, so measuring only the box let a frame that
+      // genuinely overran the info panel read as fitting. Take whichever of
+      // the two actually reaches furthest right.
+      const rightEdge = tagsShowing
+        ? Math.max(tags.getBoundingClientRect().right, frame.getBoundingClientRect().right)
+        : frame.getBoundingClientRect().right;
+      const overlap = rightEdge - infoLeft + SAFETY;
+      if (overlap <= 0) break;
+      const bw = parseFloat(getComputedStyle(frame).borderLeftWidth || '0');
+      const stacked = !!(stage && stage.classList.contains('tags-below'));
+      // EDIT: once the box is stacked UNDER the photo, narrowing it moves
+      // nothing — the photo's own edge is what reaches the info panel, and the
+      // sync above widens the box straight back again. Skipping this branch
+      // when stacked stops the loop spending every iteration on a no-op and
+      // never reaching the mat and photo below.
+      if (!stacked && tagsShowing && tags.getBoundingClientRect().width > MIN_TAGS) {
+        // first give back room by narrowing the tags box itself, down to a
+        // still-readable minimum, before touching the photo at all
+        const w = tags.getBoundingClientRect().width;
+        tags.style.width = Math.max(MIN_TAGS, w - overlap) + 'px';
+      } else if (bw > MIN_MAT) {
+        // EDIT: the mat is a fixed 240px of width that never shrank, so on
+        // mid-width screens it ate nearly all the room between the collage and
+        // the info panel and the loop below squeezed the PHOTO down to a
+        // fraction of its own frame. Give the mat back first, down to the same
+        // 44px the phone breakpoint already uses. The frame is centred, so
+        // taking d off each side moves its right edge in by exactly d.
+        frame.style.borderWidth = Math.max(MIN_MAT, bw - overlap) + 'px';
+      } else if (tags && tagsShowing && stage && !stage.classList.contains('tags-below')) {
+        // Tags box AND mat are both at their floor and it still doesn't fit.
+        // Drop the caption below the photo instead of squeezing the picture:
+        // a long caption should cost the photo its position, not its size.
+        // Everything conceded so far was conceded to make room beside the
+        // photo, so hand it all back and let the loop re-measure from scratch.
+        stage.classList.add('tags-below');
+        tags.style.width = '';
+        frame.style.borderWidth = '';
+        frame.style.maxWidth = ''; if (img) img.style.maxWidth = '';
+      } else {
+        // tags box is already as narrow as it should get — shrink the photo
+        // instead. It's centred, so its right edge only moves in by about
+        // half of any width reduction; overshoot the request and let the
+        // next loop iteration correct any remainder.
+        const fcs = getComputedStyle(frame);
+        const borderTotal = parseFloat(fcs.borderLeftWidth || '0') + parseFloat(fcs.borderRightWidth || '0');
+        const currentContentW = frame.getBoundingClientRect().width - borderTotal;
+        const nextContentW = Math.max(80, currentContentW - overlap * 2.2);
+        frame.style.maxWidth = nextContentW + 'px';
+        if (img) img.style.maxWidth = nextContentW + 'px';
+      }
+    }
+    // EDIT: stacking buys width back but spends height — photo, gap and caption
+    // now sit in one column. Trim the photo's height cap if the three of them
+    // together run past the bottom of the stage area.
+    if (stage && stage.classList.contains('tags-below') && img && wrap) {
+      for (let i = 0; i < 8; i++) {
+        const bottom = Math.max(frame.getBoundingClientRect().bottom,
+                                tags.getBoundingClientRect().bottom);
+        const over = bottom - wrap.getBoundingClientRect().bottom + 10;
+        if (over <= 0) break;
+        const h = img.getBoundingClientRect().height;
+        const next = Math.max(140, h - over);
+        if (next >= h) break;
+        img.style.maxHeight = next + 'px';
+      }
+    }
+  }
+  function syncStackedTags(frame, tags) {
+    if (!frame || !tags) return;
+    tags.style.width = Math.round(frame.getBoundingClientRect().width) + 'px';
+  }
+  window.addEventListener('resize', () => setTimeout(fitStage, 120));
+
+  function step(delta) {
+    currentPos = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
+    render();
+  }
+
+  // clicking the stage photo advances to the next image in the category
+  lbFrame.style.cursor = 'pointer';
+  lbFrame.addEventListener('click', () => step(1));
+
+  frameList.forEach((frame, i) => {
+    frame.style.cursor = 'pointer';
+    frame.addEventListener('click', () => openLightbox(i));
+  });
+
+  // ---------- INDEX OVERLAY ----------
+  // Structure mirrors the site's own data so counts can never drift: a
+  // category's number is exactly what opening it would show.
+  const IDX = [
+    ['Travel', ['Bali', 'SriLanka']],
+    ['Fashion', []],
+    ['Portrait', []],
+    ['Interiors', []],
+    ['Personal', ['UL', 'WSR', 'Vape', 'Street', 'Truckers']],
+    ['Landscape', []],
+    ['Commercial', ['Workplace', 'Wellness']]
+  ];
+  const idxList    = document.getElementById('idx-list');
+
+  const fieldInfos = () => frameList.map(f => frameInfo(f));
+
+  // Counts must equal what opening that set actually shows, which includes
+  // any frame still sitting on a grey placeholder.
+  function subPhotos(sub) {
+    return fieldInfos().filter(x => x.subcat === sub)
+      .concat((extraSubcatPhotos[sub] || []).map(e => ({ src: e.src })));
+  }
+  function catPhotos(cat) {
+    const subs = (IDX.find(r => r[0] === cat) || [null, []])[1];
+    let out = fieldInfos().filter(x => x.cat === cat)
+      .concat((extraCategoryPhotos[cat] || []).map(e => ({ src: e.src })));
+    subs.forEach(s => { out = out.concat((extraSubcatPhotos[s] || []).map(e => ({ src: e.src }))); });
+    return out;
+  }
+
+  // build the list from the same source of truth as the galleries
+  IDX.forEach(([cat, subs]) => {
+    const row = document.createElement('button');
+    row.className = 'idx-row';
+    row.dataset.cat = cat;
+    row.innerHTML = cat + '<span class="idx-n">' + String(catPhotos(cat).length).padStart(2, '0') + '</span>';
+    idxList.appendChild(row);
+    if (subs.length) {
+      const box = document.createElement('div');
+      box.className = 'idx-subs';
+      box.dataset.for = cat;
+      subs.forEach(s => {
+        const b = document.createElement('button');
+        b.className = 'idx-sub';
+        b.dataset.subcat = s;
+        b.innerHTML = (subcatNames[s] || s) + '<i>' + String(subPhotos(s).length).padStart(2, '0') + '</i>';
+        box.appendChild(b);
+      });
+      idxList.appendChild(box);
+    }
+  });
+
+  function idxClear(sel) { idxList.querySelectorAll(sel).forEach(b => b.classList.remove('on')); }
+
+  idxList.querySelectorAll('.idx-row').forEach(row => {
+    const cat = row.dataset.cat;
+    const subs = (IDX.find(r => r[0] === cat) || [null, []])[1];
+    const preview = () => {
+      idxClear('.idx-row'); idxClear('.idx-sub');
+      row.classList.add('on');
+      idxList.querySelectorAll('.idx-subs').forEach(b => b.classList.toggle('open', b.dataset.for === cat));
+    };
+    row.addEventListener('focus', preview);
+    row.addEventListener('click', () => {
+      preview();
+      // categories with subcategories only reveal their choices, exactly as
+      // the old nav behaved — they never open an unfiltered gallery
+      if (!subs.length) { openLightboxByCategory(cat); }
+    });
+  });
+
+  idxList.querySelectorAll('.idx-sub').forEach(b => {
+    const preview = () => { idxClear('.idx-sub'); b.classList.add('on'); };
+    b.addEventListener('mouseenter', preview);
+    b.addEventListener('focus', preview);
+    b.addEventListener('click', () => { openLightboxBySubcat(b.dataset.subcat); });
+  });
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-back').addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  // EDIT: deep-link support for the per-category "share" pages (e.g.
+  // bali.html) — they redirect here with ?subcat=Bali or ?cat=Fashion so
+  // the right gallery opens automatically instead of landing on the plain
+  // homepage. Also drives the browser's own back/forward buttons, since
+  // browsing now pushes a history entry per category/subcategory (see
+  // setURLForOpen/setURLForClose above). Safe to call straight away:
+  // everything openLightboxBySubcat/openLightboxByCategory needs is
+  // already built by this point in the script.
+  function openFromCurrentURL() {
+    const params = new URLSearchParams(window.location.search);
+    const subcat = params.get('subcat');
+    const cat = params.get('cat');
+    suppressHistory = true;
+    if (subcat) openLightboxBySubcat(subcat);
+    else if (cat) openLightboxByCategory(cat);
+    else closeLightbox();
+    suppressHistory = false;
+  }
+
+  window.addEventListener('popstate', openFromCurrentURL);
+  if (window.location.search) openFromCurrentURL();
+</script>
+
+</body>
+</html>
