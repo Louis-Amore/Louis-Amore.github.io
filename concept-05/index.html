@@ -1403,24 +1403,19 @@ body.lb-open{ overflow:hidden; }
     // own gallery, so only the picture changes, never where it goes.
     //
     // EDIT (Sep): the 9 small tucked-corner companion photos added this
-    // round (Image i02/i05/i08/i10/i16/i18/i19/i20/i32) are the opposite
-    // case — each one is a specific crop that only makes sense sitting next
-    // to its one specific neighbour (it was cut from the same PSD layer as
-    // that neighbour). They share a bare "Travel"/"Commercial" caption with
-    // no subcategory, which turned out to reach a large dormant pool of
-    // full-size extra photos (the category's "browse more" list) that
-    // nothing else was drawing from — so shuffling was quietly handing them
-    // an unrelated full-size photo, and adding their own tiny crop into a
-    // pool a big frame could someday read from. Protecting them here keeps
-    // each one permanently showing its own extracted companion photo, and
-    // (since nothing else reads that bare pool) leaves it dormant again as
-    // it was before they existed. Clicking one still opens its category's
-    // gallery as normal — this only stops the photo *inside the frame* from
-    // being swapped.
-    const PROTECTED_LABELS = new Set([
-      'Image i02', 'Image i05', 'Image i08', 'Image i10', 'Image i16',
-      'Image i18', 'Image i19', 'Image i20', 'Image i32',
-    ]);
+    // round (Image i02/i05/i08/i10/i16/i18/i19/i20/i32) shuffle like every
+    // other frame on request — Louis wants those boxes changing photo too,
+    // not held fixed. They share a bare "Travel"/"Commercial" caption with
+    // no subcategory; that pool also holds the large "browse more" extra
+    // photos for those categories, but no OTHER frame on the page reads
+    // that exact bare pool (every other Travel/Commercial-tagged frame has
+    // its own subcategory, which redirects it elsewhere) — so these 9 only
+    // ever trade photos among themselves and the category's extras, never
+    // with a big frame elsewhere. That's what makes it safe to let them
+    // shuffle freely: nothing here can hand a big frame one of these tiny
+    // crops, or vice versa. Clicking one still opens its category's gallery
+    // as normal either way.
+    const PROTECTED_LABELS = new Set();
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
     // (landscape) — a frame's own class is ground truth for the SHAPE it
     // needs, so a photo of the wrong orientation never gets swapped in,
