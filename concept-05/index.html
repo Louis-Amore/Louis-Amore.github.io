@@ -810,6 +810,17 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
 }
 
+/* The 9 small tucked-corner photos only make sense pinned exactly against
+   their main photo's corner in the wide Photoshop composition below — they
+   have no position of their own in the single-column/mobile layouts and
+   would otherwise show up as stray untucked squares there. Hidden by
+   default; the wide-layout media query below turns them back on. */
+.field-frame[data-num="i18"], .field-frame[data-num="i32"], .field-frame[data-num="i02"],
+.field-frame[data-num="i19"], .field-frame[data-num="i16"], .field-frame[data-num="i10"],
+.field-frame[data-num="i08"], .field-frame[data-num="i20"], .field-frame[data-num="i05"]{
+  display:none !important;
+}
+
 /* ============================================================================
    FRONT-PAGE COMPOSITION — laid out by Louis in Photoshop, measured from the
    PSD and converted here. Positions, sizes and shapes are his; nothing is
@@ -893,6 +904,37 @@ body.lb-open{ overflow:hidden; }
   .field-frame[data-num="16"]{ --w:16.67cqw !important; --x:11.08cqw !important; --y:150.00cqw !important; --ar:0.651 !important; }
   .field-frame[data-num="07"]{ --w:30.45cqw !important; --x:53.06cqw !important; --y:161.44cqw !important; --ar:0.834 !important; }
 
+  /* NEW (Sep 2): the small tucked-corner photos that were lost when the
+     combined-box measurements above got split apart — one per main photo
+     that actually had one (07 didn't). Extracted from the same PSD render,
+     positioned with the same formula, each tucked against its own main
+     photo's corner exactly like it sits in Louis's file. Unlike #4's 25/33
+     pair, these are pinned to their own extracted photo permanently (see
+     PROTECTED_LABELS near the shuffle script) rather than drawing from the
+     shuffle — each crop only makes sense next to the one neighbour it was
+     cut from a PSD layer alongside, so it never gets swapped for an
+     unrelated photo. Two needed a small nudge to clear a real collision:
+     i18 clashed with 25's corner (moved up and slightly left, --nx/--ny),
+     and i10 clashed with 08's top edge at narrow/short viewports (moved up,
+     --ny). Checked against the name, the field edges and every other frame
+     across the full width/height range, same as everything above. */
+  .field-frame[data-num="i18"]{ --w:9.19cqw !important; --x:19.59cqw !important; --y:19.28cqw !important; --ar:1.569 !important; --b:12px !important; --bc:#ffffff !important; --nx:-3cqw !important; --ny:-6cqw !important; }
+  .field-frame[data-num="i32"]{ --w:7.88cqw !important; --x:73.60cqw !important; --y:13.24cqw !important; --ar:0.684 !important; --b:6px !important; --bc:#a9852f !important; }
+  .field-frame[data-num="i02"]{ --w:4.95cqw !important; --x:62.30cqw !important; --y:38.15cqw !important; --ar:0.733 !important; --b:2px !important; --bc:#111110 !important; --nx:0.5cqw !important; }
+  .field-frame[data-num="i19"]{ --w:13.29cqw !important; --x:8.02cqw !important; --y:131.31cqw !important; --ar:1.569 !important; --b:2px !important; --bc:#ffffff !important; }
+  .field-frame[data-num="i16"]{ --w:5.63cqw !important; --x:27.70cqw !important; --y:173.69cqw !important; --ar:0.607 !important; --b:12px !important; --bc:#a9852f !important; }
+  .field-frame[data-num="i10"]{ --w:11.80cqw !important; --x:53.20cqw !important; --y:68.83cqw !important; --ar:1.386 !important; --b:0px !important; --bc:transparent !important; --ny:-5.6cqw !important; }
+  .field-frame[data-num="i08"]{ --w:7.84cqw !important; --x:35.59cqw !important; --y:82.25cqw !important; --ar:0.704 !important; --b:12px !important; --bc:#111110 !important; }
+  .field-frame[data-num="i20"]{ --w:11.58cqw !important; --x:44.64cqw !important; --y:148.15cqw !important; --ar:1.218 !important; --b:2px !important; --bc:#111110 !important; }
+  .field-frame[data-num="i05"]{ --w:7.52cqw !important; --x:65.32cqw !important; --y:104.50cqw !important; --ar:0.682 !important; --b:6px !important; --bc:#a9852f !important; }
+
+  /* turn the 9 tucked photos back on now that they have a real position */
+  .field-frame[data-num="i18"], .field-frame[data-num="i32"], .field-frame[data-num="i02"],
+  .field-frame[data-num="i19"], .field-frame[data-num="i16"], .field-frame[data-num="i10"],
+  .field-frame[data-num="i08"], .field-frame[data-num="i20"], .field-frame[data-num="i05"]{
+    display:flex !important;
+  }
+
   /* five frames stood down from the front page — every photograph
      remains in its gallery; this only changes what the field shows */
   .field-frame[data-num="03"], .field-frame[data-num="04"], .field-frame[data-num="13"], .field-frame[data-num="24"], .field-frame[data-num="12"]{ display:none !important; }
@@ -928,23 +970,32 @@ body.lb-open{ overflow:hidden; }
 <div class="field" id="field">
 <div class="field-inner">
     <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-t1" data-label="Image i02" data-num="i02"><img src="photos/inset-02.webp" alt="Image i02" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-t1" data-label="Image i05" data-num="i05"><img src="photos/inset-05.webp" alt="Image i05" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+  <figure class="field-frame w-t1" data-label="Image i08" data-num="i08"><img src="photos/inset-08.webp" alt="Image i08" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-l1" data-label="Image i10" data-num="i10"><img src="photos/inset-10.webp" alt="Image i10" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
   <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
+  <figure class="field-frame w-l1" data-label="Image i18" data-num="i18"><img src="photos/inset-18.webp" alt="Image i18" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+  <figure class="field-frame w-l1" data-label="Image i19" data-num="i19"><img src="photos/inset-19.webp" alt="Image i19" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+  <figure class="field-frame w-l1" data-label="Image i20" data-num="i20"><img src="photos/inset-20.webp" alt="Image i20" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
   <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
   <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
 
   <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
   <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
+  <figure class="field-frame w-t1" data-label="Image i16" data-num="i16"><img src="photos/inset-16.webp" alt="Image i16" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
 
     <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+  <figure class="field-frame w-t1" data-label="Image i32" data-num="i32"><img src="photos/inset-32.webp" alt="Image i32" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
   <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
 </div>
 </div>
@@ -1350,7 +1401,26 @@ body.lb-open{ overflow:hidden; }
     // people. Nothing on the field is fixed now; every frame draws from its
     // own pool. Whichever photo lands in a frame still opens that frame's
     // own gallery, so only the picture changes, never where it goes.
-    const PROTECTED_LABELS = new Set();
+    //
+    // EDIT (Sep): the 9 small tucked-corner companion photos added this
+    // round (Image i02/i05/i08/i10/i16/i18/i19/i20/i32) are the opposite
+    // case — each one is a specific crop that only makes sense sitting next
+    // to its one specific neighbour (it was cut from the same PSD layer as
+    // that neighbour). They share a bare "Travel"/"Commercial" caption with
+    // no subcategory, which turned out to reach a large dormant pool of
+    // full-size extra photos (the category's "browse more" list) that
+    // nothing else was drawing from — so shuffling was quietly handing them
+    // an unrelated full-size photo, and adding their own tiny crop into a
+    // pool a big frame could someday read from. Protecting them here keeps
+    // each one permanently showing its own extracted companion photo, and
+    // (since nothing else reads that bare pool) leaves it dormant again as
+    // it was before they existed. Clicking one still opens its category's
+    // gallery as normal — this only stops the photo *inside the frame* from
+    // being swapped.
+    const PROTECTED_LABELS = new Set([
+      'Image i02', 'Image i05', 'Image i08', 'Image i10', 'Image i16',
+      'Image i18', 'Image i19', 'Image i20', 'Image i32',
+    ]);
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
     // (landscape) — a frame's own class is ground truth for the SHAPE it
     // needs, so a photo of the wrong orientation never gets swapped in,
