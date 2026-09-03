@@ -408,6 +408,13 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
   .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
 
+  /* TEST PAGE — Louis's two-box layout from pageskeletontemplate_1.psd.
+     Main box border copied from Image 32 (border-thin). Tucked corner box
+     border copied from Image 18 (border-white-thick). Roughly matches the
+     position/size he drew in Photoshop — not pixel-exact, just close. */
+  .field-frame[data-num="test-a"]{ --w:min(23cqw, 520px); --x:2cqw; --y:1.6cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-b"]{ --w:min(15cqw, 330px); --x:16cqw; --y:14.5cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
 .field-frame{
@@ -969,34 +976,11 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-t1" data-label="Image i02" data-num="i02"><img src="photos/inset-02.webp" alt="Image i02" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="photos/interiors-03.webp" srcset="photos/thumb/interiors-03.webp 400w, photos/med/interiors-03.webp 1400w, photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="photos/bali-04.webp" srcset="photos/thumb/bali-04.webp 400w, photos/med/bali-04.webp 1400w, photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-t1" data-label="Image i05" data-num="i05"><img src="photos/inset-05.webp" alt="Image i05" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="photos/workplace-10.webp" srcset="photos/thumb/workplace-10.webp 400w, photos/med/workplace-10.webp 1400w, photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t1" data-label="Image i08" data-num="i08"><img src="photos/inset-08.webp" alt="Image i08" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="photos/interiors-10.webp" srcset="photos/thumb/interiors-10.webp 400w, photos/med/interiors-10.webp 1400w, photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l1" data-label="Image i10" data-num="i10"><img src="photos/inset-10.webp" alt="Image i10" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="photos/portrait-12.webp" srcset="photos/thumb/portrait-12.webp 400w, photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="photos/fashion-image13.webp" srcset="photos/thumb/fashion-image13.webp 400w, photos/med/fashion-image13.webp 1400w, photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-l1" data-label="Image i18" data-num="i18"><img src="photos/inset-18.webp" alt="Image i18" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="photos/fashion-16.webp" srcset="photos/thumb/fashion-16.webp 400w, photos/med/fashion-16.webp 1400w, photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1" data-label="Image i19" data-num="i19"><img src="photos/inset-19.webp" alt="Image i19" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="photos/personal-20.webp" srcset="photos/thumb/personal-20.webp 400w, photos/med/personal-20.webp 1400w, photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l1" data-label="Image i20" data-num="i20"><img src="photos/inset-20.webp" alt="Image i20" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="photos/personal-24.webp" srcset="photos/thumb/personal-24.webp 400w, photos/med/personal-24.webp 1400w, photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="photos/fashion-25.webp" srcset="photos/thumb/fashion-25.webp 400w, photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-
-  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="photos/portrait-07.webp" srcset="photos/thumb/portrait-07.webp 400w, photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="photos/interiors-16.webp" srcset="photos/thumb/interiors-16.webp 400w, photos/med/interiors-16.webp 1400w, photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1" data-label="Image i16" data-num="i16"><img src="photos/inset-16.webp" alt="Image i16" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-
-    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1" data-label="Image i32" data-num="i32"><img src="photos/inset-32.webp" alt="Image i32" loading="lazy" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <!-- TEST PAGE — Louis's 2-box layout. Main box: Landscape category,
+         border copied from Image 32. Tucked box: Travel category, border
+         copied from Image 18. Both shuffle on reload like every other frame. -->
+    <figure class="field-frame w-l1 border-thin" data-label="Test A" data-num="test-a"><img src="photos/personal-32.webp" alt="Test A" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 border-white-thick" data-label="Test B" data-num="test-b"><img src="photos/inset-18.webp" alt="Test B" decoding="async"><figcaption>Travel</figcaption></figure>
 </div>
 </div>
 
