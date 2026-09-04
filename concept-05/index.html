@@ -349,6 +349,22 @@ a{ color:inherit; text-decoration:none; }
   opacity:0; transition:opacity .2s ease;
 }
 .field-frame:hover figcaption{ opacity:1; }
+/* EDIT: category label moved to the top on frames whose bottom-left
+   corner is covered by their tucked partner. Checked every tucked pair
+   with the caption actually revealed (not just measured) before touching
+   anything — most already read fine (the overlap lands at the OTHER
+   corner, or is small enough to clear the text); only these five were
+   genuinely hidden or clipped: 38 (Fashion, fully hidden by 39), 40
+   (Interiors, "INT" clipped by 41), 46 (Commercial, fully hidden by 49),
+   50 (Portrait, fully hidden by 51), 54 (Fashion, fully hidden by 55).
+   The reference-only "Image NN" tag (::before) also lives top-left —
+   moved it to top-right on these same frames so the two hover labels
+   don't land on top of each other. */
+.field-frame.cap-top figcaption{
+  top:0; bottom:auto;
+  background:linear-gradient(180deg, rgba(0,0,0,0.45), transparent);
+}
+.field-frame.cap-top::before{ left:auto; right:0; }
 
 .w-t1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
 .w-t2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
@@ -1074,10 +1090,10 @@ body.lb-open{ overflow:hidden; }
     <figure class="field-frame w-l1 border-thin" data-label="Image 36" data-num="36"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 434px" alt="Image 36" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
     <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 220px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
     <!-- New pair: Fashion main + Personal tucked, from the 2nd skeleton file -->
-    <figure class="field-frame w-l1 border-thick" data-label="Image 38" data-num="38"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Image 38" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 border-thick cap-top" data-label="Image 38" data-num="38"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Image 38" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 39" data-num="39" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Image 39" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <!-- New pair: Interiors main + Fashion tucked, from the 3rd skeleton file -->
-    <figure class="field-frame w-l1 double-border" data-label="Image 40" data-num="40"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-l1 double-border cap-top" data-label="Image 40" data-num="40"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
     <figure class="field-frame w-t1 border-thin" data-label="Image 41" data-num="41"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 156px" alt="Image 41" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
     <!-- New pair: Fashion (portrait) main + Interiors (portrait) tucked, from the 4th skeleton file -->
     <figure class="field-frame w-t1 border-thick" data-label="Image 42" data-num="42"><img src="photos/fashion-42.webp" srcset="photos/thumb/fashion-42.webp 400w, photos/fashion-42.webp 1268w" sizes="(max-width:760px) 82vw, 251px" alt="Image 42" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
@@ -1089,7 +1105,7 @@ body.lb-open{ overflow:hidden; }
          landscape/portrait file matching that box's shape. -->
     <figure class="field-frame w-t1 border-white-thick" data-label="Image 44" data-num="44"><img src="photos/portrait-41.webp" srcset="photos/thumb/portrait-41.webp 400w, photos/portrait-41.webp 1000w" sizes="(max-width:760px) 82vw, 357px" alt="Image 44" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 45" data-num="45"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, 166px" alt="Image 45" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 46" data-num="46"><img src="photos/wellness-05.webp" srcset="photos/thumb/wellness-05.webp 400w, photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin cap-top" data-label="Image 46" data-num="46"><img src="photos/wellness-05.webp" srcset="photos/thumb/wellness-05.webp 400w, photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
     <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 753px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
     <figure class="field-frame w-t1 border-black-thick" data-label="Image 48" data-num="48"><img src="photos/portrait-60.webp" srcset="photos/thumb/portrait-60.webp 400w, photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 228px" alt="Image 48" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 49" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
@@ -1098,7 +1114,7 @@ body.lb-open{ overflow:hidden; }
          photos are placeholders per his own "photo doesn't matter, only
          border+category" rule, each a real landscape/portrait file matching
          that box's shape. -->
-    <figure class="field-frame w-t1 border-white" data-label="Image 50" data-num="50"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 389px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-t1 border-white cap-top" data-label="Image 50" data-num="50"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 389px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 51" data-num="51"><img src="photos/fashion-07.webp" srcset="photos/thumb/fashion-07.webp 400w, photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Image 51" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 887px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
     <figure class="field-frame w-l1 border-gold" data-label="Image 53" data-num="53"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Image 53" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
@@ -1107,7 +1123,7 @@ body.lb-open{ overflow:hidden; }
          are placeholders per his own "photo doesn't matter, only
          border+category" rule, each a real landscape/portrait file matching
          that box's shape. -->
-    <figure class="field-frame w-t1 border-black-thick" data-label="Image 54" data-num="54"><img src="photos/fashion-40.webp" srcset="photos/thumb/fashion-40.webp 400w, photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Image 54" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-black-thick cap-top" data-label="Image 54" data-num="54"><img src="photos/fashion-40.webp" srcset="photos/thumb/fashion-40.webp 400w, photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Image 54" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 723px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
 </div>
 </div>
