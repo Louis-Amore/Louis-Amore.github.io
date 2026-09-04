@@ -413,11 +413,11 @@ a{ color:inherit; text-decoration:none; }
      border copied from Image 18 (border-white-thick). Roughly matches the
      position/size he drew in Photoshop — not pixel-exact, just close. */
   .field-frame[data-num="test-a"]{ --w:min(17.9cqw, 397px); --x:5.95cqw; --y:5.18cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-b"]{ --w:min(9.7cqw, 216px); --x:20.05cqw; --y:15.9cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
-  .field-frame[data-num="test-c"]{ --w:min(17.4cqw, 386px); --x:78.51cqw; --y:3.69cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-d"]{ --w:min(6.8cqw, 150px); --x:74.05cqw; --y:11.26cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
-  .field-frame[data-num="test-e"]{ --w:min(23.9cqw, 531px); --x:66.94cqw; --y:26.49cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-f"]{ --w:min(7.7cqw, 171px); --x:58.02cqw; --y:36.08cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
+  .field-frame[data-num="test-b"]{ --w:min(10.8cqw, 240px); --x:20.05cqw; --y:15.9cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="test-c"]{ --w:min(16.5cqw, 366px); --x:78.51cqw; --y:3.69cqw; --ar:1.5; --b:12px; --bc:#111110; }
+  .field-frame[data-num="test-d"]{ --w:min(8.4cqw, 186px); --x:74.05cqw; --y:11.26cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="test-e"]{ --w:min(19.8cqw, 439px); --x:66.94cqw; --y:26.49cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="test-f"]{ --w:min(9.7cqw, 215px); --x:58.02cqw; --y:36.08cqw; --ar:0.6667; --b:2px; --bc:#111110; }
 
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
@@ -984,13 +984,13 @@ body.lb-open{ overflow:hidden; }
          border copied from Image 32. Tucked box: Travel category, border
          copied from Image 18. Both shuffle on reload like every other frame. -->
     <figure class="field-frame w-l1 border-thin" data-label="Test A" data-num="test-a"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 400px" alt="Test A" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-    <figure class="field-frame w-l1 border-white-thick" data-label="Test B" data-num="test-b"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 220px" alt="Test B" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Test B" data-num="test-b"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 220px" alt="Test B" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
     <!-- New pair: Fashion main + Personal tucked, from the 2nd skeleton file -->
-    <figure class="field-frame w-l1 border-thin" data-label="Test C" data-num="test-c"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Test C" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-t1 border-white-thick" data-label="Test D" data-num="test-d" data-pool="Personal"><img src="photos/personal-41.webp" srcset="photos/thumb/personal-41.webp 400w, photos/personal-41.webp 1900w" sizes="(max-width:760px) 82vw, 150px" alt="Test D" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-thick" data-label="Test C" data-num="test-c"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Test C" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Test D" data-num="test-d" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Test D" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <!-- New pair: Interiors main + Fashion tucked, from the 3rd skeleton file -->
-    <figure class="field-frame w-l1 border-thin" data-label="Test E" data-num="test-e"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 531px" alt="Test E" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
-    <figure class="field-frame w-t1 border-white-thick" data-label="Test F" data-num="test-f"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 171px" alt="Test F" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Test E" data-num="test-e"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 531px" alt="Test E" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-thin" data-label="Test F" data-num="test-f"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 171px" alt="Test F" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
 </div>
 </div>
 
