@@ -678,6 +678,14 @@ body.lb-open{ overflow:hidden; }
   font-family:var(--font-body); font-size:15px; line-height:1.7; color:#3a3a38; margin:0;
 }
 .lb-info p + p{ margin-top:14px; }
+.lb-info .q{
+  border-left:2px solid #a9852f; padding-left:14px; margin:20px 0 0;
+  font-style:italic; font-family:'EB Garamond', serif; font-size:15px; color:#4a4741;
+}
+.lb-info .q span{
+  display:block; margin-top:8px; font-family:var(--font-mono); font-size:10px;
+  font-style:normal; letter-spacing:.06em; color:var(--muted);
+}
 
 .lb-bottombar{
   display:flex; justify-content:center; padding:22px 28px; border-top:1px solid rgba(17,17,16,0.12);
@@ -1807,6 +1815,8 @@ body.lb-open{ overflow:hidden; }
         "What started as curiosity about vaping's sudden popularity turned into something else once I got close to it. This wasn't just a replacement for smoking \u2014 it was almost a sport. People blew clouds into shapes, chased bigger exhales, entered competitions. A whole subculture with its own style, its own language, its own cool kids.",
         "The series was shot at Prohibition Vapes on Old Street, London \u2014 part shop, part hangout, where the regulars let me photograph them in their own haze."
       ],
+      quote: "Determining that a tobacco-free nicotine-delivering product is safer than a product that delivers nicotine with thousands of tobacco smoke constituents is a fact of basic science, and anyone who challenges such a notion would probably benefit from a remedial course in basic sciences.",
+      quoteAttr: "Prof M Siegel",
       images: ['Vape 01', 'Vape 02', 'Vape 03', 'Vape 04', 'Vape 05', 'Vape 06', 'Vape 07', 'Vape 08']
     },
     'we-shall-remember': {
@@ -1991,7 +2001,10 @@ body.lb-open{ overflow:hidden; }
     const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
     lbInfoTitle.innerHTML = titleText + ' <em>- ' + suffix + '</em>';
     lbInfoCat.style.display = '';
-    lbInfoBody.innerHTML = story ? story.body.map(p => `<p>${p}</p>`).join('') : '';
+    lbInfoBody.innerHTML = story
+      ? story.body.map(p => `<p>${p}</p>`).join('')
+        + (story.quote ? `<div class="q">\u201C${story.quote}\u201D${story.quoteAttr ? `<span>\u2014 ${story.quoteAttr}</span>` : ''}</div>` : '')
+      : '';
 
     const caption = photoCaptions[info.label];
     const stageEl = lbFrame.closest('.lb-stage');
