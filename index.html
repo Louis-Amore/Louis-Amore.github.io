@@ -11,16 +11,19 @@
 <title>Louis Amore — Photographer | London</title>
 <meta name="description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="canonical" href="https://louis-amore.github.io/">
-<meta name="robots" content="index, follow">
-<meta name="google-site-verification" content="4e-XtJ8nHISbuyLNDaDc2q8wk8ExGz7LrRhzUZb5YX8">
+<link rel="canonical" href="https://louis-amore.github.io/concept-05/">
+<!-- EDIT: this is the working copy of the site, identical in content to the
+     root. Two indexable copies of the same portfolio compete with each other
+     and split whatever ranking signal there is, so this one is kept out of
+     search results. "follow" still lets the links be crawled. -->
+<meta name="robots" content="noindex, follow">
 
 <!-- Open Graph — how a shared link looks on iMessage, LinkedIn, Instagram, etc. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Louis Amore">
 <meta property="og:title" content="Louis Amore — Photographer | London">
 <meta property="og:description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
-<meta property="og:url" content="https://louis-amore.github.io/">
+<meta property="og:url" content="https://louis-amore.github.io/concept-05/">
 <meta property="og:image" content="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg">
 <meta property="og:image:width" content="1900">
 <meta property="og:image:height" content="1266">
@@ -45,7 +48,7 @@
   "@type": "Person",
   "name": "Louis Amore",
   "jobTitle": "Photographer",
-  "url": "https://louis-amore.github.io/",
+  "url": "https://louis-amore.github.io/concept-05/",
   "image": "https://louis-amore.github.io/concept-05/photos/fashion-18.jpg",
   "address": {
     "@type": "PostalAddress",
@@ -405,6 +408,17 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
   .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
 
+  /* TEST PAGE — Louis's two-box layout from pageskeletontemplate_1.psd.
+     Main box border copied from Image 32 (border-thin). Tucked corner box
+     border copied from Image 18 (border-white-thick). Roughly matches the
+     position/size he drew in Photoshop — not pixel-exact, just close. */
+  .field-frame[data-num="test-a"]{ --w:min(17.9cqw, 397px); --x:5.95cqw; --y:5.18cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-b"]{ --w:min(10.8cqw, 240px); --x:20.05cqw; --y:15.9cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="test-c"]{ --w:min(16.5cqw, 366px); --x:78.51cqw; --y:3.69cqw; --ar:1.5; --b:12px; --bc:#111110; }
+  .field-frame[data-num="test-d"]{ --w:min(8.4cqw, 186px); --x:74.05cqw; --y:11.26cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="test-e"]{ --w:min(16.8cqw, 373px); --x:67.75cqw; --y:28.11cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="test-f"]{ --w:min(8.5cqw, 189px); --x:59.91cqw; --y:38.02cqw; --ar:0.6667; --b:2px; --bc:#111110; }
+
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
 .field-frame{
@@ -742,6 +756,14 @@ body.lb-open{ overflow:hidden; }
    scatter hasn't got the vertical room to work. */
 @media (min-width:761px) and (max-width:1499px),
        (min-width:761px) and (max-height:899px){
+  /* EDIT: the name is fixed to the screen at every width above 760px (it's
+     only hidden below that, on true mobile) — it was never actually immune
+     to the frames in this range despite the comment above; a scrolled photo
+     passing through the vertical centre sits on top of it exactly as it does
+     on the wide layout. Same fix as true mobile: hide it here too, since a
+     fixed name has no safe place to live once the photos are back in normal
+     document flow and can be anywhere on screen at any scroll position. */
+  .fixed-name{ display:none; }
   .field{ height:auto !important; }
   .field-inner{
     position:static; left:auto; right:auto;
@@ -799,12 +821,142 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
 }
 
-/* EDIT: a frame can hold a different position for a given range of widths.
-   Image 25 takes its full move right at 1920 and up, where there is room for
-   it beside the name. Between 1500 and 1919 there isn't, so it steps back
-   into the open space on the left instead of shrinking anything else. */
-@media (min-width:1500px) and (max-width:1919px){
-  .field-frame[data-num="25"]{ --nx:0cqw; }
+/* The 9 small tucked-corner photos only make sense pinned exactly against
+   their main photo's corner in the wide Photoshop composition below — they
+   have no position of their own in the single-column/mobile layouts and
+   would otherwise show up as stray untucked squares there. Hidden by
+   default; the wide-layout media query below turns them back on. */
+.field-frame[data-num="i18"], .field-frame[data-num="i32"], .field-frame[data-num="i02"],
+.field-frame[data-num="i19"], .field-frame[data-num="i16"], .field-frame[data-num="i10"],
+.field-frame[data-num="i08"], .field-frame[data-num="i20"], .field-frame[data-num="i05"]{
+  display:none !important;
+}
+
+/* ============================================================================
+   FRONT-PAGE COMPOSITION — laid out by Louis in Photoshop, measured from the
+   PSD and converted here. Positions, sizes and shapes are his; nothing is
+   generated by a spacing rule.
+
+   Scoped to the wide layout. Below 1500px, or on a short window, the
+   single-column layout takes over untouched.
+   ========================================================================== */
+@media (min-width:1500px) and (min-height:900px){
+  /* EDIT (Sep 2): 25.41cqw/1.066 was measured from Layer 2's FULL bounding
+     box, which — like every other layer in this file, it turns out — is
+     really two photos baked into one flattened image: the main landscape
+     shot plus a small tucked accent photo in the corner (same pattern as
+     #4's Layer 3, just not flagged at the time). Measuring the combined box
+     as if it were one photo squashed the main shot into a near-square crop.
+     Re-measured using just the main photo's own rectangle within Layer 2
+     (2028,111)-(2405,363) in PSD pixels, same conversion formula as always.
+     Matches almost exactly what this frame used BEFORE the PSD conversion
+     (ar:1.5 in the untouched base rule above) — a good sign this is right. */
+  .field-frame[data-num="32"]{ --w:16.98cqw !important; --x:77.84cqw !important; --y:5.00cqw !important; --ar:1.496 !important; }
+  /* EDIT (Sep 2): same combined-box mistake as #32 above — measured from
+     Layer 1's full bbox (main London-bridge photo + a tucked white-mat inset
+     bottom-right), not the main photo alone. Re-measured just the main
+     photo's rectangle (0,0)-(430,256) local to the layer. */
+  .field-frame[data-num="18"]{ --w:19.37cqw !important; --x:2.43cqw !important; --y:6.62cqw !important; --ar:1.680 !important; }
+  /* EDIT: --nx added on 02, 25 and 33 below (10 originally needed one too,
+     but it was solved for 10's old, wrong, too-large size — once 10 was
+     re-measured down to its real main-photo size below, it cleared the name
+     on its own and the nudge was removed, since keeping it would have
+     pushed the now-smaller frame off the right edge of the page). The name
+     sits dead centre on the viewport (top:50%/left:50%) at every width in
+     this range, while every frame's position tracks the FIELD, which is
+     inset unevenly (a wide clearance for the category list on the left, a
+     narrow one on the right) and scales with window width, not height.
+     Those two coordinate spaces drift apart as the window is resized, which
+     is why the old single band-switch at 1920px (kept the previous fix for
+     25 working at only one width) no longer held once the name moved to
+     centre: 25, 33 and 10 sat on the name at nearly every width, and 02
+     cleared it by only ~13px at 1500 — close enough to read as touching.
+     Rather than another width band, each gets a single constant horizontal
+     nudge, solved to hold an 18px clearance from the name's box at every
+     width from 1500 up to 3840 and every window height (the separation is
+     horizontal-only, so it doesn't depend on height at all). Checked against
+     every other frame on the field across that same range — the only
+     overlaps these nudges touch
+     (10/05, 18/25, 32/02, all only past ~3700px width) were already there
+     before this change; nothing new was introduced. */
+  .field-frame[data-num="02"]{ --w:19.73cqw !important; --x:68.02cqw !important; --y:28.47cqw !important; --ar:1.377 !important; --nx:0.5cqw !important; }
+  .field-frame[data-num="25"]{ --w:17.84cqw !important; --x:9.82cqw !important; --y:29.23cqw !important; --ar:0.925 !important; --nx:-9.1cqw !important; }
+  /* EDIT: real measurement, replacing the earlier guess. Louis separated the
+     second portrait onto its own layer (Layer 15) in the PSD; this is that
+     layer's bbox converted with the same formula as every other frame:
+     x_cqw = (psd_x - 300) * 100/2220, y_cqw = psd_y * 100/2220, same for w,
+     ar = w/h. Also came out much smaller than the guess (5.59cqw vs the old
+     13.51cqw), which is why it no longer needs nearly as large a nudge to
+     clear the name.
+     EDIT 2: 33 is Louis's second portrait tucked against the bottom-right
+     corner of 25 (that's the whole point of #4 above) — their PSD positions
+     confirm it, 33 ends almost exactly where 25's right edge does. Giving
+     each frame its OWN independently-solved name-clearance nudge broke that:
+     25 got nx:-9.1cqw AND ny:-7.18cqw, but 33 only got nx:-8.7cqw with no ny,
+     so 25 moved up and left while 33 only moved left — pulling the pair
+     apart and losing the tucked-corner look. Fix: give 33 the exact same
+     nudge vector as 25, so they move together as one rigid pair instead of
+     drifting apart. Re-checked against the name across the full 1500-3840px
+     width range and every height: still clears with room to spare (23px+,
+     vs 25's own 18px). */
+  .field-frame[data-num="33"]{ --w:5.59cqw !important; --x:21.67cqw !important; --y:45.63cqw !important; --ar:0.685 !important; --nx:-9.1cqw !important; --ny:-7.18cqw !important; }
+  /* EDIT (Sep 2): 10, 08, 05, 19, 20 and 16 all had the same combined-box
+     problem as 32/18/02/25 above — every one of these layers turns out to be
+     a main photo plus a small tucked accent, and only the combined outline
+     of both was ever measured. Re-measured each from just its own main
+     photo's rectangle within its layer, same conversion formula throughout.
+     07 is the one layer in this set that's genuinely a single photo with no
+     tucked accent — left untouched. */
+  .field-frame[data-num="10"]{ --w:29.05cqw !important; --x:62.84cqw !important; --y:54.10cqw !important; --ar:1.466 !important; }
+  .field-frame[data-num="08"]{ --w:28.02cqw !important; --x:9.10cqw !important; --y:65.54cqw !important; --ar:1.492 !important; }
+  .field-frame[data-num="05"]{ --w:19.59cqw !important; --x:71.31cqw !important; --y:81.71cqw !important; --ar:0.813 !important; }
+  .field-frame[data-num="19"]{ --w:20.18cqw !important; --x:17.75cqw !important; --y:102.66cqw !important; --ar:0.655 !important; }
+  .field-frame[data-num="20"]{ --w:35.59cqw !important; --x:55.77cqw !important; --y:126.53cqw !important; --ar:1.519 !important; }
+  .field-frame[data-num="16"]{ --w:16.67cqw !important; --x:11.08cqw !important; --y:150.00cqw !important; --ar:0.651 !important; }
+  .field-frame[data-num="07"]{ --w:30.45cqw !important; --x:53.06cqw !important; --y:161.44cqw !important; --ar:0.834 !important; }
+
+  /* NEW (Sep 2): the small tucked-corner photos that were lost when the
+     combined-box measurements above got split apart — one per main photo
+     that actually had one (07 didn't). Extracted from the same PSD render,
+     positioned with the same formula, each tucked against its own main
+     photo's corner exactly like it sits in Louis's file. Unlike #4's 25/33
+     pair, these are pinned to their own extracted photo permanently (see
+     PROTECTED_LABELS near the shuffle script) rather than drawing from the
+     shuffle — each crop only makes sense next to the one neighbour it was
+     cut from a PSD layer alongside, so it never gets swapped for an
+     unrelated photo. Two needed a small nudge to clear a real collision:
+     i18 clashed with 25's corner (moved up and slightly left, --nx/--ny),
+     and i10 clashed with 08's top edge at narrow/short viewports (moved up,
+     --ny). Checked against the name, the field edges and every other frame
+     across the full width/height range, same as everything above. */
+  .field-frame[data-num="i18"]{ --w:9.19cqw !important; --x:19.59cqw !important; --y:19.28cqw !important; --ar:1.569 !important; --b:12px !important; --bc:#ffffff !important; --nx:-3cqw !important; --ny:-6cqw !important; }
+  .field-frame[data-num="i32"]{ --w:7.88cqw !important; --x:73.60cqw !important; --y:13.24cqw !important; --ar:0.684 !important; --b:6px !important; --bc:#a9852f !important; }
+  .field-frame[data-num="i02"]{ --w:4.95cqw !important; --x:62.30cqw !important; --y:38.15cqw !important; --ar:0.733 !important; --b:2px !important; --bc:#111110 !important; --nx:0.5cqw !important; }
+  .field-frame[data-num="i19"]{ --w:13.29cqw !important; --x:8.02cqw !important; --y:131.31cqw !important; --ar:1.569 !important; --b:2px !important; --bc:#ffffff !important; }
+  .field-frame[data-num="i16"]{ --w:5.63cqw !important; --x:27.70cqw !important; --y:173.69cqw !important; --ar:0.607 !important; --b:12px !important; --bc:#a9852f !important; }
+  .field-frame[data-num="i10"]{ --w:11.80cqw !important; --x:53.20cqw !important; --y:68.83cqw !important; --ar:1.386 !important; --b:0px !important; --bc:transparent !important; --ny:-5.6cqw !important; }
+  .field-frame[data-num="i08"]{ --w:7.84cqw !important; --x:35.59cqw !important; --y:82.25cqw !important; --ar:0.704 !important; --b:12px !important; --bc:#111110 !important; }
+  .field-frame[data-num="i20"]{ --w:11.58cqw !important; --x:44.64cqw !important; --y:148.15cqw !important; --ar:1.218 !important; --b:2px !important; --bc:#111110 !important; }
+  .field-frame[data-num="i05"]{ --w:7.52cqw !important; --x:65.32cqw !important; --y:104.50cqw !important; --ar:0.682 !important; --b:6px !important; --bc:#a9852f !important; }
+
+  /* turn the 9 tucked photos back on now that they have a real position */
+  .field-frame[data-num="i18"], .field-frame[data-num="i32"], .field-frame[data-num="i02"],
+  .field-frame[data-num="i19"], .field-frame[data-num="i16"], .field-frame[data-num="i10"],
+  .field-frame[data-num="i08"], .field-frame[data-num="i20"], .field-frame[data-num="i05"]{
+    display:flex !important;
+  }
+
+  /* five frames stood down from the front page — every photograph
+     remains in its gallery; this only changes what the field shows */
+  .field-frame[data-num="03"], .field-frame[data-num="04"], .field-frame[data-num="13"], .field-frame[data-num="24"], .field-frame[data-num="12"]{ display:none !important; }
+
+  /* the name sits in the middle of the first screen, and the category list
+     at the vertical centre on the left, as asked */
+  .fixed-name{ top:50% !important;
+    transform:translate(-50%, -50%) !important; }
+
+  /* his composition ends higher than the old one, so the field is shorter */
+  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.10) !important; }
 }
 </style>
 </head>
@@ -828,25 +980,17 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="concept-05/photos/interiors-03.webp" srcset="concept-05/photos/thumb/interiors-03.webp 400w, concept-05/photos/med/interiors-03.webp 1400w, concept-05/photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="concept-05/photos/bali-04.webp" srcset="concept-05/photos/thumb/bali-04.webp 400w, concept-05/photos/med/bali-04.webp 1400w, concept-05/photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="concept-05/photos/workplace-10.webp" srcset="concept-05/photos/thumb/workplace-10.webp 400w, concept-05/photos/med/workplace-10.webp 1400w, concept-05/photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="concept-05/photos/interiors-10.webp" srcset="concept-05/photos/thumb/interiors-10.webp 400w, concept-05/photos/med/interiors-10.webp 1400w, concept-05/photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="concept-05/photos/portrait-12.webp" srcset="concept-05/photos/thumb/portrait-12.webp 400w, concept-05/photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="concept-05/photos/fashion-image13.webp" srcset="concept-05/photos/thumb/fashion-image13.webp 400w, concept-05/photos/med/fashion-image13.webp 1400w, concept-05/photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="concept-05/photos/bali-18.webp" srcset="concept-05/photos/thumb/bali-18.webp 400w, concept-05/photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="concept-05/photos/fashion-16.webp" srcset="concept-05/photos/thumb/fashion-16.webp 400w, concept-05/photos/med/fashion-16.webp 1400w, concept-05/photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="concept-05/photos/personal-20.webp" srcset="concept-05/photos/thumb/personal-20.webp 400w, concept-05/photos/med/personal-20.webp 1400w, concept-05/photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="concept-05/photos/personal-24.webp" srcset="concept-05/photos/thumb/personal-24.webp 400w, concept-05/photos/med/personal-24.webp 1400w, concept-05/photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="concept-05/photos/fashion-25.webp" srcset="concept-05/photos/thumb/fashion-25.webp 400w, concept-05/photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-
-  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="concept-05/photos/portrait-07.webp" srcset="concept-05/photos/thumb/portrait-07.webp 400w, concept-05/photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="concept-05/photos/interiors-16.webp" srcset="concept-05/photos/thumb/interiors-16.webp 400w, concept-05/photos/med/interiors-16.webp 1400w, concept-05/photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
-
-    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="concept-05/photos/personal-32.webp" srcset="concept-05/photos/thumb/personal-32.webp 400w, concept-05/photos/med/personal-32.webp 1400w, concept-05/photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="concept-05/photos/portrait-33.webp" srcset="concept-05/photos/thumb/portrait-33.webp 400w, concept-05/photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <!-- TEST PAGE — Louis's 2-box layout. Main box: Landscape category,
+         border copied from Image 32. Tucked box: Travel category, border
+         copied from Image 18. Both shuffle on reload like every other frame. -->
+    <figure class="field-frame w-l1 border-thin" data-label="Test A" data-num="test-a"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 400px" alt="Test A" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Test B" data-num="test-b"><img src="photos/bali-18.webp" srcset="photos/thumb/bali-18.webp 400w, photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 220px" alt="Test B" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+    <!-- New pair: Fashion main + Personal tucked, from the 2nd skeleton file -->
+    <figure class="field-frame w-l1 border-thick" data-label="Test C" data-num="test-c"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Test C" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Test D" data-num="test-d" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Test D" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <!-- New pair: Interiors main + Fashion tucked, from the 3rd skeleton file -->
+    <figure class="field-frame w-l1 double-border" data-label="Test E" data-num="test-e"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 531px" alt="Test E" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-thin" data-label="Test F" data-num="test-f"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 171px" alt="Test F" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
 </div>
 </div>
 
@@ -857,6 +1001,7 @@ body.lb-open{ overflow:hidden; }
 <footer id="contact">
   <span>© Louis Amore</span>
   <a href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a>
+  <span>Concept 05 — not yet live</span>
 </footer>
 
 <div id="lightbox" aria-hidden="true">
@@ -949,12 +1094,12 @@ body.lb-open{ overflow:hidden; }
 
   // frameInfo() reads img.src (a DOM property, always a full resolved URL);
   // the data arrays and getAttribute('src') calls elsewhere give back the
-  // raw relative "concept-05/photos/xxx.jpg" string instead — same photo, two
-  // different-looking strings. Strip down to "concept-05/photos/xxx.jpg" on both sides
+  // raw relative "photos/xxx.jpg" string instead — same photo, two
+  // different-looking strings. Strip down to "photos/xxx.jpg" on both sides
   // before ever comparing two src values for equality.
   function normalizeSrc(src) {
     if (!src) return src;
-    const i = src.indexOf('concept-05/photos/');
+    const i = src.indexOf('photos/');
     return i === -1 ? src : src.slice(i);
   }
 
@@ -975,97 +1120,97 @@ body.lb-open{ overflow:hidden; }
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
     'Interiors': [
-      { label: 'Interiors 35', ratio: 'landscape', src: 'concept-05/photos/interiors-35.webp' },
-      { label: 'Interiors 36', ratio: 'landscape', src: 'concept-05/photos/interiors-36.webp' },
-      { label: 'Interiors 37', ratio: 'landscape', src: 'concept-05/photos/interiors-37.webp' },
-      { label: 'Interiors 39', ratio: 'landscape', src: 'concept-05/photos/interiors-39.webp' },
-      { label: 'Interiors 40', ratio: 'landscape', src: 'concept-05/photos/interiors-40.webp' },
-      { label: 'Interiors 67', ratio: 'landscape', src: 'concept-05/photos/interiors-67.webp' },
-      { label: 'Interiors 68', ratio: 'landscape', src: 'concept-05/photos/interiors-68.webp' },
-      { label: 'Interiors 69', ratio: 'landscape', src: 'concept-05/photos/interiors-69.webp' },
-      { label: 'Interiors 70', ratio: 'portrait', src: 'concept-05/photos/interiors-70.webp' },
-      { label: 'Interiors 71', ratio: 'landscape', src: 'concept-05/photos/interiors-71.webp' },
-      { label: 'Interiors 72', ratio: 'landscape', src: 'concept-05/photos/interiors-72.webp' },
-      { label: 'Interiors 73', ratio: 'landscape', src: 'concept-05/photos/interiors-73.webp' },
-      { label: 'Interiors 75', ratio: 'landscape', src: 'concept-05/photos/interiors-75.webp' },
-      { label: 'Interiors 76', ratio: 'landscape', src: 'concept-05/photos/interiors-76.webp' },
+      { label: 'Interiors 35', ratio: 'landscape', src: 'photos/interiors-35.webp' },
+      { label: 'Interiors 36', ratio: 'landscape', src: 'photos/interiors-36.webp' },
+      { label: 'Interiors 37', ratio: 'landscape', src: 'photos/interiors-37.webp' },
+      { label: 'Interiors 39', ratio: 'landscape', src: 'photos/interiors-39.webp' },
+      { label: 'Interiors 40', ratio: 'landscape', src: 'photos/interiors-40.webp' },
+      { label: 'Interiors 67', ratio: 'landscape', src: 'photos/interiors-67.webp' },
+      { label: 'Interiors 68', ratio: 'landscape', src: 'photos/interiors-68.webp' },
+      { label: 'Interiors 69', ratio: 'landscape', src: 'photos/interiors-69.webp' },
+      { label: 'Interiors 70', ratio: 'portrait', src: 'photos/interiors-70.webp' },
+      { label: 'Interiors 71', ratio: 'landscape', src: 'photos/interiors-71.webp' },
+      { label: 'Interiors 72', ratio: 'landscape', src: 'photos/interiors-72.webp' },
+      { label: 'Interiors 73', ratio: 'landscape', src: 'photos/interiors-73.webp' },
+      { label: 'Interiors 75', ratio: 'landscape', src: 'photos/interiors-75.webp' },
+      { label: 'Interiors 76', ratio: 'landscape', src: 'photos/interiors-76.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 11', ratio: 'landscape', src: 'concept-05/photos/interiors-11.webp' },
-      { label: 'Image 26', ratio: 'portrait', src: 'concept-05/photos/interiors-26.webp' },
-      { label: 'Image 28', ratio: 'portrait', src: 'concept-05/photos/interiors-38.webp' },
+      { label: 'Image 11', ratio: 'landscape', src: 'photos/interiors-11.webp' },
+      { label: 'Image 26', ratio: 'portrait', src: 'photos/interiors-26.webp' },
+      { label: 'Image 28', ratio: 'portrait', src: 'photos/interiors-38.webp' },
     ],
     'Portrait': [
-      { label: 'Portrait 41', ratio: 'portrait', src: 'concept-05/photos/portrait-41.webp' },
-      { label: 'Portrait 43', ratio: 'portrait', src: 'concept-05/photos/portrait-43.webp' },
-      { label: 'Portrait 49', ratio: 'landscape', src: 'concept-05/photos/portrait-49.webp' },
-      { label: 'Portrait 51', ratio: 'landscape', src: 'concept-05/photos/portrait-51.webp' },
-      { label: 'Portrait 56', ratio: 'landscape', src: 'concept-05/photos/portrait-56.webp' },
-      { label: 'Portrait 60', ratio: 'portrait', src: 'concept-05/photos/portrait-60.webp' },
-      { label: 'Portrait 65', ratio: 'portrait', src: 'concept-05/photos/portrait-65.webp' },
-      { label: 'Portrait 67', ratio: 'portrait', src: 'concept-05/photos/portrait-67.webp' },
-      { label: 'Portrait 68', ratio: 'portrait', src: 'concept-05/photos/portrait-68.webp' },
-      { label: 'Portrait 69', ratio: 'portrait', src: 'concept-05/photos/portrait-69.webp' },
-      { label: 'Portrait 70', ratio: 'portrait', src: 'concept-05/photos/portrait-70.webp' },
-      { label: 'Portrait 71', ratio: 'portrait', src: 'concept-05/photos/portrait-71.webp' },
-      { label: 'Portrait 72', ratio: 'landscape', src: 'concept-05/photos/portrait-72.webp' },
-      { label: 'Portrait 73', ratio: 'portrait', src: 'concept-05/photos/portrait-73.webp' },
+      { label: 'Portrait 41', ratio: 'portrait', src: 'photos/portrait-41.webp' },
+      { label: 'Portrait 43', ratio: 'portrait', src: 'photos/portrait-43.webp' },
+      { label: 'Portrait 49', ratio: 'landscape', src: 'photos/portrait-49.webp' },
+      { label: 'Portrait 51', ratio: 'landscape', src: 'photos/portrait-51.webp' },
+      { label: 'Portrait 56', ratio: 'landscape', src: 'photos/portrait-56.webp' },
+      { label: 'Portrait 60', ratio: 'portrait', src: 'photos/portrait-60.webp' },
+      { label: 'Portrait 65', ratio: 'portrait', src: 'photos/portrait-65.webp' },
+      { label: 'Portrait 67', ratio: 'portrait', src: 'photos/portrait-67.webp' },
+      { label: 'Portrait 68', ratio: 'portrait', src: 'photos/portrait-68.webp' },
+      { label: 'Portrait 69', ratio: 'portrait', src: 'photos/portrait-69.webp' },
+      { label: 'Portrait 70', ratio: 'portrait', src: 'photos/portrait-70.webp' },
+      { label: 'Portrait 71', ratio: 'portrait', src: 'photos/portrait-71.webp' },
+      { label: 'Portrait 72', ratio: 'landscape', src: 'photos/portrait-72.webp' },
+      { label: 'Portrait 73', ratio: 'portrait', src: 'photos/portrait-73.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 14', ratio: 'landscape', src: 'concept-05/photos/portrait-14.webp' },
-      { label: 'Image 15', ratio: 'landscape', src: 'concept-05/photos/portrait-15.webp' },
-      { label: 'Image 30', ratio: 'portrait', src: 'concept-05/photos/portrait-30.webp' },
-      { label: 'Image 35', ratio: 'portrait', src: 'concept-05/photos/portrait-35.webp' },
+      { label: 'Image 14', ratio: 'landscape', src: 'photos/portrait-14.webp' },
+      { label: 'Image 15', ratio: 'landscape', src: 'photos/portrait-15.webp' },
+      { label: 'Image 30', ratio: 'portrait', src: 'photos/portrait-30.webp' },
+      { label: 'Image 35', ratio: 'portrait', src: 'photos/portrait-35.webp' },
     ],
     'Fashion': [
-      { label: 'Fashion 01', ratio: 'landscape', src: 'concept-05/photos/fashion-01.webp' },
-      { label: 'Fashion 05', ratio: 'portrait', src: 'concept-05/photos/fashion-05.webp' },
-      { label: 'Fashion 06', ratio: 'landscape', src: 'concept-05/photos/fashion-image06.webp' },
-      { label: 'Fashion 07', ratio: 'landscape', src: 'concept-05/photos/fashion-07.webp' },
-      { label: 'Fashion 09', ratio: 'portrait', src: 'concept-05/photos/fashion-09.webp' },
-      { label: 'Fashion 11', ratio: 'portrait', src: 'concept-05/photos/fashion-11.webp' },
-      { label: 'Fashion 12', ratio: 'landscape', src: 'concept-05/photos/fashion-12.webp' },
-      { label: 'Fashion 13', ratio: 'portrait', src: 'concept-05/photos/fashion-13.webp' },
-      { label: 'Fashion 15', ratio: 'portrait', src: 'concept-05/photos/fashion-15.webp' },
-      { label: 'Fashion 19', ratio: 'portrait', src: 'concept-05/photos/fashion-19.webp' },
-      { label: 'Fashion 40', ratio: 'portrait', src: 'concept-05/photos/fashion-40.webp' },
-      { label: 'Fashion 42', ratio: 'portrait', src: 'concept-05/photos/fashion-42.webp' },
-      { label: 'Fashion 43', ratio: 'portrait', src: 'concept-05/photos/fashion-43.webp' },
-      { label: 'Fashion 44', ratio: 'portrait', src: 'concept-05/photos/fashion-44.webp' },
-      { label: 'Fashion 45', ratio: 'portrait', src: 'concept-05/photos/fashion-45.webp' },
-      { label: 'Fashion 46', ratio: 'portrait', src: 'concept-05/photos/fashion-46.webp' },
-      { label: 'Fashion 47', ratio: 'portrait', src: 'concept-05/photos/fashion-47.webp' },
+      { label: 'Fashion 01', ratio: 'landscape', src: 'photos/fashion-01.webp' },
+      { label: 'Fashion 05', ratio: 'portrait', src: 'photos/fashion-05.webp' },
+      { label: 'Fashion 06', ratio: 'landscape', src: 'photos/fashion-image06.webp' },
+      { label: 'Fashion 07', ratio: 'landscape', src: 'photos/fashion-07.webp' },
+      { label: 'Fashion 09', ratio: 'portrait', src: 'photos/fashion-09.webp' },
+      { label: 'Fashion 11', ratio: 'portrait', src: 'photos/fashion-11.webp' },
+      { label: 'Fashion 12', ratio: 'landscape', src: 'photos/fashion-12.webp' },
+      { label: 'Fashion 13', ratio: 'portrait', src: 'photos/fashion-13.webp' },
+      { label: 'Fashion 15', ratio: 'portrait', src: 'photos/fashion-15.webp' },
+      { label: 'Fashion 19', ratio: 'portrait', src: 'photos/fashion-19.webp' },
+      { label: 'Fashion 40', ratio: 'portrait', src: 'photos/fashion-40.webp' },
+      { label: 'Fashion 42', ratio: 'portrait', src: 'photos/fashion-42.webp' },
+      { label: 'Fashion 43', ratio: 'portrait', src: 'photos/fashion-43.webp' },
+      { label: 'Fashion 44', ratio: 'portrait', src: 'photos/fashion-44.webp' },
+      { label: 'Fashion 45', ratio: 'portrait', src: 'photos/fashion-45.webp' },
+      { label: 'Fashion 46', ratio: 'portrait', src: 'photos/fashion-46.webp' },
+      { label: 'Fashion 47', ratio: 'portrait', src: 'photos/fashion-47.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 21', ratio: 'portrait', src: 'concept-05/photos/fashion-17.webp' },
-      { label: 'Image 29', ratio: 'landscape', src: 'concept-05/photos/fashion-41.webp' },
-      { label: 'Fashion 48', ratio: 'portrait', src: 'concept-05/photos/fashion-48.webp' },
-      { label: 'Fashion 49', ratio: 'portrait', src: 'concept-05/photos/fashion-49.webp' },
-      { label: 'Fashion 50', ratio: 'portrait', src: 'concept-05/photos/fashion-50.webp' },
-      { label: 'Fashion 51', ratio: 'portrait', src: 'concept-05/photos/fashion-51.webp' },
-      { label: 'Fashion 52', ratio: 'portrait', src: 'concept-05/photos/fashion-52.webp' },
-      { label: 'Fashion 53', ratio: 'portrait', src: 'concept-05/photos/fashion-53.webp' },
-      { label: 'Fashion 54', ratio: 'portrait', src: 'concept-05/photos/fashion-54.webp' },
-      { label: 'Fashion 55', ratio: 'portrait', src: 'concept-05/photos/fashion-55.webp' },
-      { label: 'Fashion 56', ratio: 'portrait', src: 'concept-05/photos/fashion-56.webp' },
-      { label: 'Fashion 57', ratio: 'portrait', src: 'concept-05/photos/fashion-57.webp' },
+      { label: 'Image 21', ratio: 'portrait', src: 'photos/fashion-17.webp' },
+      { label: 'Image 29', ratio: 'landscape', src: 'photos/fashion-41.webp' },
+      { label: 'Fashion 48', ratio: 'portrait', src: 'photos/fashion-48.webp' },
+      { label: 'Fashion 49', ratio: 'portrait', src: 'photos/fashion-49.webp' },
+      { label: 'Fashion 50', ratio: 'portrait', src: 'photos/fashion-50.webp' },
+      { label: 'Fashion 51', ratio: 'portrait', src: 'photos/fashion-51.webp' },
+      { label: 'Fashion 52', ratio: 'portrait', src: 'photos/fashion-52.webp' },
+      { label: 'Fashion 53', ratio: 'portrait', src: 'photos/fashion-53.webp' },
+      { label: 'Fashion 54', ratio: 'portrait', src: 'photos/fashion-54.webp' },
+      { label: 'Fashion 55', ratio: 'portrait', src: 'photos/fashion-55.webp' },
+      { label: 'Fashion 56', ratio: 'portrait', src: 'photos/fashion-56.webp' },
+      { label: 'Fashion 57', ratio: 'portrait', src: 'photos/fashion-57.webp' },
     ],
     'Landscape': [
-      { label: 'Landscape 40', ratio: 'landscape', src: 'concept-05/photos/landscape-40.webp' },
-      { label: 'Landscape 41', ratio: 'landscape', src: 'concept-05/photos/landscape-41.webp' },
-      { label: 'Landscape 42', ratio: 'landscape', src: 'concept-05/photos/landscape-42.webp' },
-      { label: 'Landscape 43', ratio: 'landscape', src: 'concept-05/photos/landscape-43.webp' },
-      { label: 'Landscape 44', ratio: 'landscape', src: 'concept-05/photos/landscape-44.webp' },
-      { label: 'Landscape 45', ratio: 'landscape', src: 'concept-05/photos/landscape-45.webp' },
-      { label: 'Landscape 46', ratio: 'landscape', src: 'concept-05/photos/landscape-46.webp' },
-      { label: 'Landscape 47', ratio: 'landscape', src: 'concept-05/photos/landscape-47.webp' },
-      { label: 'Landscape 48', ratio: 'landscape', src: 'concept-05/photos/landscape-48.webp' },
-      { label: 'Landscape 51', ratio: 'landscape', src: 'concept-05/photos/landscape-51.webp' },
-      { label: 'Landscape 52', ratio: 'landscape', src: 'concept-05/photos/landscape-52.webp' },
+      { label: 'Landscape 40', ratio: 'landscape', src: 'photos/landscape-40.webp' },
+      { label: 'Landscape 41', ratio: 'landscape', src: 'photos/landscape-41.webp' },
+      { label: 'Landscape 42', ratio: 'landscape', src: 'photos/landscape-42.webp' },
+      { label: 'Landscape 43', ratio: 'landscape', src: 'photos/landscape-43.webp' },
+      { label: 'Landscape 44', ratio: 'landscape', src: 'photos/landscape-44.webp' },
+      { label: 'Landscape 45', ratio: 'landscape', src: 'photos/landscape-45.webp' },
+      { label: 'Landscape 46', ratio: 'landscape', src: 'photos/landscape-46.webp' },
+      { label: 'Landscape 47', ratio: 'landscape', src: 'photos/landscape-47.webp' },
+      { label: 'Landscape 48', ratio: 'landscape', src: 'photos/landscape-48.webp' },
+      { label: 'Landscape 51', ratio: 'landscape', src: 'photos/landscape-51.webp' },
+      { label: 'Landscape 52', ratio: 'landscape', src: 'photos/landscape-52.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 23', ratio: 'landscape', src: 'concept-05/photos/landscape-23.webp' },
-      { label: 'Image 27', ratio: 'landscape', src: 'concept-05/photos/landscape-27.webp' },
+      { label: 'Image 23', ratio: 'landscape', src: 'photos/landscape-23.webp' },
+      { label: 'Image 27', ratio: 'landscape', src: 'photos/landscape-27.webp' },
     ],
   };
 
@@ -1073,135 +1218,135 @@ body.lb-open{ overflow:hidden; }
   // add a "cat" so the info panel still knows the main category too.
   const extraSubcatPhotos = {
     'Workplace': [
-      { label: 'Workplace 02', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-02.webp' },
-      { label: 'Workplace 03', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-03.webp' },
-      { label: 'Workplace 04', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-04.webp' },
-      { label: 'Workplace 05', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-05.webp' },
-      { label: 'Workplace 06', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-06.webp' },
-      { label: 'Workplace 09', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-09.webp' },
-      { label: 'Workplace 10', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-10.webp' },
-      { label: 'Workplace 11', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-11.webp' },
-      { label: 'Workplace 12', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-12.webp' },
-      { label: 'Workplace 13', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-13.webp' },
-      { label: 'Workplace 14', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/workplace-14.webp' },
+      { label: 'Workplace 02', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-02.webp' },
+      { label: 'Workplace 03', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-03.webp' },
+      { label: 'Workplace 04', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-04.webp' },
+      { label: 'Workplace 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-05.webp' },
+      { label: 'Workplace 06', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-06.webp' },
+      { label: 'Workplace 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-09.webp' },
+      { label: 'Workplace 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-10.webp' },
+      { label: 'Workplace 11', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-11.webp' },
+      { label: 'Workplace 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-12.webp' },
+      { label: 'Workplace 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-13.webp' },
+      { label: 'Workplace 14', cat: 'Commercial', ratio: 'portrait', src: 'photos/workplace-14.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 34', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/workplace-01.webp' },
+      { label: 'Image 34', cat: 'Commercial', ratio: 'landscape', src: 'photos/workplace-01.webp' },
     ],
     'Wellness': [
-      { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-05.webp' },
-      { label: 'Wellness 08', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-08.webp' },
-      { label: 'Wellness 09', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-09.webp' },
-      { label: 'Wellness 10', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-10.webp' },
-      { label: 'Wellness 11', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-11.webp' },
-      { label: 'Wellness 12', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-12.webp' },
-      { label: 'Wellness 13', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-13.webp' },
-      { label: 'Wellness 14', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-14.webp' },
-      { label: 'Wellness 15', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-15.webp' },
-      { label: 'Wellness 16', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-16.webp' },
-      { label: 'Wellness 17', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-17.webp' },
-      { label: 'Wellness 18', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/wellness-18.webp' },
-      { label: 'Wellness 19', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-19.webp' },
-      { label: 'Wellness 20', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-20.webp' },
-      { label: 'Wellness 21', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-21.webp' },
-      { label: 'Wellness 22', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-22.webp' },
+      { label: 'Wellness 05', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-05.webp' },
+      { label: 'Wellness 08', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-08.webp' },
+      { label: 'Wellness 09', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-09.webp' },
+      { label: 'Wellness 10', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-10.webp' },
+      { label: 'Wellness 11', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-11.webp' },
+      { label: 'Wellness 12', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-12.webp' },
+      { label: 'Wellness 13', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-13.webp' },
+      { label: 'Wellness 14', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-14.webp' },
+      { label: 'Wellness 15', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-15.webp' },
+      { label: 'Wellness 16', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-16.webp' },
+      { label: 'Wellness 17', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-17.webp' },
+      { label: 'Wellness 18', cat: 'Commercial', ratio: 'portrait', src: 'photos/wellness-18.webp' },
+      { label: 'Wellness 19', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-19.webp' },
+      { label: 'Wellness 20', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-20.webp' },
+      { label: 'Wellness 21', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-21.webp' },
+      { label: 'Wellness 22', cat: 'Commercial', ratio: 'landscape', src: 'photos/wellness-22.webp' },
     ],
     'Street': [
-      { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-40.webp' },
+      { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-40.webp' },
     ],
     'Bali': [
-      { label: 'Bali 05', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-05.webp' },
-      { label: 'Bali 07', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-07.webp' },
-      { label: 'Bali 10', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-10.webp' },
-      { label: 'Bali 11', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-11.webp' },
-      { label: 'Bali 12', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-12.webp' },
-      { label: 'Bali 14', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-14.webp' },
-      { label: 'Bali 19', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-19.webp' },
-      { label: 'Bali 20', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-20.webp' },
-      { label: 'Bali 21', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-21.webp' },
-      { label: 'Bali 22', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-22.webp' },
-      { label: 'Bali 23', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-23.webp' },
-      { label: 'Bali 24', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-24.webp' },
-      { label: 'Bali 25', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-25.webp' },
-      { label: 'Bali 26', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-26.webp' },
-      { label: 'Bali 28', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-28.webp' },
-      { label: 'Bali 29', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-29.webp' },
+      { label: 'Bali 05', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-05.webp' },
+      { label: 'Bali 07', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-07.webp' },
+      { label: 'Bali 10', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-10.webp' },
+      { label: 'Bali 11', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-11.webp' },
+      { label: 'Bali 12', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-12.webp' },
+      { label: 'Bali 14', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-14.webp' },
+      { label: 'Bali 19', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-19.webp' },
+      { label: 'Bali 20', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-20.webp' },
+      { label: 'Bali 21', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-21.webp' },
+      { label: 'Bali 22', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-22.webp' },
+      { label: 'Bali 23', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-23.webp' },
+      { label: 'Bali 24', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-24.webp' },
+      { label: 'Bali 25', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-25.webp' },
+      { label: 'Bali 26', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-26.webp' },
+      { label: 'Bali 28', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-28.webp' },
+      { label: 'Bali 29', cat: 'Travel', ratio: 'landscape', src: 'photos/bali-29.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
-      { label: 'Image 09', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/personal-image09.webp' },
+      { label: 'Image 09', cat: 'Travel', ratio: 'landscape', src: 'photos/personal-image09.webp' },
     ],
     'SriLanka': [
-      { label: 'Sri Lanka 01', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-01.webp' },
-      { label: 'Sri Lanka 02', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-02.webp' },
-      { label: 'Sri Lanka 03', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-03.webp' },
-      { label: 'Sri Lanka 04', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-04.webp' },
-      { label: 'Sri Lanka 05', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-05.webp' },
-      { label: 'Sri Lanka 06', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-06.webp' },
-      { label: 'Sri Lanka 07', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-07.webp' },
-      { label: 'Sri Lanka 08', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-08.webp' },
-      { label: 'Sri Lanka 09', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-09.webp' },
-      { label: 'Sri Lanka 10', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/srilanka-10.webp' },
+      { label: 'Sri Lanka 01', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-01.webp' },
+      { label: 'Sri Lanka 02', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-02.webp' },
+      { label: 'Sri Lanka 03', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-03.webp' },
+      { label: 'Sri Lanka 04', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-04.webp' },
+      { label: 'Sri Lanka 05', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-05.webp' },
+      { label: 'Sri Lanka 06', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-06.webp' },
+      { label: 'Sri Lanka 07', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-07.webp' },
+      { label: 'Sri Lanka 08', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-08.webp' },
+      { label: 'Sri Lanka 09', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-09.webp' },
+      { label: 'Sri Lanka 10', cat: 'Travel', ratio: 'landscape', src: 'photos/srilanka-10.webp' },
     ],
     'Truckers': [
-      { label: 'Truckers 01', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-01.webp' },
-      { label: 'Truckers 02', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-02.webp' },
-      { label: 'Truckers 03', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-03.webp' },
-      { label: 'Truckers 04', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-04.webp' },
-      { label: 'Truckers 05', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-05.webp' },
-      { label: 'Truckers 06', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-06.webp' },
-      { label: 'Truckers 07', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-07.webp' },
-      { label: 'Truckers 08', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-08.webp' },
-      { label: 'Truckers 09', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-09.webp' },
-      { label: 'Truckers 10', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-10.webp' },
-      { label: 'Truckers 11', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-11.webp' },
-      { label: 'Truckers 12', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-12.webp' },
-      { label: 'Truckers 13', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/truckers-13.webp' },
+      { label: 'Truckers 01', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-01.webp' },
+      { label: 'Truckers 02', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-02.webp' },
+      { label: 'Truckers 03', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-03.webp' },
+      { label: 'Truckers 04', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-04.webp' },
+      { label: 'Truckers 05', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-05.webp' },
+      { label: 'Truckers 06', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-06.webp' },
+      { label: 'Truckers 07', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-07.webp' },
+      { label: 'Truckers 08', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-08.webp' },
+      { label: 'Truckers 09', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-09.webp' },
+      { label: 'Truckers 10', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-10.webp' },
+      { label: 'Truckers 11', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-11.webp' },
+      { label: 'Truckers 12', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-12.webp' },
+      { label: 'Truckers 13', cat: 'Personal', ratio: 'landscape', src: 'photos/truckers-13.webp' },
     ],
     'UL': [
-      { label: 'UL 02', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-02.webp' },
-      { label: 'UL 03', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-03.webp' },
-      { label: 'UL 04', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-04.webp' },
-      { label: 'UL 05', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-05.webp' },
-      { label: 'UL 09', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-09.webp' },
-      { label: 'UL 12', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-12.webp' },
-      { label: 'UL 41', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-41.webp' },
+      { label: 'UL 02', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-02.webp' },
+      { label: 'UL 03', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-03.webp' },
+      { label: 'UL 04', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-04.webp' },
+      { label: 'UL 05', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-05.webp' },
+      { label: 'UL 09', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-09.webp' },
+      { label: 'UL 12', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-12.webp' },
+      { label: 'UL 41', cat: 'Personal', ratio: 'landscape', src: 'photos/personal-41.webp' },
     ],
     'WSR': [
-      { label: 'WSR 01', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-01.webp' },
-      { label: 'WSR 02', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-02.webp' },
-      { label: 'WSR 03', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-03.webp' },
-      { label: 'WSR 04', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-04.webp' },
-      { label: 'WSR 05', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-05.webp' },
-      { label: 'WSR 06', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-06.webp' },
-      { label: 'WSR 07', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-07.webp' },
-      { label: 'WSR 08', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-08.webp' },
-      { label: 'WSR 09', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-09.webp' },
-      { label: 'WSR 10', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-10.webp' },
-      { label: 'WSR 11', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-11.webp' },
-      { label: 'WSR 12', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-12.webp' },
-      { label: 'WSR 13', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-13.webp' },
-      { label: 'WSR 14', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-14.webp' },
-      { label: 'WSR 15', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-15.webp' },
-      { label: 'WSR 16', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-16.webp' },
-      { label: 'WSR 17', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-17.webp' },
-      { label: 'WSR 18', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-18.webp' },
-      { label: 'WSR 19', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-19.webp' },
-      { label: 'WSR 20', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-20.webp' },
-      { label: 'WSR 21', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-21.webp' },
-      { label: 'WSR 22', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-22.webp' },
-      { label: 'WSR 23', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-23.webp' },
-      { label: 'WSR 24', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-24.webp' },
-      { label: 'WSR 25', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-25.webp' },
+      { label: 'WSR 01', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-01.webp' },
+      { label: 'WSR 02', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-02.webp' },
+      { label: 'WSR 03', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-03.webp' },
+      { label: 'WSR 04', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-04.webp' },
+      { label: 'WSR 05', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-05.webp' },
+      { label: 'WSR 06', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-06.webp' },
+      { label: 'WSR 07', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-07.webp' },
+      { label: 'WSR 08', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-08.webp' },
+      { label: 'WSR 09', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-09.webp' },
+      { label: 'WSR 10', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-10.webp' },
+      { label: 'WSR 11', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-11.webp' },
+      { label: 'WSR 12', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-12.webp' },
+      { label: 'WSR 13', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-13.webp' },
+      { label: 'WSR 14', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-14.webp' },
+      { label: 'WSR 15', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-15.webp' },
+      { label: 'WSR 16', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-16.webp' },
+      { label: 'WSR 17', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-17.webp' },
+      { label: 'WSR 18', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-18.webp' },
+      { label: 'WSR 19', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-19.webp' },
+      { label: 'WSR 20', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-20.webp' },
+      { label: 'WSR 21', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-21.webp' },
+      { label: 'WSR 22', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-22.webp' },
+      { label: 'WSR 23', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-23.webp' },
+      { label: 'WSR 24', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-24.webp' },
+      { label: 'WSR 25', cat: 'Personal', ratio: 'landscape', src: 'photos/wsr-25.webp' },
     ],
     'Vape': [
-      { label: 'Vape 01', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-01.webp' },
-      { label: 'Vape 02', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-02.webp' },
-      { label: 'Vape 03', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-03.webp' },
-      { label: 'Vape 04', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-04.webp' },
-      { label: 'Vape 05', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-05.webp' },
-      { label: 'Vape 06', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-06.webp' },
-      { label: 'Vape 07', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-07.webp' },
-      { label: 'Vape 08', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/vape-08.webp' },
+      { label: 'Vape 01', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-01.webp' },
+      { label: 'Vape 02', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-02.webp' },
+      { label: 'Vape 03', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-03.webp' },
+      { label: 'Vape 04', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-04.webp' },
+      { label: 'Vape 05', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-05.webp' },
+      { label: 'Vape 06', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-06.webp' },
+      { label: 'Vape 07', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-07.webp' },
+      { label: 'Vape 08', cat: 'Personal', ratio: 'landscape', src: 'photos/vape-08.webp' },
     ],
   };
 
@@ -1250,6 +1395,20 @@ body.lb-open{ overflow:hidden; }
     // people. Nothing on the field is fixed now; every frame draws from its
     // own pool. Whichever photo lands in a frame still opens that frame's
     // own gallery, so only the picture changes, never where it goes.
+    //
+    // EDIT (Sep): the 9 small tucked-corner companion photos added this
+    // round (Image i02/i05/i08/i10/i16/i18/i19/i20/i32) shuffle like every
+    // other frame on request — Louis wants those boxes changing photo too,
+    // not held fixed. They share a bare "Travel"/"Commercial" caption with
+    // no subcategory; that pool also holds the large "browse more" extra
+    // photos for those categories, but no OTHER frame on the page reads
+    // that exact bare pool (every other Travel/Commercial-tagged frame has
+    // its own subcategory, which redirects it elsewhere) — so these 9 only
+    // ever trade photos among themselves and the category's extras, never
+    // with a big frame elsewhere. That's what makes it safe to let them
+    // shuffle freely: nothing here can hand a big frame one of these tiny
+    // crops, or vice versa. Clicking one still opens its category's gallery
+    // as normal either way.
     const PROTECTED_LABELS = new Set();
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
     // (landscape) — a frame's own class is ground truth for the SHAPE it
@@ -1550,14 +1709,11 @@ body.lb-open{ overflow:hidden; }
     setURLForClose();
   }
 
-  // EDIT: concept-05/photos/ holds the full-size file (used by the lightbox stage).
-  // concept-05/photos/med/ (1400px) and concept-05/photos/thumb/ (400px) hold display copies.
+  // EDIT: photos/ holds the full-size file (used by the lightbox stage).
+  // photos/med/ (1400px) and photos/thumb/ (400px) hold display copies.
   // This swaps a full-size path for its smaller sibling.
   function variantSrc(src, kind) {
     if (!src) return src;
-    // NOTE: src already begins concept-05/photos/ on this page, so only the
-    // variant folder is inserted — adding the prefix again produced
-    // concept-05/concept-05/photos/... and every thumbnail 404'd.
     return src.replace(/photos\//, 'photos/' + kind + '/');
   }
 
