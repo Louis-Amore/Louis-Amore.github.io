@@ -1176,6 +1176,16 @@ body.lb-open{ overflow:hidden; }
     ],
     'Street': [
       { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-40.webp' },
+      // EDIT: street-05.webp sits on two home-field frames (39/45) that are
+      // tagged with the bare "Personal" figcaption, not a real subcategory —
+      // so it was never registered anywhere as belonging to Street, and
+      // srcToTrueSubcat (built from this list) had nothing to redirect a
+      // click on it to. Result: clicking it opened a generic "Personal"
+      // grab-bag instead of Street, and Street's own gallery was missing it
+      // entirely. Adding it here fixes both at once, the same way
+      // personal-40.webp/personal-04.webp already do for their own true
+      // subcategories (Street/UL) despite sitting on bare-"Personal" frames.
+      { label: 'Street 41', cat: 'Personal', ratio: 'portrait', src: 'concept-05/photos/street-05.webp' },
     ],
     'Bali': [
       { label: 'Bali 05', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-05.webp' },
