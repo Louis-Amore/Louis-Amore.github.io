@@ -425,46 +425,52 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="42"]{ --w:min(12.39cqw, 275px); --x:11.8cqw; --y:34.32cqw; --ar:0.6667; --b:12px; --bc:#111110; }
   .field-frame[data-num="43"]{ --w:min(6.40cqw, 142px); --x:21.94cqw; --y:47.88cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
 
-  /* Images 44-49 — EDIT: repositioned to match Louis's revised master skeleton
-     (matched to a-f by category + order: 33→a, 05→b, 08→c, 19→d, 12→e,
-     30→f). Shifted down (+57cqw beyond his drawn positions) to clear the
-     taller Page 1 batch above. One real overlap in his redrawn skeleton:
-     A/B (Portrait+Personal, both "bleeds off screen") landed at ~37% of
-     B's area under A — nudged B to bring that down to a normal ~3% corner
-     touch, the same kind of fix as before. C/F and D/E also overlap in his
-     drawing but only by ~10%, well within the range everything else on the
-     page already uses, so those were left exactly as he drew them. */
+  /* Images 44-49 — matched to a-f by category + order: 33→a, 05→b, 08→c,
+     19→d, 12→e, 30→f. Shifted down (+57cqw beyond his drawn positions) to
+     clear the taller Page 1 batch above.
+     EDIT (resize round): Image 19/Interiors (d/47) was genuinely resized
+     smaller in his latest file (800px → 753px wide) and moved up/left with
+     it. Image 12/Portrait (e/48) wasn't resized but was redrawn further
+     left. Re-checked against 47's new size/position: their overlap is now
+     ~21% of 48's area, still within the site's normal tuck range, so no
+     extra nudge needed. A/B (Portrait+Personal "bleeds off screen") keep
+     their existing ~3% corner-touch fix from before — his raw drawing for
+     that pair is unchanged, so the old fix still applies. C/F unchanged. */
   .field-frame[data-num="44"]{ --w:min(18.24cqw, 405px); --x:73.78cqw; --y:97.81cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
   .field-frame[data-num="45"]{ --w:min(8.02cqw, 178px); --x:67.26cqw; --y:123.37cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
   .field-frame[data-num="46"]{ --w:min(27.79cqw, 617px); --x:68.02cqw; --y:63.40cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="47"]{ --w:min(36.04cqw, 800px); --x:1.89cqw; --y:66.14cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
-  .field-frame[data-num="48"]{ --w:min(10.32cqw, 229px); --x:33.56cqw; --y:86.41cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="47"]{ --w:min(33.92cqw, 753px); --x:2.03cqw; --y:70.24cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="48"]{ --w:min(10.27cqw, 228px); --x:33.68cqw; --y:90.41cqw; --ar:0.6667; --b:24px; --bc:#111110; }
   .field-frame[data-num="49"]{ --w:min(12.07cqw, 268px); --x:59.95cqw; --y:79.48cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
 
-  /* Images 50-53 — Louis's 3rd (and last) batch, from pageskeletontemplate_1.psd
-     (PAGE 3 group). Categories/borders read off his layer names; seed
-     photos are placeholders per his own "photo doesn't matter, only
-     border+category" rule. Positions converted from the skeleton's pixel
-     coordinates (its 2560px canvas matches the field's cqw basis at this
-     viewport). EDIT: Page 3 itself wasn't touched in Louis's latest file,
-     but its shift was recalculated (+123.5cqw, was +107.84) since Page 2
-     now runs taller after his revision — still just clearing whatever's
-     above it, same internal layout as before. In the skeleton, Image 07
-     (Portrait) and Image 02 (Fashion) overlapped by about a quarter of the
-     Fashion box's area — Image 02 nudged down to clear it, the same fix as
-     the Page2 A/B overlap. */
-  .field-frame[data-num="50"]{ --w:min(20.18cqw, 448px); --x:16.08cqw; --y:140.66cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
-  .field-frame[data-num="51"]{ --w:min(16.49cqw, 366px); --x:7.61cqw; --y:173.00cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="52"]{ --w:min(39.32cqw, 873px); --x:50.09cqw; --y:145.98cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
-  .field-frame[data-num="53"]{ --w:min(15.09cqw, 335px); --x:45.41cqw; --y:172.78cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
+  /* Images 50-53 — Page 3 batch (07→a/50 Portrait, 02→b/51 Fashion,
+     18→c/52 Travel, 32→d/53 Landscape), shifted +123.5cqw to clear Page 2.
+     EDIT (resize round): Image 07/Portrait (a/50) was genuinely resized
+     smaller (448px → 389px) and moved with the resize. Image 18/Travel
+     (c/52) resized slightly (873px → 887px) and shifted right. Image
+     32/Landscape (d/53) wasn't resized but moved substantially right in
+     his latest file. Image 02/Fashion (b/51) is unchanged in size or raw
+     position — its previous manual "nudge down" fix (for the old ~25%
+     overlap with 07) is no longer needed now that 07 has moved/shrunk:
+     using his actual drawn position for 51, the 07/02 overlap is now a
+     normal ~21% tuck, so the artificial nudge was removed and 51 was put
+     back at the position he actually drew. Re-checked all four against
+     each other and against the batches above/below — no new collisions. */
+  .field-frame[data-num="50"]{ --w:min(17.52cqw, 389px); --x:10.05cqw; --y:131.25cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="51"]{ --w:min(16.49cqw, 366px); --x:3.83cqw; --y:155.82cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="52"]{ --w:min(39.95cqw, 887px); --x:56.08cqw; --y:142.06cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="53"]{ --w:min(15.09cqw, 335px); --x:78.38cqw; --y:168.95cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
 
-  /* Images 54-55 — also untouched by Louis's latest file; shift recalculated
-     (+172.5cqw, was +158.24) for the same reason as Page 3's, to clear the
-     now-taller batches above. The two boxes (Fashion, Personal) still don't
-     overlap each other, so no nudge needed. Field height bumped 2.30→2.45
-     to keep the statement/footer clear of this lower bottom edge. */
-  .field-frame[data-num="54"]{ --w:min(24.32cqw, 542px); --x:65.63cqw; --y:196.01cqw; --ar:0.6667; --b:24px; --bc:#111110; }
-  .field-frame[data-num="55"]{ --w:min(43.33cqw, 962px); --x:7.84cqw; --y:189.26cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+  /* Images 54-55 — Page 4 batch, shifted +172.5cqw to clear Page 3.
+     EDIT (resize round): Image 20/Personal (b/55) was genuinely resized
+     smaller (808px → 723px) and moved with it — this was his biggest
+     resize in this batch. Image 25/Fashion (a/54) wasn't resized, only
+     nudged. Re-checked: the two still tuck at ~9% overlap, within range,
+     and the field is still tall enough to clear the closing statement text
+     at the current 2.45 height multiplier — no further height change
+     needed. */
+  .field-frame[data-num="54"]{ --w:min(24.41cqw, 542px); --x:61.76cqw; --y:189.39cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="55"]{ --w:min(32.57cqw, 723px); --x:33.47cqw; --y:211.60cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
 
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
@@ -887,15 +893,15 @@ body.lb-open{ overflow:hidden; }
   .field-inner .field-frame[data-num="44"]{ order:26; width:calc(32% - var(--eb) * 2) !important; margin-left:45%; }
   .field-inner .field-frame[data-num="45"]{ order:27; width:calc(26% - var(--eb) * 2) !important; margin-left:62%; }
   .field-inner .field-frame[data-num="46"]{ order:28; width:calc(62% - var(--eb) * 2) !important; margin-left:12%; }
-  .field-inner .field-frame[data-num="47"]{ order:29; width:calc(68% - var(--eb) * 2) !important; margin-left:6%; }
+  .field-inner .field-frame[data-num="47"]{ order:29; width:calc(64% - var(--eb) * 2) !important; margin-left:6%; }
   .field-inner .field-frame[data-num="48"]{ order:30; width:calc(28% - var(--eb) * 2) !important; margin-left:50%; }
   .field-inner .field-frame[data-num="49"]{ order:31; width:calc(42% - var(--eb) * 2) !important; margin-left:34%; }
-  .field-inner .field-frame[data-num="50"]{ order:32; width:calc(32% - var(--eb) * 2) !important; margin-left:42%; }
+  .field-inner .field-frame[data-num="50"]{ order:32; width:calc(28% - var(--eb) * 2) !important; margin-left:42%; }
   .field-inner .field-frame[data-num="51"]{ order:33; width:calc(54% - var(--eb) * 2) !important; margin-left:18%; }
   .field-inner .field-frame[data-num="52"]{ order:34; width:calc(68% - var(--eb) * 2) !important; margin-left:8%; }
   .field-inner .field-frame[data-num="53"]{ order:35; width:calc(44% - var(--eb) * 2) !important; margin-left:32%; }
   .field-inner .field-frame[data-num="54"]{ order:36; width:calc(34% - var(--eb) * 2) !important; margin-left:48%; }
-  .field-inner .field-frame[data-num="55"]{ order:37; width:calc(66% - var(--eb) * 2) !important; margin-left:10%; }
+  .field-inner .field-frame[data-num="55"]{ order:37; width:calc(50% - var(--eb) * 2) !important; margin-left:10%; }
 }
 
 /* The 9 small tucked-corner photos only make sense pinned exactly against
@@ -1084,17 +1090,17 @@ body.lb-open{ overflow:hidden; }
     <figure class="field-frame w-t1 border-white-thick" data-label="Image 44" data-num="44"><img src="photos/portrait-41.webp" srcset="photos/thumb/portrait-41.webp 400w, photos/portrait-41.webp 1000w" sizes="(max-width:760px) 82vw, 357px" alt="Image 44" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 45" data-num="45"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, 166px" alt="Image 45" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 46" data-num="46"><img src="photos/wellness-05.webp" srcset="photos/thumb/wellness-05.webp 400w, photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-    <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 750px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-    <figure class="field-frame w-t1 border-black-thick" data-label="Image 48" data-num="48"><img src="photos/portrait-60.webp" srcset="photos/thumb/portrait-60.webp 400w, photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 156px" alt="Image 44" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-    <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 45" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 753px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-black-thick" data-label="Image 48" data-num="48"><img src="photos/portrait-60.webp" srcset="photos/thumb/portrait-60.webp 400w, photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 228px" alt="Image 48" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 49" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <!-- Images 50-53 — Louis's 3rd (and last) batch, from pageskeletontemplate_1.psd
          (PAGE 3 group). Categories/borders read off his layer names; seed
          photos are placeholders per his own "photo doesn't matter, only
          border+category" rule, each a real landscape/portrait file matching
          that box's shape. -->
-    <figure class="field-frame w-t1 border-white" data-label="Image 50" data-num="50"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 448px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-t1 border-white" data-label="Image 50" data-num="50"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 389px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 51" data-num="51"><img src="photos/fashion-07.webp" srcset="photos/thumb/fashion-07.webp 400w, photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Image 51" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 873px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 887px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
     <figure class="field-frame w-l1 border-gold" data-label="Image 53" data-num="53"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Image 53" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
     <!-- Images 54-55 — a further batch, from pageskeletontemplate_1.psd (PAGE 4
          group). Categories/borders read off his layer names; seed photos
@@ -1102,7 +1108,7 @@ body.lb-open{ overflow:hidden; }
          border+category" rule, each a real landscape/portrait file matching
          that box's shape. -->
     <figure class="field-frame w-t1 border-black-thick" data-label="Image 54" data-num="54"><img src="photos/fashion-40.webp" srcset="photos/thumb/fashion-40.webp 400w, photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Image 54" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 962px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 723px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
 </div>
 </div>
 
