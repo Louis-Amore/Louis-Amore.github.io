@@ -408,53 +408,63 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
   .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
 
-  /* TEST PAGE — Louis's two-box layout from pageskeletontemplate_1.psd.
-     Main box border copied from Image 32 (border-thin). Tucked corner box
-     border copied from Image 18 (border-white-thick). Roughly matches the
-     position/size he drew in Photoshop — not pixel-exact, just close. */
-  .field-frame[data-num="test-a"]{ --w:min(19.55cqw, 434px); --x:4.28cqw; --y:4.05cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-b"]{ --w:min(11.22cqw, 249px); --x:19.91cqw; --y:15.59cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
-  .field-frame[data-num="test-c"]{ --w:min(16.5cqw, 366px); --x:78.51cqw; --y:3.69cqw; --ar:1.5; --b:12px; --bc:#111110; }
-  .field-frame[data-num="test-d"]{ --w:min(8.4cqw, 186px); --x:74.05cqw; --y:11.26cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
-  .field-frame[data-num="test-e"]{ --w:min(16.8cqw, 373px); --x:67.75cqw; --y:28.11cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
-  .field-frame[data-num="test-f"]{ --w:min(7.03cqw, 156px); --x:62.03cqw; --y:38.06cqw; --ar:0.6667; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-g"]{ --w:min(11.31cqw, 251px); --x:11.8cqw; --y:30.54cqw; --ar:0.6667; --b:12px; --bc:#111110; }
-  .field-frame[data-num="test-h"]{ --w:min(5.86cqw, 130px); --x:21.94cqw; --y:44.1cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
+  /* TEST PAGE (Page 1) — Louis's original 8-box layout. EDIT: repositioned
+     to match his revised master skeleton (all 4 pairs now confirmed as one
+     PSD's "PAGE 1" group, matched to these by their border-reference
+     numbers/category: 32→a, 18→b, 26→c, 05→d, 10→e, 25→f, 19→g, 16→h). x
+     stayed identical to the original build for every box; only y and width
+     shifted with his revision. All four tucked pairs re-checked and still
+     sit within the same small-overlap range as before (7-18% of the
+     smaller box's area) — no further nudging needed here. */
+  .field-frame[data-num="test-a"]{ --w:min(19.73cqw, 438px); --x:4.28cqw; --y:7.84cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-b"]{ --w:min(12.30cqw, 273px); --x:19.91cqw; --y:19.37cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="test-c"]{ --w:min(17.57cqw, 390px); --x:78.51cqw; --y:7.48cqw; --ar:1.5; --b:12px; --bc:#111110; }
+  .field-frame[data-num="test-d"]{ --w:min(8.92cqw, 198px); --x:74.05cqw; --y:15.05cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="test-e"]{ --w:min(21.13cqw, 469px); --x:67.75cqw; --y:31.85cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="test-f"]{ --w:min(7.21cqw, 160px); --x:62.03cqw; --y:41.85cqw; --ar:0.6667; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-g"]{ --w:min(12.39cqw, 275px); --x:11.8cqw; --y:34.32cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="test-h"]{ --w:min(6.40cqw, 142px); --x:21.94cqw; --y:47.88cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
 
-  /* PAGE 2 — Louis's 2nd batch, from pageskeletontemplate_8.psd (PAGE 2
-     group). Originally built as a separate page with its own copy of the
-     field, so these x/y values assumed an empty field; moved into the main
-     field here and shifted down (+53.42cqw) to clear the Test A-H batch
-     above instead of overlapping it — relative positions to each other are
-     unchanged from the original layout. */
-  .field-frame[data-num="p2-a"]{ --w:min(16.08cqw, 357px); --x:73.78cqw; --y:90.45cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
-  .field-frame[data-num="p2-b"]{ --w:min(7.48cqw, 166px); --x:56cqw; --y:109.19cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
-  .field-frame[data-num="p2-c"]{ --w:min(29.68cqw, 659px); --x:64.05cqw; --y:60.00cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="p2-d"]{ --w:min(33.78cqw, 750px); --x:5.9cqw; --y:70.63cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
-  .field-frame[data-num="p2-e"]{ --w:min(7.03cqw, 156px); --x:39.05cqw; --y:91.62cqw; --ar:0.6667; --b:24px; --bc:#111110; }
-  .field-frame[data-num="p2-f"]{ --w:min(10.99cqw, 244px); --x:56.08cqw; --y:78.69cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
+  /* PAGE 2 — EDIT: repositioned to match Louis's revised master skeleton
+     (matched to a-f by category + order: 33→a, 05→b, 08→c, 19→d, 12→e,
+     30→f). Shifted down (+57cqw beyond his drawn positions) to clear the
+     taller Page 1 batch above. One real overlap in his redrawn skeleton:
+     A/B (Portrait+Personal, both "bleeds off screen") landed at ~37% of
+     B's area under A — nudged B to bring that down to a normal ~3% corner
+     touch, the same kind of fix as before. C/F and D/E also overlap in his
+     drawing but only by ~10%, well within the range everything else on the
+     page already uses, so those were left exactly as he drew them. */
+  .field-frame[data-num="p2-a"]{ --w:min(18.24cqw, 405px); --x:73.78cqw; --y:97.81cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
+  .field-frame[data-num="p2-b"]{ --w:min(8.02cqw, 178px); --x:67.26cqw; --y:123.37cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="p2-c"]{ --w:min(27.79cqw, 617px); --x:68.02cqw; --y:63.40cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="p2-d"]{ --w:min(36.04cqw, 800px); --x:1.89cqw; --y:66.14cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="p2-e"]{ --w:min(10.32cqw, 229px); --x:33.56cqw; --y:86.41cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="p2-f"]{ --w:min(12.07cqw, 268px); --x:59.95cqw; --y:79.48cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
 
   /* PAGE 3 — Louis's 3rd (and last) batch, from pageskeletontemplate_1.psd
      (PAGE 3 group). Categories/borders read off his layer names; seed
      photos are placeholders per his own "photo doesn't matter, only
      border+category" rule. Positions converted from the skeleton's pixel
      coordinates (its 2560px canvas matches the field's cqw basis at this
-     viewport) and shifted down (+107.84cqw) to clear the Page 2 batch above.
-     In the skeleton, Image 07 (Portrait) and Image 02 (Fashion) overlapped
-     by about a quarter of the Fashion box's area — Image 02 nudged down to
-     clear it, the same fix as the Page2 A/B overlap. */
-  .field-frame[data-num="p3-a"]{ --w:min(20.18cqw, 448px); --x:16.08cqw; --y:125.00cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
-  .field-frame[data-num="p3-b"]{ --w:min(16.49cqw, 366px); --x:7.61cqw; --y:157.34cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="p3-c"]{ --w:min(39.32cqw, 873px); --x:50.09cqw; --y:130.32cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
-  .field-frame[data-num="p3-d"]{ --w:min(15.09cqw, 335px); --x:45.41cqw; --y:157.12cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
+     viewport). EDIT: Page 3 itself wasn't touched in Louis's latest file,
+     but its shift was recalculated (+123.5cqw, was +107.84) since Page 2
+     now runs taller after his revision — still just clearing whatever's
+     above it, same internal layout as before. In the skeleton, Image 07
+     (Portrait) and Image 02 (Fashion) overlapped by about a quarter of the
+     Fashion box's area — Image 02 nudged down to clear it, the same fix as
+     the Page2 A/B overlap. */
+  .field-frame[data-num="p3-a"]{ --w:min(20.18cqw, 448px); --x:16.08cqw; --y:140.66cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="p3-b"]{ --w:min(16.49cqw, 366px); --x:7.61cqw; --y:173.00cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="p3-c"]{ --w:min(39.32cqw, 873px); --x:50.09cqw; --y:145.98cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="p3-d"]{ --w:min(15.09cqw, 335px); --x:45.41cqw; --y:172.78cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
 
-  /* PAGE 4 — a further batch, also from pageskeletontemplate_1.psd (PAGE 4
-     group), same conversion/placement method as Pages 2-3: pixel coords off
-     the skeleton's 2560px canvas, shifted down (+158.24cqw) to clear
-     everything above. The two boxes (Fashion, Personal) didn't overlap each
-     other in the skeleton, so no nudge was needed this time. */
-  .field-frame[data-num="p4-a"]{ --w:min(24.32cqw, 542px); --x:65.63cqw; --y:181.75cqw; --ar:0.6667; --b:24px; --bc:#111110; }
-  .field-frame[data-num="p4-b"]{ --w:min(43.33cqw, 962px); --x:7.84cqw; --y:175.00cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+  /* PAGE 4 — also untouched by Louis's latest file; shift recalculated
+     (+172.5cqw, was +158.24) for the same reason as Page 3's, to clear the
+     now-taller batches above. The two boxes (Fashion, Personal) still don't
+     overlap each other, so no nudge needed. Field height bumped 2.30→2.45
+     to keep the statement/footer clear of this lower bottom edge. */
+  .field-frame[data-num="p4-a"]{ --w:min(24.32cqw, 542px); --x:65.63cqw; --y:196.01cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="p4-b"]{ --w:min(43.33cqw, 962px); --x:7.84cqw; --y:189.26cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
 
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
@@ -998,7 +1008,7 @@ body.lb-open{ overflow:hidden; }
      into the statement/footer; the lowest of them (Page 4's Fashion box)
      now bottoms out around 218cqw, with headroom to spare. Real-site value
      unaffected until these batches get folded back into production. */
-  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.30) !important; }
+  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.45) !important; }
 }
 </style>
 </head>
