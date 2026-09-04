@@ -770,17 +770,26 @@ body.lb-open{ overflow:hidden; }
 /* tuned away. 1500px is the cut so iPads and 13" laptops get this and   */
 /* 15" and up keep the scatter.                                          */
 /* ===================================================================== */
-/* EDIT: also applied to any short window, not just narrow ones. The scatter
-   positions frames in vh but their heights come from their width, so squeezing
-   the window vertically slides the two out of step and frames start meeting —
-   measured on the untouched live site, five different pairs collide at
-   1500-1920px wide once the viewport drops below ~900px tall, and Image 02
-   reaches the name again. That is most of a 15" Windows laptop's browser
-   window. So the scatter now needs BOTH the width and the height to work in:
-   1500px across and 900px down. The column has no such failure mode, so it takes over whenever the
-   scatter hasn't got the vertical room to work. */
+/* EDIT: also applied to any short window, not just narrow ones — a short
+   window is the other way the scatter can run out of room (see the wide-
+   layout block below for why). EDIT (re-measured after the PSD rebuild):
+   the 900px figure above was tuned for the OLD front-page composition and
+   never re-checked against the current 4-page PSD layout. Re-tested directly
+   (forcing scatter on at a real range of widths/heights and measuring actual
+   name/frame overlap): at widths >=1500px, the current layout holds with
+   zero overlap all the way down to 700px tall, only starting to break
+   around 600-650px — so the floor is lowered to 750px, a safe margin above
+   that, which is enough for a normal 15" laptop's browser window (most
+   maximised 1920x1080/1600x900/1536x864 windows land at 750-1000px of
+   available page height once browser chrome is subtracted). Narrower
+   windows (<1500px wide) are a separate, real limit: Image 42 sits close
+   enough to the name that clearance was only ever verified at 1500px+
+   width, and re-testing below that shows it genuinely starting to
+   encroach on the name (small at 1440px, worse the narrower it gets) —
+   that needs its own fix, not just a lower number, so the width floor
+   stays at 1500px for now. */
 @media (min-width:761px) and (max-width:1499px),
-       (min-width:761px) and (max-height:899px){
+       (min-width:761px) and (max-height:749px){
   /* EDIT: the name is fixed to the screen at every width above 760px (it's
      only hidden below that, on true mobile) — it was never actually immune
      to the frames in this range despite the comment above; a scrolled photo
@@ -828,10 +837,12 @@ body.lb-open{ overflow:hidden; }
 
 /* ============================================================================
    WIDE-LAYOUT FIELD — scoped to widths/heights with room for the scatter.
-   Below 1500px, or on a short window, the single-column layout above takes
-   over untouched.
+   Below 1500px wide, or under 750px tall, the single-column layout above
+   takes over untouched. (Height floor lowered from 900 to 750 after
+   re-measuring the current PSD layout directly — see the comment above the
+   column-layout block for the full reasoning.)
    ========================================================================== */
-@media (min-width:1500px) and (min-height:900px){
+@media (min-width:1500px) and (min-height:750px){
   /* the name sits in the middle of the first screen, and the category list
      at the vertical centre on the left, as asked */
   .fixed-name{ top:50% !important;
