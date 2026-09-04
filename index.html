@@ -346,6 +346,22 @@ a{ color:inherit; text-decoration:none; }
   opacity:0; transition:opacity .2s ease;
 }
 .field-frame:hover figcaption{ opacity:1; }
+/* EDIT: category label moved to the top on frames whose bottom-left
+   corner is covered by their tucked partner. Checked every tucked pair
+   with the caption actually revealed (not just measured) before touching
+   anything — most already read fine (the overlap lands at the OTHER
+   corner, or is small enough to clear the text); only these five were
+   genuinely hidden or clipped: 38 (Fashion, fully hidden by 39), 40
+   (Interiors, "INT" clipped by 41), 46 (Commercial, fully hidden by 49),
+   50 (Portrait, fully hidden by 51), 54 (Fashion, fully hidden by 55).
+   The reference-only "Image NN" tag (::before) also lives top-left —
+   moved it to top-right on these same frames so the two hover labels
+   don't land on top of each other. */
+.field-frame.cap-top figcaption{
+  top:0; bottom:auto;
+  background:linear-gradient(180deg, rgba(0,0,0,0.45), transparent);
+}
+.field-frame.cap-top::before{ left:auto; right:0; }
 
 .w-t1{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
 .w-t2{ /* sizing now comes from the control block; this class is kept only so the shuffle can read orientation from it */ }
@@ -383,27 +399,50 @@ a{ color:inherit; text-decoration:none; }
    min(Ncqw, Npx) keeps each frame's original pixel ceiling — the composition
    stops growing at the same point it always did.
    ========================================================================== */
-  .field-frame[data-num="02"]{ --w:calc(min(22cqw, 390px) - 24px); --x:5.391cqw; --y:8.09cqw; --ar:1.5; --b:12px; --bc:#111110; }
-  .field-frame[data-num="03"]{ --eb:0px; --w:min(30cqw, 390px); --x:73.795cqw; --y:173.043cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
-  .field-frame[data-num="04"]{ --eb:0px; --w:min(42cqw, 540px); --x:22.95cqw; --y:159.368cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
-  .field-frame[data-num="05"]{ --w:calc(min(24cqw, 310px) - 12px); --x:77.911cqw; --y:62.532cqw; --ar:0.6667; --b:6px; --bc:#b8952f; }
-  .field-frame[data-num="07"]{ --w:calc(min(17cqw, 220px) - 48px); --x:47.95cqw; --y:127.719cqw; --ar:0.6667; --b:24px; --bc:#ffffff; }
-  /* pushed down to clear frame 25 above it. One value covers every width,
-     because the spacing no longer changes with window height. */
-  .field-frame[data-num="08"]{ --ny:60px; --w:calc(min(30cqw, 390px) - 4px); --x:16.958cqw; --y:66.106cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="10"]{ --eb:0px; --w:min(18.2cqw, 340px); --x:67.326cqw; --y:36.471cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
-  .field-frame[data-num="12"]{ --w:calc(min(17cqw, 220px) - 48px); --x:4.151cqw; --y:177.686cqw; --ar:0.6667; --b:24px; --bc:#111110; }
-  .field-frame[data-num="13"]{ --w:calc(min(30cqw, 390px) - 4px); --x:46.657cqw; --y:206.096cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="16"]{ --w:calc(min(24cqw, 310px) - 24px); --x:69.191cqw; --y:102.009cqw; --ar:0.6667; --b:12px; --bc:#b8952f; }
-  .field-frame[data-num="18"]{ --eb:0px; --w:calc((min(42cqw, 540px) - 72px) * 0.9); --x:66.91cqw; --y:3.39cqw; --ar:1.5; --b:48px; --bc:#ffffff; }
-  .field-frame[data-num="19"]{ --w:calc(min(24cqw, 310px) - 24px); --x:12.19cqw; --y:93.656cqw; --ar:0.6667; --b:12px; --bc:#111110; }
-  .field-frame[data-num="20"]{ --w:calc(min(30cqw, 390px) - 4px); --x:37.058cqw; --y:92.793cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="24"]{ --w:calc(min(42cqw, 540px) - 4px); --x:4.658cqw; --y:217.037cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  /* nudged down so it clears the name at every width — this is what a
-     positional tweak looks like now: one value, no knock-on effects */
-  .field-frame[data-num="25"]{ --ny:-7.18cqw; --nx:11.96cqw; --w:calc(min(17cqw, 220px) - 24px); --x:1.4cqw; --y:40.696cqw; --ar:0.6667; --b:12px; --bc:#111110; }
-  .field-frame[data-num="32"]{ --w:calc(min(22cqw, 390px) - 4px); --x:28.958cqw; --y:2.468cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="33"]{ --w:calc(min(17cqw, 220px) - 24px); --x:58.09cqw; --y:56.485cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+  /* ==========================================================================
+     Positions below are taken directly from Louis's master skeleton PSD
+     (pageskeletontemplate, canvas 2560x1400), one line per real layer, using
+     the standard conversion: x_cqw = (psd_x - 300) / 2220 * 100,
+     y_cqw = psd_y / 2220 * 100 + page_shift, w_cqw = psd_w / 2220 * 100,
+     ar = psd_w / psd_h. Page height = 1400/2220*100 = 63.063cqw, so each
+     page's own y is offset by 63.063 * (page_number - 1): Page 1 = +0,
+     Page 2 = +63.063, Page 3 = +126.126, Page 4 = +189.189. No box here is
+     a combined/guessed measurement — each is one PSD layer's own bbox.
+     Border weight/colour is a styling choice (not from the PSD) following
+     the site's usual convention: thin/thick/gold/white tiers by category
+     and size, gold kept deliberately rare.
+     ========================================================================== */
+
+  /* PAGE 1 (PSD group "copy", shift +0) — 8 photos, the hero page. */
+  /* EDIT: pair nudged up 1cm together (--ny:-3.436cqw, matching the
+     established 1cm≈3.436cqw reference conversion at 1440px width) per
+     Louis's request — moved as a pair so the tuck relationship is unchanged. */
+  .field-frame[data-num="36"]{ --w:min(19.73cqw, 438px); --x:2.07cqw; --y:5.09cqw; --ar:1.490; --b:2px; --bc:#111110; --ny:-3.436cqw; }
+  .field-frame[data-num="37"]{ --w:min(11.22cqw, 249px); --x:17.79cqw; --y:15.32cqw; --ar:1.465; --b:12px; --bc:#ffffff; --ny:-3.436cqw; }
+  .field-frame[data-num="38"]{ --w:min(17.57cqw, 390px); --x:76.31cqw; --y:6.62cqw; --ar:1.483; --b:12px; --bc:#111110; }
+  .field-frame[data-num="39"]{ --w:min(8.92cqw, 198px); --x:70.05cqw; --y:13.29cqw; --ar:0.673; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="40"]{ --w:min(21.13cqw, 469px); --x:68.06cqw; --y:33.06cqw; --ar:1.388; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="41"]{ --w:min(7.21cqw, 160px); --x:61.89cqw; --y:42.43cqw; --ar:0.687; --b:2px; --bc:#111110; }
+  .field-frame[data-num="42"]{ --w:min(12.39cqw, 275px); --x:11.80cqw; --y:34.32cqw; --ar:0.686; --b:12px; --bc:#111110; --nx:-5cqw; --ny:-6cqw; }
+  .field-frame[data-num="43"]{ --w:min(6.40cqw, 142px); --x:21.94cqw; --y:47.88cqw; --ar:0.686; --b:6px; --bc:#a9852f; }
+
+  /* PAGE 2 (PSD group "copy 2", shift +63.063) — 6 photos. */
+  .field-frame[data-num="44"]{ --w:min(18.24cqw, 405px); --x:73.78cqw; --y:103.87cqw; --ar:0.691; --b:24px; --bc:#ffffff; }
+  .field-frame[data-num="45"]{ --w:min(8.02cqw, 178px); --x:69.87cqw; --y:122.61cqw; --ar:0.674; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="46"]{ --w:min(27.79cqw, 617px); --x:68.02cqw; --y:69.46cqw; --ar:1.494; --b:2px; --bc:#111110; }
+  .field-frame[data-num="47"]{ --w:min(27.52cqw, 611px); --x:2.43cqw; --y:76.40cqw; --ar:1.386; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="48"]{ --w:min(7.21cqw, 160px); --x:26.58cqw; --y:91.67cqw; --ar:0.718; --b:24px; --bc:#111110; }
+  .field-frame[data-num="49"]{ --w:min(12.07cqw, 268px); --x:59.96cqw; --y:85.54cqw; --ar:1.489; --b:12px; --bc:#ffffff; }
+
+  /* PAGE 3 (PSD group "copy 4", shift +126.126) — 4 photos. */
+  .field-frame[data-num="50"]{ --w:min(14.64cqw, 325px); --x:11.49cqw; --y:138.02cqw; --ar:0.690; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="51"]{ --w:min(16.49cqw, 366px); --x:3.83cqw; --y:156.44cqw; --ar:1.424; --b:2px; --bc:#111110; }
+  .field-frame[data-num="52"]{ --w:min(39.95cqw, 887px); --x:56.08cqw; --y:144.69cqw; --ar:1.386; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="53"]{ --w:min(15.09cqw, 335px); --x:75.09cqw; --y:170.95cqw; --ar:1.482; --b:6px; --bc:#a9852f; }
+
+  /* PAGE 4 (PSD group "copy 3", shift +189.189) — 2 photos, the final page. */
+  .field-frame[data-num="54"]{ --w:min(24.41cqw, 542px); --x:61.76cqw; --y:206.08cqw; --ar:0.690; --b:24px; --bc:#111110; }
+  .field-frame[data-num="55"]{ --w:min(24.14cqw, 536px); --x:41.89cqw; --y:233.96cqw; --ar:1.473; --b:24px; --bc:#ffffff; }
 
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
@@ -742,6 +781,14 @@ body.lb-open{ overflow:hidden; }
    scatter hasn't got the vertical room to work. */
 @media (min-width:761px) and (max-width:1499px),
        (min-width:761px) and (max-height:899px){
+  /* EDIT: the name is fixed to the screen at every width above 760px (it's
+     only hidden below that, on true mobile) — it was never actually immune
+     to the frames in this range despite the comment above; a scrolled photo
+     passing through the vertical centre sits on top of it exactly as it does
+     on the wide layout. Same fix as true mobile: hide it here too, since a
+     fixed name has no safe place to live once the photos are back in normal
+     document flow and can be anywhere on screen at any scroll position. */
+  .fixed-name{ display:none; }
   .field{ height:auto !important; }
   .field-inner{
     position:static; left:auto; right:auto;
@@ -753,58 +800,48 @@ body.lb-open{ overflow:hidden; }
     position:static !important; left:auto !important; top:auto !important;
     margin-bottom:14vh; flex:0 0 auto;
   }
-  /* Frame 32 opens the page, pinned to the right-hand third — that band is
-     clear of the centred name at every width in this range, so the name
-     always reads on load whatever the window height. Frame 18 then takes a
-     deliberate 44vh drop: measured against the shortest window this range
-     will realistically see, that is enough for it to start BELOW the name
-     rather than across it, without needing to know its rendered height. */
-  .field-inner .field-frame[data-num="18"]{ margin-top:44vh; }
   .field-inner .field-frame:last-of-type{ margin-bottom:6vh; }
-  .field-inner .field-frame[data-num="32"]{ order:1; width:calc(30% - var(--eb) * 2) !important; margin-left:68%; }
-  /* EDIT: same 10% picture reduction as the wide layout, border untouched:
-     0.9 of the picture's share of the 62%, plus the full 72px of border. */
-  /* same treatment in the column layout: width and height both name the
-     picture, so it keeps the exact size it had and the border grows outward */
-  .field-inner .field-frame[data-num="18"]{
-    order:2; margin-left:2%;
-    /* cqw, not %, for the height: a percentage height resolves against the
-       container's HEIGHT, which here is auto and would make the value
-       meaningless. Container query units resolve against its width whichever
-       property they are used in, so both dimensions stay tied to the same
-       measurement. */
-    width:calc((62cqw - 72px) * 0.9) !important;
-    height:calc((62cqw - 72px) * 0.6 - 24px) !important;
-  }
-  .field-inner .field-frame[data-num="25"]{ order:3; width:calc(28% - var(--eb) * 2) !important; margin-left:40%; }
-  /* EDIT: Image 10 pulled up per request. Every frame carries a 14vh gap
-     below it; this takes 5vh back off the top of 10 only, leaving a 9vh
-     gap to Image 25 above. Kept as a negative TOP margin rather than
-     shrinking 25's bottom margin so the change is scoped to one frame and
-     the rest of the column's rhythm is untouched. Net gap stays positive,
-     so the two can still never touch. */
-  .field-inner .field-frame[data-num="10"]{ order:4; width:calc(56% - var(--eb) * 2) !important; margin-left:30%; margin-top:-5vh; }
-  .field-inner .field-frame[data-num="05"]{ order:5; width:calc(30% - var(--eb) * 2) !important; margin-left:6%; }
-  .field-inner .field-frame[data-num="04"]{ order:6; width:calc(58% - var(--eb) * 2) !important; margin-left:24%; }
-  .field-inner .field-frame[data-num="33"]{ order:7; width:calc(26% - var(--eb) * 2) !important; margin-left:70%; }
-  .field-inner .field-frame[data-num="08"]{ order:8; width:calc(64% - var(--eb) * 2) !important; margin-left:4%; }
-  .field-inner .field-frame[data-num="16"]{ order:9; width:calc(30% - var(--eb) * 2) !important; margin-left:44%; }
-  .field-inner .field-frame[data-num="20"]{ order:10; width:calc(56% - var(--eb) * 2) !important; margin-left:40%; }
-  .field-inner .field-frame[data-num="07"]{ order:11; width:calc(28% - var(--eb) * 2) !important; margin-left:10%; }
-  .field-inner .field-frame[data-num="03"]{ order:12; width:calc(56% - var(--eb) * 2) !important; margin-left:28%; }
-  .field-inner .field-frame[data-num="19"]{ order:13; width:calc(30% - var(--eb) * 2) !important; margin-left:66%; }
-  .field-inner .field-frame[data-num="13"]{ order:14; width:calc(60% - var(--eb) * 2) !important; margin-left:0%; }
-  .field-inner .field-frame[data-num="12"]{ order:15; width:calc(26% - var(--eb) * 2) !important; margin-left:36%; }
-  .field-inner .field-frame[data-num="24"]{ order:16; width:calc(68% - var(--eb) * 2) !important; margin-left:30%; }
-  .field-inner .field-frame[data-num="02"]{ order:17; width:calc(54% - var(--eb) * 2) !important; margin-left:8%; }
+  /* Column order simply follows the PSD's own page order — Page 1's 8
+     photos first, then Page 2's 6, Page 3's 4, Page 4's 2 — one column
+     reading top to bottom exactly as the four pages are meant to be seen. */
+  .field-inner .field-frame[data-num="36"]{ order:1; width:calc(56% - var(--eb) * 2) !important; margin-left:10%; }
+  .field-inner .field-frame[data-num="37"]{ order:2; width:calc(40% - var(--eb) * 2) !important; margin-left:30%; }
+  .field-inner .field-frame[data-num="38"]{ order:3; width:calc(54% - var(--eb) * 2) !important; margin-left:20%; }
+  .field-inner .field-frame[data-num="39"]{ order:4; width:calc(28% - var(--eb) * 2) !important; margin-left:60%; }
+  .field-inner .field-frame[data-num="40"]{ order:5; width:calc(60% - var(--eb) * 2) !important; margin-left:15%; }
+  .field-inner .field-frame[data-num="41"]{ order:6; width:calc(26% - var(--eb) * 2) !important; margin-left:40%; }
+  .field-inner .field-frame[data-num="42"]{ order:7; width:calc(30% - var(--eb) * 2) !important; margin-left:55%; }
+  .field-inner .field-frame[data-num="43"]{ order:8; width:calc(26% - var(--eb) * 2) !important; margin-left:65%; }
+  .field-inner .field-frame[data-num="44"]{ order:9; width:calc(32% - var(--eb) * 2) !important; margin-left:45%; }
+  .field-inner .field-frame[data-num="45"]{ order:10; width:calc(26% - var(--eb) * 2) !important; margin-left:62%; }
+  .field-inner .field-frame[data-num="46"]{ order:11; width:calc(62% - var(--eb) * 2) !important; margin-left:12%; }
+  .field-inner .field-frame[data-num="47"]{ order:12; width:calc(64% - var(--eb) * 2) !important; margin-left:6%; }
+  .field-inner .field-frame[data-num="48"]{ order:13; width:calc(28% - var(--eb) * 2) !important; margin-left:50%; }
+  .field-inner .field-frame[data-num="49"]{ order:14; width:calc(42% - var(--eb) * 2) !important; margin-left:34%; }
+  .field-inner .field-frame[data-num="50"]{ order:15; width:calc(28% - var(--eb) * 2) !important; margin-left:42%; }
+  .field-inner .field-frame[data-num="51"]{ order:16; width:calc(54% - var(--eb) * 2) !important; margin-left:18%; }
+  .field-inner .field-frame[data-num="52"]{ order:17; width:calc(68% - var(--eb) * 2) !important; margin-left:8%; }
+  .field-inner .field-frame[data-num="53"]{ order:18; width:calc(44% - var(--eb) * 2) !important; margin-left:32%; }
+  .field-inner .field-frame[data-num="54"]{ order:19; width:calc(34% - var(--eb) * 2) !important; margin-left:48%; }
+  .field-inner .field-frame[data-num="55"]{ order:20; width:calc(50% - var(--eb) * 2) !important; margin-left:10%; }
 }
 
-/* EDIT: a frame can hold a different position for a given range of widths.
-   Image 25 takes its full move right at 1920 and up, where there is room for
-   it beside the name. Between 1500 and 1919 there isn't, so it steps back
-   into the open space on the left instead of shrinking anything else. */
-@media (min-width:1500px) and (max-width:1919px){
-  .field-frame[data-num="25"]{ --nx:0cqw; }
+/* ============================================================================
+   WIDE-LAYOUT FIELD — scoped to widths/heights with room for the scatter.
+   Below 1500px, or on a short window, the single-column layout above takes
+   over untouched.
+   ========================================================================== */
+@media (min-width:1500px) and (min-height:900px){
+  /* the name sits in the middle of the first screen, and the category list
+     at the vertical centre on the left, as asked */
+  .fixed-name{ top:50% !important;
+    transform:translate(-50%, -50%) !important; }
+
+  /* Field height covers all 4 stacked pages. Page 4 (the last, lowest page)
+     bottoms out around 250cqw (page shift 189.19 + Image 20's own
+     44.78 + 16.39 tall) — 2.75x gives that room plus a clear run-in to the
+     statement/footer below. */
+  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.75) !important; }
 }
 </style>
 </head>
@@ -828,25 +865,45 @@ body.lb-open{ overflow:hidden; }
 
 <div class="field" id="field">
 <div class="field-inner">
-    <figure class="field-frame w-l1 w-l1-tight border-thick" data-label="Image 02" data-num="02"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 02" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 double-border border-extrude" data-num="03" data-label="Image 03"><div class="db-inner"><img src="concept-05/photos/interiors-03.webp" srcset="concept-05/photos/thumb/interiors-03.webp 400w, concept-05/photos/med/interiors-03.webp 1400w, concept-05/photos/interiors-03.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 03" loading="lazy" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude" data-num="04" data-label="Image 04" data-subcat="Bali"><img src="concept-05/photos/bali-04.webp" srcset="concept-05/photos/thumb/bali-04.webp 400w, concept-05/photos/med/bali-04.webp 1400w, concept-05/photos/bali-04.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 04" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold" data-num="05" data-label="Image 05" data-subcat="Street"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 05" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin" data-label="Image 08" data-num="08" data-subcat="Workplace"><img src="concept-05/photos/workplace-10.webp" srcset="concept-05/photos/thumb/workplace-10.webp 400w, concept-05/photos/med/workplace-10.webp 1400w, concept-05/photos/workplace-10.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 08" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-  <figure class="field-frame w-l2-big double-border border-extrude" data-num="10" data-label="Image 10"><div class="db-inner"><img src="concept-05/photos/interiors-10.webp" srcset="concept-05/photos/thumb/interiors-10.webp 400w, concept-05/photos/med/interiors-10.webp 1400w, concept-05/photos/interiors-10.webp 1500w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 10"></div><figcaption>Interiors</figcaption></figure>
-  <figure class="field-frame w-t1 border-black-thick" data-num="12" data-label="Image 12"><img src="concept-05/photos/portrait-12.webp" srcset="concept-05/photos/thumb/portrait-12.webp 400w, concept-05/photos/portrait-12.webp 1333w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 12" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-num="13" data-label="Image 13"><img src="concept-05/photos/fashion-image13.webp" srcset="concept-05/photos/thumb/fashion-image13.webp 400w, concept-05/photos/med/fashion-image13.webp 1400w, concept-05/photos/fashion-image13.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 13" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l2 border-white-thick border-extrude-18-wide" data-label="Image 18" data-num="18" data-subcat="Bali"><img src="concept-05/photos/bali-18.webp" srcset="concept-05/photos/thumb/bali-18.webp 400w, concept-05/photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 18" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
-  <figure class="field-frame w-t2 border-thick" data-num="19" data-label="Image 19"><img src="concept-05/photos/fashion-16.webp" srcset="concept-05/photos/thumb/fashion-16.webp 400w, concept-05/photos/med/fashion-16.webp 1400w, concept-05/photos/fashion-16.webp 1466w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 19" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-  <figure class="field-frame w-l1 border-thin" data-label="Image 20" data-num="20" data-subcat="UL" data-pool="Personal"><img src="concept-05/photos/personal-20.webp" srcset="concept-05/photos/thumb/personal-20.webp 400w, concept-05/photos/med/personal-20.webp 1400w, concept-05/photos/personal-20.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 20" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-  <figure class="field-frame w-l2 border-thin" data-num="24" data-label="Image 24"><img src="concept-05/photos/personal-24.webp" srcset="concept-05/photos/thumb/personal-24.webp 400w, concept-05/photos/med/personal-24.webp 1400w, concept-05/photos/personal-24.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1286px) 42vw, 540px" alt="Image 24" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-thick" data-label="Image 25" data-num="25"><img src="concept-05/photos/fashion-25.webp" srcset="concept-05/photos/thumb/fashion-25.webp 400w, concept-05/photos/fashion-25.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 25" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <!-- ============================================================
+         Rebuilt from Louis's master skeleton PSD (pageskeletontemplate),
+         exactly as its own 4 "PAGE SKELETON" groups are laid out — no
+         invented composition, no borrowed content from an older file.
+         Canvas 2560x1400, one group per page, all four stacked into this
+         one continuous scroll in page order (Page 1 first, since that is
+         the only group carrying the Name + tagline layer — the site's own
+         .fixed-name element covers that, so no separate name element is
+         needed here). Every box below is a real PSD layer's own bounding
+         box; nothing is a combined/split measurement.
+         ============================================================ -->
 
-  <figure class="field-frame w-t1 border-white-thick" data-num="07" data-label="Image 07"><img src="concept-05/photos/portrait-07.webp" srcset="concept-05/photos/thumb/portrait-07.webp 400w, concept-05/photos/portrait-07.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 07" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-  <figure class="field-frame w-t2 border-gold-thick" data-label="Image 16" data-num="16"><img src="concept-05/photos/interiors-16.webp" srcset="concept-05/photos/thumb/interiors-16.webp 400w, concept-05/photos/med/interiors-16.webp 1400w, concept-05/photos/interiors-16.webp 1467w" sizes="(max-width:760px) 82vw, (max-width:1292px) 24vw, 310px" alt="Image 16" fetchpriority="high" decoding="async"><figcaption>Interiors</figcaption></figure>
+    <!-- PAGE 1 (PSD group "copy") — 8 photos, the hero page around the name. -->
+    <figure class="field-frame w-l1 border-thin" data-label="Image 36" data-num="36"><img src="concept-05/photos/personal-32.webp" srcset="concept-05/photos/thumb/personal-32.webp 400w, concept-05/photos/med/personal-32.webp 1400w, concept-05/photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 434px" alt="Image 36" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="concept-05/photos/bali-18.webp" srcset="concept-05/photos/thumb/bali-18.webp 400w, concept-05/photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 249px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-thick cap-top" data-label="Image 38" data-num="38"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/med/fashion-01.webp 1400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Image 38" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Image 39" data-num="39" data-pool="Personal"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Image 39" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 double-border cap-top" data-label="Image 40" data-num="40"><div class="db-inner"><img src="concept-05/photos/interiors-35.webp" srcset="concept-05/photos/thumb/interiors-35.webp 400w, concept-05/photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-thin" data-label="Image 41" data-num="41"><img src="concept-05/photos/fashion-05.webp" srcset="concept-05/photos/thumb/fashion-05.webp 400w, concept-05/photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 156px" alt="Image 41" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-thick" data-label="Image 42" data-num="42"><img src="concept-05/photos/fashion-42.webp" srcset="concept-05/photos/thumb/fashion-42.webp 400w, concept-05/photos/fashion-42.webp 1268w" sizes="(max-width:760px) 82vw, 251px" alt="Image 42" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Image 43" data-num="43"><img src="concept-05/photos/interiors-70.webp" srcset="concept-05/photos/thumb/interiors-70.webp 400w, concept-05/photos/interiors-70.webp 1001w" sizes="(max-width:760px) 82vw, 130px" alt="Image 43" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
 
-    <figure class="field-frame w-l1 w-l1-tight border-thin" data-label="Image 32" data-num="32"><img src="concept-05/photos/personal-32.webp" srcset="concept-05/photos/thumb/personal-32.webp 400w, concept-05/photos/med/personal-32.webp 1400w, concept-05/photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, (max-width:1300px) 30vw, 390px" alt="Image 32" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-  <figure class="field-frame w-t1 border-white" data-label="Image 33" data-num="33"><img src="concept-05/photos/portrait-33.webp" srcset="concept-05/photos/thumb/portrait-33.webp 400w, concept-05/photos/portrait-33.webp 1334w" sizes="(max-width:760px) 82vw, (max-width:1294px) 17vw, 220px" alt="Image 33" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <!-- PAGE 2 (PSD group "copy 2") — 6 photos. -->
+    <figure class="field-frame w-t1 border-white-thick" data-label="Image 44" data-num="44"><img src="concept-05/photos/portrait-41.webp" srcset="concept-05/photos/thumb/portrait-41.webp 400w, concept-05/photos/portrait-41.webp 1000w" sizes="(max-width:760px) 82vw, 357px" alt="Image 44" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Image 45" data-num="45"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, 166px" alt="Image 45" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin cap-top" data-label="Image 46" data-num="46"><img src="concept-05/photos/wellness-05.webp" srcset="concept-05/photos/thumb/wellness-05.webp 400w, concept-05/photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="concept-05/photos/interiors-36.webp" srcset="concept-05/photos/thumb/interiors-36.webp 400w, concept-05/photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 611px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-black-thick" data-label="Image 48" data-num="48"><img src="concept-05/photos/portrait-60.webp" srcset="concept-05/photos/thumb/portrait-60.webp 400w, concept-05/photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 160px" alt="Image 48" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="concept-05/photos/personal-40.webp" srcset="concept-05/photos/thumb/personal-40.webp 400w, concept-05/photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 49" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+
+    <!-- PAGE 3 (PSD group "copy 4") — 4 photos. -->
+    <figure class="field-frame w-t1 border-white cap-top" data-label="Image 50" data-num="50"><img src="concept-05/photos/portrait-33.webp" srcset="concept-05/photos/thumb/portrait-33.webp 400w, concept-05/photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 325px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 51" data-num="51"><img src="concept-05/photos/fashion-07.webp" srcset="concept-05/photos/thumb/fashion-07.webp 400w, concept-05/photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Image 51" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="concept-05/photos/srilanka-04.webp" srcset="concept-05/photos/thumb/srilanka-04.webp 400w, concept-05/photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 887px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-gold" data-label="Image 53" data-num="53"><img src="concept-05/photos/landscape-43.webp" srcset="concept-05/photos/thumb/landscape-43.webp 400w, concept-05/photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Image 53" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+
+    <!-- PAGE 4 (PSD group "copy 3") — 2 photos, the final page. -->
+    <figure class="field-frame w-t1 border-black-thick cap-top" data-label="Image 54" data-num="54"><img src="concept-05/photos/fashion-40.webp" srcset="concept-05/photos/thumb/fashion-40.webp 400w, concept-05/photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Image 54" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="concept-05/photos/personal-04.webp" srcset="concept-05/photos/thumb/personal-04.webp 400w, concept-05/photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 536px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
 </div>
 </div>
 
@@ -1250,6 +1307,20 @@ body.lb-open{ overflow:hidden; }
     // people. Nothing on the field is fixed now; every frame draws from its
     // own pool. Whichever photo lands in a frame still opens that frame's
     // own gallery, so only the picture changes, never where it goes.
+    //
+    // EDIT (Sep): the 9 small tucked-corner companion photos added this
+    // round (Image i02/i05/i08/i10/i16/i18/i19/i20/i32) shuffle like every
+    // other frame on request — Louis wants those boxes changing photo too,
+    // not held fixed. They share a bare "Travel"/"Commercial" caption with
+    // no subcategory; that pool also holds the large "browse more" extra
+    // photos for those categories, but no OTHER frame on the page reads
+    // that exact bare pool (every other Travel/Commercial-tagged frame has
+    // its own subcategory, which redirects it elsewhere) — so these 9 only
+    // ever trade photos among themselves and the category's extras, never
+    // with a big frame elsewhere. That's what makes it safe to let them
+    // shuffle freely: nothing here can hand a big frame one of these tiny
+    // crops, or vice versa. Clicking one still opens its category's gallery
+    // as normal either way.
     const PROTECTED_LABELS = new Set();
     // .w-t1/.w-t2 are aspect-ratio 2/3 (portrait); every .w-l* is 3/2
     // (landscape) — a frame's own class is ground truth for the SHAPE it
@@ -1339,7 +1410,7 @@ body.lb-open{ overflow:hidden; }
         if (deck.length === 0) deck = shuffleArr(pool.slice());
         const pick = deck.pop();
         const img = f.querySelector('img');
-        const thumbSrc = pick.replace('photos/', 'photos/thumb/');
+        const thumbSrc = pick.replace('concept-05/photos/', 'concept-05/photos/thumb/');
         img.setAttribute('src', pick);
         img.setAttribute('srcset', thumbSrc + ' 400w, ' + pick + ' 1900w');
       });
@@ -1555,10 +1626,7 @@ body.lb-open{ overflow:hidden; }
   // This swaps a full-size path for its smaller sibling.
   function variantSrc(src, kind) {
     if (!src) return src;
-    // NOTE: src already begins concept-05/photos/ on this page, so only the
-    // variant folder is inserted — adding the prefix again produced
-    // concept-05/concept-05/photos/... and every thumbnail 404'd.
-    return src.replace(/photos\//, 'photos/' + kind + '/');
+    return src.replace(/photos\//, 'concept-05/photos/' + kind + '/');
   }
 
   function buildRail() {

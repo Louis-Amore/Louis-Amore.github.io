@@ -417,8 +417,11 @@ a{ color:inherit; text-decoration:none; }
      ========================================================================== */
 
   /* PAGE 1 (PSD group "copy", shift +0) — 8 photos, the hero page. */
-  .field-frame[data-num="36"]{ --w:min(19.73cqw, 438px); --x:2.07cqw; --y:5.09cqw; --ar:1.490; --b:2px; --bc:#111110; }
-  .field-frame[data-num="37"]{ --w:min(11.22cqw, 249px); --x:17.79cqw; --y:15.32cqw; --ar:1.465; --b:12px; --bc:#ffffff; }
+  /* EDIT: pair nudged up 1cm together (--ny:-3.436cqw, matching the
+     established 1cm≈3.436cqw reference conversion at 1440px width) per
+     Louis's request — moved as a pair so the tuck relationship is unchanged. */
+  .field-frame[data-num="36"]{ --w:min(19.73cqw, 438px); --x:2.07cqw; --y:5.09cqw; --ar:1.490; --b:2px; --bc:#111110; --ny:-3.436cqw; }
+  .field-frame[data-num="37"]{ --w:min(11.22cqw, 249px); --x:17.79cqw; --y:15.32cqw; --ar:1.465; --b:12px; --bc:#ffffff; --ny:-3.436cqw; }
   .field-frame[data-num="38"]{ --w:min(17.57cqw, 390px); --x:76.31cqw; --y:6.62cqw; --ar:1.483; --b:12px; --bc:#111110; }
   .field-frame[data-num="39"]{ --w:min(8.92cqw, 198px); --x:70.05cqw; --y:13.29cqw; --ar:0.673; --b:6px; --bc:#a9852f; }
   .field-frame[data-num="40"]{ --w:min(21.13cqw, 469px); --x:68.06cqw; --y:33.06cqw; --ar:1.388; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
