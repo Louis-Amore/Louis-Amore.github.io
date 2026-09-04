@@ -434,6 +434,20 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="p2-e"]{ --w:min(7.03cqw, 156px); --x:39.05cqw; --y:91.62cqw; --ar:0.6667; --b:24px; --bc:#111110; }
   .field-frame[data-num="p2-f"]{ --w:min(10.99cqw, 244px); --x:56.08cqw; --y:78.69cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
 
+  /* PAGE 3 — Louis's 3rd (and last) batch, from pageskeletontemplate_1.psd
+     (PAGE 3 group). Categories/borders read off his layer names; seed
+     photos are placeholders per his own "photo doesn't matter, only
+     border+category" rule. Positions converted from the skeleton's pixel
+     coordinates (its 2560px canvas matches the field's cqw basis at this
+     viewport) and shifted down (+107.84cqw) to clear the Page 2 batch above.
+     In the skeleton, Image 07 (Portrait) and Image 02 (Fashion) overlapped
+     by about a quarter of the Fashion box's area — Image 02 nudged down to
+     clear it, the same fix as the Page2 A/B overlap. */
+  .field-frame[data-num="p3-a"]{ --w:min(20.18cqw, 448px); --x:16.08cqw; --y:125.00cqw; --ar:0.6667; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="p3-b"]{ --w:min(16.49cqw, 366px); --x:7.61cqw; --y:157.34cqw; --ar:1.5; --b:2px; --bc:#111110; }
+  .field-frame[data-num="p3-c"]{ --w:min(39.32cqw, 873px); --x:50.09cqw; --y:130.32cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
+  .field-frame[data-num="p3-d"]{ --w:min(15.09cqw, 335px); --x:45.41cqw; --y:157.12cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
+
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
 .field-frame{
@@ -1020,6 +1034,15 @@ body.lb-open{ overflow:hidden; }
     <figure class="field-frame w-l1 double-border" data-label="Page2 D" data-num="p2-d"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 750px" alt="Page 2 - Interiors" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
     <figure class="field-frame w-t1 border-black-thick" data-label="Page2 E" data-num="p2-e"><img src="photos/portrait-60.webp" srcset="photos/thumb/portrait-60.webp 400w, photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 156px" alt="Page 2 - Portrait" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-l1 border-white" data-label="Page2 F" data-num="p2-f"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Page 2 - Personal" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <!-- PAGE 3 — Louis's 3rd (and last) batch, from pageskeletontemplate_1.psd
+         (PAGE 3 group). Categories/borders read off his layer names; seed
+         photos are placeholders per his own "photo doesn't matter, only
+         border+category" rule, each a real landscape/portrait file matching
+         that box's shape. -->
+    <figure class="field-frame w-t1 border-white" data-label="Page3 A" data-num="p3-a"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 448px" alt="Page 3 - Portrait" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Page3 B" data-num="p3-b"><img src="photos/fashion-07.webp" srcset="photos/thumb/fashion-07.webp 400w, photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Page 3 - Fashion" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Page3 C" data-num="p3-c"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 873px" alt="Page 3 - Travel" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-gold" data-label="Page3 D" data-num="p3-d"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Page 3 - Landscape" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
 </div>
 </div>
 
