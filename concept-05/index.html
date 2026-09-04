@@ -448,6 +448,14 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="p3-c"]{ --w:min(39.32cqw, 873px); --x:50.09cqw; --y:130.32cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
   .field-frame[data-num="p3-d"]{ --w:min(15.09cqw, 335px); --x:45.41cqw; --y:157.12cqw; --ar:1.5; --b:6px; --bc:#a9852f; }
 
+  /* PAGE 4 — a further batch, also from pageskeletontemplate_1.psd (PAGE 4
+     group), same conversion/placement method as Pages 2-3: pixel coords off
+     the skeleton's 2560px canvas, shifted down (+158.24cqw) to clear
+     everything above. The two boxes (Fashion, Personal) didn't overlap each
+     other in the skeleton, so no nudge was needed this time. */
+  .field-frame[data-num="p4-a"]{ --w:min(24.32cqw, 542px); --x:65.63cqw; --y:181.75cqw; --ar:0.6667; --b:24px; --bc:#111110; }
+  .field-frame[data-num="p4-b"]{ --w:min(43.33cqw, 962px); --x:7.84cqw; --y:175.00cqw; --ar:1.5; --b:24px; --bc:#ffffff; }
+
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
 .field-frame{
@@ -984,8 +992,13 @@ body.lb-open{ overflow:hidden; }
   .fixed-name{ top:50% !important;
     transform:translate(-50%, -50%) !important; }
 
-  /* his composition ends higher than the old one, so the field is shorter */
-  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.10) !important; }
+  /* his composition ends higher than the old one, so the field is shorter --
+     EDIT: raised from 2.10 to 2.30 for this review file only, so the four
+     added batches (Test A-H, Page 2-4) have room to scroll without running
+     into the statement/footer; the lowest of them (Page 4's Fashion box)
+     now bottoms out around 218cqw, with headroom to spare. Real-site value
+     unaffected until these batches get folded back into production. */
+  .field{ height:calc((100vw - clamp(250px, calc(16.2vw + 76px), 300px) - 40px) * 2.30) !important; }
 }
 </style>
 </head>
@@ -1043,6 +1056,13 @@ body.lb-open{ overflow:hidden; }
     <figure class="field-frame w-l1 border-thin" data-label="Page3 B" data-num="p3-b"><img src="photos/fashion-07.webp" srcset="photos/thumb/fashion-07.webp 400w, photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Page 3 - Fashion" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-l1 double-border" data-label="Page3 C" data-num="p3-c"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 873px" alt="Page 3 - Travel" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
     <figure class="field-frame w-l1 border-gold" data-label="Page3 D" data-num="p3-d"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Page 3 - Landscape" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <!-- PAGE 4 — a further batch, from pageskeletontemplate_1.psd (PAGE 4
+         group). Categories/borders read off his layer names; seed photos
+         are placeholders per his own "photo doesn't matter, only
+         border+category" rule, each a real landscape/portrait file matching
+         that box's shape. -->
+    <figure class="field-frame w-t1 border-black-thick" data-label="Page4 A" data-num="p4-a"><img src="photos/fashion-40.webp" srcset="photos/thumb/fashion-40.webp 400w, photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Page 4 - Fashion" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-l1 border-white-thick" data-label="Page4 B" data-num="p4-b"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 962px" alt="Page 4 - Personal" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
 </div>
 </div>
 
