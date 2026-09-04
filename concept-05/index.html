@@ -413,11 +413,13 @@ a{ color:inherit; text-decoration:none; }
      border copied from Image 18 (border-white-thick). Roughly matches the
      position/size he drew in Photoshop — not pixel-exact, just close. */
   .field-frame[data-num="test-a"]{ --w:min(17.9cqw, 397px); --x:5.95cqw; --y:5.18cqw; --ar:1.5; --b:2px; --bc:#111110; }
-  .field-frame[data-num="test-b"]{ --w:min(10.8cqw, 240px); --x:20.05cqw; --y:15.9cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
+  .field-frame[data-num="test-b"]{ --w:min(11.22cqw, 249px); --x:19.91cqw; --y:15.59cqw; --ar:1.5; --b:12px; --bc:#ffffff; }
   .field-frame[data-num="test-c"]{ --w:min(16.5cqw, 366px); --x:78.51cqw; --y:3.69cqw; --ar:1.5; --b:12px; --bc:#111110; }
   .field-frame[data-num="test-d"]{ --w:min(8.4cqw, 186px); --x:74.05cqw; --y:11.26cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
   .field-frame[data-num="test-e"]{ --w:min(16.8cqw, 373px); --x:67.75cqw; --y:28.11cqw; --ar:1.5; --b:48px; --bc:#111110; --inner:2px; --inner-c:#ffffff; }
-  .field-frame[data-num="test-f"]{ --w:min(8.5cqw, 189px); --x:59.91cqw; --y:38.02cqw; --ar:0.6667; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-f"]{ --w:min(7.7cqw, 171px); --x:60.59cqw; --y:38.02cqw; --ar:0.6667; --b:2px; --bc:#111110; }
+  .field-frame[data-num="test-g"]{ --w:min(11.31cqw, 251px); --x:11.8cqw; --y:29.41cqw; --ar:0.6667; --b:12px; --bc:#111110; }
+  .field-frame[data-num="test-h"]{ --w:min(5.86cqw, 130px); --x:21.94cqw; --y:44.1cqw; --ar:0.6667; --b:6px; --bc:#a9852f; }
 
 /* One rule drives every frame from the values above. One box model, so the
    border always sits outside the picture. */
@@ -989,8 +991,11 @@ body.lb-open{ overflow:hidden; }
     <figure class="field-frame w-l1 border-thick" data-label="Test C" data-num="test-c"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Test C" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Test D" data-num="test-d" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Test D" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <!-- New pair: Interiors main + Fashion tucked, from the 3rd skeleton file -->
-    <figure class="field-frame w-l1 double-border" data-label="Test E" data-num="test-e"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 531px" alt="Test E" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Test E" data-num="test-e"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Test E" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
     <figure class="field-frame w-t1 border-thin" data-label="Test F" data-num="test-f"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 171px" alt="Test F" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <!-- New pair: Fashion (portrait) main + Interiors (portrait) tucked, from the 4th skeleton file -->
+    <figure class="field-frame w-t1 border-thick" data-label="Test G" data-num="test-g"><img src="photos/fashion-42.webp" srcset="photos/thumb/fashion-42.webp 400w, photos/fashion-42.webp 1268w" sizes="(max-width:760px) 82vw, 251px" alt="Test G" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Test H" data-num="test-h"><img src="photos/interiors-70.webp" srcset="photos/thumb/interiors-70.webp 400w, photos/interiors-70.webp 1001w" sizes="(max-width:760px) 82vw, 130px" alt="Test H" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
 </div>
 </div>
 
