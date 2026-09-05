@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /concept-05/test-*.html
+Disallow: /concept-05/interiors-portfolio.html
+Disallow: /concept-05/commercial-portfolio.html
 
 Sitemap: https://louis-amore.github.io/sitemap.xml
