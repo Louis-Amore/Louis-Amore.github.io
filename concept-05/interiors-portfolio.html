@@ -38,7 +38,7 @@ header nav a:hover{color:var(--ink);}
 .row{display:flex;align-items:center;gap:60px;padding:60px 48px;border-top:1px solid rgba(17,17,16,.08);}
 .row:nth-child(even){flex-direction:row-reverse;}
 .row .img{flex:0 0 58%;}
-.row .img img{width:100%;height:440px;object-fit:cover;}
+.row .img img{width:100%;height:440px;object-fit:cover;cursor:zoom-in;}
 .row .cap{flex:1;}
 .row .cap .n{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.08em;margin-bottom:10px;}
 .row .cap p{font-family:var(--font-serif);font-style:italic;font-size:18px;color:#3a3a38;line-height:1.6;}
@@ -53,20 +53,81 @@ footer a:hover{color:var(--ink);border-color:var(--ink);}
   .row, .row:nth-child(even){flex-direction:column;gap:20px;padding:36px 24px;}
   .row .img img{height:auto;}
 }
+/* -------- lightbox (click any photo to enlarge) -------- */
+#lb{position:fixed;inset:0;background:rgba(17,17,16,.96);display:none;align-items:center;
+  justify-content:center;flex-direction:column;padding:40px;z-index:100;}
+#lb.open{display:flex;}
+#lb img{max-width:88vw;max-height:76vh;object-fit:contain;}
+#lb .cap{color:#efece6;font-family:var(--font-serif);font-style:italic;font-size:15px;
+  margin-top:20px;text-align:center;max-width:640px;}
+#lb .close{position:fixed;top:22px;right:28px;color:#efece6;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;background:none;
+  border:1px solid rgba(239,236,230,.4);padding:8px 14px;}
+#lb .close:hover{border-color:#efece6;}
+#lb .nav{position:fixed;top:50%;transform:translateY(-50%);color:#efece6;font-size:30px;
+  cursor:pointer;background:none;border:none;padding:20px;opacity:.6;line-height:1;}
+#lb .nav:hover{opacity:1;}
+#lb .prev{left:6px;} #lb .next{right:6px;}
+#lb .count{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);color:rgba(239,236,230,.7);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;}
+@media (max-width:900px){ #lb .nav{font-size:24px;padding:14px;} }
 </style>
 </head>
 <body>
 <header><div class="name">Louis Amore</div><nav><a href="mailto:louis.amore@gmail.com">Enquire</a></nav></header>
 <div class="lede"><div class="eyebrow">Interiors &amp; Architecture</div><h1>Interior &amp; architectural photography for designers, developers and property brands.</h1><p>London-based photographer, 15+ years&rsquo; experience working with brands, agencies and organisations &mdash; available for commissions in the UK and internationally.</p></div>
-<div class="row"><div class="img"><img src="photos/interiors-11.webp" alt=""></div>
-      <div class="cap"><div class="n">01</div><p>Beauty hall counter, department store, London.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-26.webp" alt=""></div>
-      <div class="cap"><div class="n">02</div><p>Prada boutique interior.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-68.webp" alt=""></div>
-      <div class="cap"><div class="n">03</div><p>Lancôme counter, department store.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-35.webp" alt=""></div>
-      <div class="cap"><div class="n">04</div><p>Marble kitchen island, private residence.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-36.webp" alt=""></div>
-      <div class="cap"><div class="n">05</div><p>Skylight kitchen extension, London.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-37.webp" alt=""></div>
-      <div class="cap"><div class="n">06</div><p>Period fireplace, restored townhouse.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-38.webp" alt=""></div>
-      <div class="cap"><div class="n">07</div><p>Steel-framed garden doors.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-40.webp" alt=""></div>
-      <div class="cap"><div class="n">08</div><p>Freestanding bath, residential bathroom.</p></div></div>
+<div class="row"><div class="img"><img src="photos/interiors-11.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Beauty hall counter, department store, London.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-26.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Prada boutique interior.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-68.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Lancôme counter, department store.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-35.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Marble kitchen island, private residence.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-36.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Skylight kitchen extension, London.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-37.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Period fireplace, restored townhouse.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-38.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Steel-framed garden doors.</p></div></div><div class="row"><div class="img"><img src="photos/interiors-40.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="cap"><div class="n"></div><p>Freestanding bath, residential bathroom.</p></div></div>
 <footer><a href="mailto:louis.amore@gmail.com">louis.amore@gmail.com</a> &middot; London, UK</footer>
+
+<div id="lb">
+  <button class="close" aria-label="Close">Close &times;</button>
+  <button class="nav prev" aria-label="Previous">&lsaquo;</button>
+  <button class="nav next" aria-label="Next">&rsaquo;</button>
+  <img alt="">
+  <div class="cap"></div>
+  <div class="count"></div>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.row .cap .n').forEach(function(el, i){
+    el.textContent = String(i + 1).padStart(2, '0');
+  });
+  var imgs = Array.prototype.slice.call(document.querySelectorAll('.row .img img'));
+  if (!imgs.length) return;
+  var lb = document.getElementById('lb');
+  var lbImg = lb.querySelector('img');
+  var lbCap = lb.querySelector('.cap');
+  var lbCount = lb.querySelector('.count');
+  var idx = 0;
+  function show(i){
+    idx = (i + imgs.length) % imgs.length;
+    lbImg.src = imgs[idx].currentSrc || imgs[idx].src;
+    var capEl = imgs[idx].closest('.row').querySelector('.cap p');
+    lbCap.textContent = capEl ? capEl.textContent : '';
+    lbCount.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(imgs.length).padStart(2, '0');
+  }
+  function open(i){ show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function close(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+  imgs.forEach(function(img, i){ img.addEventListener('click', function(){ open(i); }); });
+  lb.querySelector('.close').addEventListener('click', close);
+  lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
+  lb.querySelector('.prev').addEventListener('click', function(){ show(idx - 1); });
+  lb.querySelector('.next').addEventListener('click', function(){ show(idx + 1); });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+})();
+</script>
 </body>
 </html>
