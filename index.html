@@ -670,7 +670,10 @@ body.lb-open{ overflow:hidden; }
 .lb-info h3{
   font-family:'EB Garamond', serif; font-weight:700; font-size:33px; letter-spacing:-0.005em; margin:0 0 20px; line-height:1.16;
 }
-.lb-info h3 em{ font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted); }
+.lb-info h3 em{
+  display:block; margin-top:6px;
+  font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted);
+}
 .lb-info p{
   font-family:'Fraunces', serif; font-optical-sizing:auto; font-style:italic;
   font-size:19px; line-height:1.65; letter-spacing:0.005em; color:#3a3a38; margin:0;
@@ -2003,7 +2006,7 @@ body.lb-open{ overflow:hidden; }
     const titleText = (story && story.title) || displayCat;
     const generic = !story && genericSubtitles[displayCat];
     const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
-    lbInfoTitle.innerHTML = titleText + ' <em>- ' + suffix + '</em>';
+    lbInfoTitle.innerHTML = titleText + ' <em>' + suffix + '</em>';
     lbInfoCat.style.display = '';
     lbInfoBody.innerHTML = story
       ? story.body.map(p => `<p>${p}</p>`).join('')
