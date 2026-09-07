@@ -636,9 +636,13 @@ body.lb-open{ overflow:hidden; }
 .lb-stage.tags-below{ flex-direction:column; gap:14px; }
 .lb-stage.tags-below .lb-tags{ position:static; left:auto; margin-left:0; width:100%; }
 .lb-tags p{
-  font-family:var(--font-body); font-size:13px; line-height:1.7; color:#3a3a38; margin:0;
+  font-family:'Courier Prime', monospace; font-size:13px; line-height:1.7;
+  letter-spacing:0.01em; color:#3a3a38; margin:0;
 }
-.lb-tags strong{ display:block; margin-bottom:8px; color:var(--ink); }
+.lb-tags strong{
+  display:block; margin-bottom:8px; font-family:'Courier Prime', monospace;
+  font-weight:700; color:var(--ink);
+}
 
 @media (min-width:761px) and (max-width:1150px){
   .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
@@ -675,8 +679,8 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-info h3 em{ font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted); }
 .lb-info p{
-  font-family:'Fraunces', serif; font-optical-sizing:auto; font-style:italic;
-  font-size:19px; line-height:1.65; letter-spacing:0.005em; color:#3a3a38; margin:0;
+  font-family:'Courier Prime', monospace;
+  font-size:15px; line-height:1.8; letter-spacing:0.01em; color:#3a3a38; margin:0;
 }
 .lb-info p + p{ margin-top:14px; }
 .lb-info .q{
