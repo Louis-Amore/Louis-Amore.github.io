@@ -62,7 +62,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=EB+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500;700&family=Courier+Prime:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=EB+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap">
 <style>
 
 :root{
@@ -144,8 +144,8 @@ a{ color:inherit; text-decoration:none; }
    across the name sooner or later. Photographs doing that is the design;
    text over text is just unreadable. Here it cannot happen at any size. */
 .fixed-name .name-note{
-  font-family:var(--font-mono); color:var(--muted);
-  font-size:12px; letter-spacing:.04em; line-height:1.85;
+  font-family:'Courier Prime', monospace; color:var(--muted);
+  font-size:13px; letter-spacing:.02em; line-height:1.85;
   text-align:center;
   /* EDIT: taken OUT of the lockup's flow and hung beneath the name instead.
      The lockup is centred on the screen, so while the paragraph counted toward
@@ -649,7 +649,7 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.ratio-portrait:not(.has-photo){ width:min(32vw, 340px); }
   .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
   .lb-info h3{ font-size:28px; }
-  .lb-info p{ font-size:13px; }
+  .lb-info p{ font-size:16px; }
   .lb-frame{ border-width:80px; max-width:calc(100vw - 100px - 220px - 280px); }
   .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
   .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
@@ -670,9 +670,13 @@ body.lb-open{ overflow:hidden; }
 .lb-info h3{
   font-family:'EB Garamond', serif; font-weight:700; font-size:33px; letter-spacing:-0.005em; margin:0 0 20px; line-height:1.16;
 }
-.lb-info h3 em{ font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted); }
+.lb-info h3 em{
+  display:block; margin-top:6px;
+  font-family:'EB Garamond', serif; font-style:italic; font-weight:500; color:var(--muted);
+}
 .lb-info p{
-  font-family:var(--font-body); font-size:15px; line-height:1.7; color:#3a3a38; margin:0;
+  font-family:'Fraunces', serif; font-optical-sizing:auto; font-style:italic;
+  font-size:19px; line-height:1.65; letter-spacing:0.005em; color:#3a3a38; margin:0;
 }
 .lb-info p + p{ margin-top:14px; }
 .lb-info .q{
@@ -754,7 +758,17 @@ body.lb-open{ overflow:hidden; }
 }
 
 @media (max-width:760px){
-  .fixed-name{ display:none; }
+  /* EDIT: previously hidden entirely at this width — a fixed name had no
+     safe place to live once photos are back in normal document flow. Now
+     made static/in-flow instead, so it sits as an ordinary block at the
+     top of the page and can never collide with anything below it. */
+  .fixed-name{
+    display:block; position:relative; top:auto; left:auto; transform:none;
+    padding:90px 24px 10px;
+  }
+  .fixed-name .name-note{
+    position:static; transform:none; margin:18px auto 0; width:52ch; max-width:min(52ch, 86vw);
+  }
   .field{ height:auto; }
   .field-frame{
     position:static !important; left:auto !important; top:auto !important;
@@ -805,7 +819,13 @@ body.lb-open{ overflow:hidden; }
      on the wide layout. Same fix as true mobile: hide it here too, since a
      fixed name has no safe place to live once the photos are back in normal
      document flow and can be anywhere on screen at any scroll position. */
-  .fixed-name{ display:none; }
+  .fixed-name{
+    display:block; position:relative; top:auto; left:auto; transform:none;
+    padding:90px 24px 10px;
+  }
+  .fixed-name .name-note{
+    position:static; transform:none; margin:18px auto 0; width:52ch; max-width:min(52ch, 86vw);
+  }
   .field{ height:auto !important; }
   .field-inner{
     position:static; left:auto; right:auto;
@@ -897,8 +917,8 @@ body.lb-open{ overflow:hidden; }
          ============================================================ -->
 
     <!-- PAGE 1 (PSD group "copy") — 8 photos, the hero page around the name. -->
-    <figure class="field-frame w-l1 border-thin" data-label="Image 36" data-num="36"><img src="concept-05/photos/personal-32.webp" srcset="concept-05/photos/thumb/personal-32.webp 400w, concept-05/photos/med/personal-32.webp 1400w, concept-05/photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 434px" alt="Image 36" fetchpriority="high" decoding="async"><figcaption>Landscape</figcaption></figure>
-    <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="concept-05/photos/bali-18.webp" srcset="concept-05/photos/thumb/bali-18.webp 400w, concept-05/photos/bali-18.webp 1900w" sizes="(max-width:760px) 82vw, 249px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin" data-label="Image 36" data-num="36"><img src="concept-05/photos/personal-32.webp" srcset="concept-05/photos/thumb/personal-32.webp 400w, concept-05/photos/med/personal-32.webp 1400w, concept-05/photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 434px" alt="Image 36" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="concept-05/photos/landscape-40.webp" srcset="concept-05/photos/thumb/landscape-40.webp 400w, concept-05/photos/landscape-40.webp 1900w" sizes="(max-width:760px) 82vw, 249px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
     <figure class="field-frame w-l1 border-thick cap-top" data-label="Image 38" data-num="38"><img src="concept-05/photos/fashion-01.webp" srcset="concept-05/photos/thumb/fashion-01.webp 400w, concept-05/photos/med/fashion-01.webp 1400w, concept-05/photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Image 38" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 39" data-num="39" data-pool="Personal"><img src="concept-05/photos/street-05.webp" srcset="concept-05/photos/thumb/street-05.webp 400w, concept-05/photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Image 39" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
     <figure class="field-frame w-l1 double-border cap-top" data-label="Image 40" data-num="40"><div class="db-inner"><img src="concept-05/photos/interiors-35.webp" srcset="concept-05/photos/thumb/interiors-35.webp 400w, concept-05/photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
@@ -1051,15 +1071,12 @@ body.lb-open{ overflow:hidden; }
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
     'Interiors': [
-      { label: 'Interiors 35', ratio: 'landscape', src: 'concept-05/photos/interiors-35.webp' },
-      { label: 'Interiors 36', ratio: 'landscape', src: 'concept-05/photos/interiors-36.webp' },
       { label: 'Interiors 37', ratio: 'landscape', src: 'concept-05/photos/interiors-37.webp' },
       { label: 'Interiors 39', ratio: 'landscape', src: 'concept-05/photos/interiors-39.webp' },
       { label: 'Interiors 40', ratio: 'landscape', src: 'concept-05/photos/interiors-40.webp' },
       { label: 'Interiors 67', ratio: 'landscape', src: 'concept-05/photos/interiors-67.webp' },
       { label: 'Interiors 68', ratio: 'landscape', src: 'concept-05/photos/interiors-68.webp' },
       { label: 'Interiors 69', ratio: 'landscape', src: 'concept-05/photos/interiors-69.webp' },
-      { label: 'Interiors 70', ratio: 'portrait', src: 'concept-05/photos/interiors-70.webp' },
       { label: 'Interiors 71', ratio: 'landscape', src: 'concept-05/photos/interiors-71.webp' },
       { label: 'Interiors 72', ratio: 'landscape', src: 'concept-05/photos/interiors-72.webp' },
       { label: 'Interiors 73', ratio: 'landscape', src: 'concept-05/photos/interiors-73.webp' },
@@ -1072,12 +1089,10 @@ body.lb-open{ overflow:hidden; }
       { label: 'Image 28', ratio: 'portrait', src: 'concept-05/photos/interiors-38.webp' },
     ],
     'Portrait': [
-      { label: 'Portrait 41', ratio: 'portrait', src: 'concept-05/photos/portrait-41.webp' },
       { label: 'Portrait 43', ratio: 'portrait', src: 'concept-05/photos/portrait-43.webp' },
       { label: 'Portrait 49', ratio: 'landscape', src: 'concept-05/photos/portrait-49.webp' },
       { label: 'Portrait 51', ratio: 'landscape', src: 'concept-05/photos/portrait-51.webp' },
       { label: 'Portrait 56', ratio: 'landscape', src: 'concept-05/photos/portrait-56.webp' },
-      { label: 'Portrait 60', ratio: 'portrait', src: 'concept-05/photos/portrait-60.webp' },
       { label: 'Portrait 65', ratio: 'portrait', src: 'concept-05/photos/portrait-65.webp' },
       { label: 'Portrait 67', ratio: 'portrait', src: 'concept-05/photos/portrait-67.webp' },
       { label: 'Portrait 68', ratio: 'portrait', src: 'concept-05/photos/portrait-68.webp' },
@@ -1094,18 +1109,13 @@ body.lb-open{ overflow:hidden; }
       { label: 'Image 35', ratio: 'portrait', src: 'concept-05/photos/portrait-35.webp' },
     ],
     'Fashion': [
-      { label: 'Fashion 01', ratio: 'landscape', src: 'concept-05/photos/fashion-01.webp' },
-      { label: 'Fashion 05', ratio: 'portrait', src: 'concept-05/photos/fashion-05.webp' },
       { label: 'Fashion 06', ratio: 'landscape', src: 'concept-05/photos/fashion-image06.webp' },
-      { label: 'Fashion 07', ratio: 'landscape', src: 'concept-05/photos/fashion-07.webp' },
       { label: 'Fashion 09', ratio: 'portrait', src: 'concept-05/photos/fashion-09.webp' },
       { label: 'Fashion 11', ratio: 'portrait', src: 'concept-05/photos/fashion-11.webp' },
       { label: 'Fashion 12', ratio: 'landscape', src: 'concept-05/photos/fashion-12.webp' },
       { label: 'Fashion 13', ratio: 'portrait', src: 'concept-05/photos/fashion-13.webp' },
       { label: 'Fashion 15', ratio: 'portrait', src: 'concept-05/photos/fashion-15.webp' },
       { label: 'Fashion 19', ratio: 'portrait', src: 'concept-05/photos/fashion-19.webp' },
-      { label: 'Fashion 40', ratio: 'portrait', src: 'concept-05/photos/fashion-40.webp' },
-      { label: 'Fashion 42', ratio: 'portrait', src: 'concept-05/photos/fashion-42.webp' },
       { label: 'Fashion 43', ratio: 'portrait', src: 'concept-05/photos/fashion-43.webp' },
       { label: 'Fashion 44', ratio: 'portrait', src: 'concept-05/photos/fashion-44.webp' },
       { label: 'Fashion 45', ratio: 'portrait', src: 'concept-05/photos/fashion-45.webp' },
@@ -1127,10 +1137,8 @@ body.lb-open{ overflow:hidden; }
       { label: 'Fashion 57', ratio: 'portrait', src: 'concept-05/photos/fashion-57.webp' },
     ],
     'Landscape': [
-      { label: 'Landscape 40', ratio: 'landscape', src: 'concept-05/photos/landscape-40.webp' },
       { label: 'Landscape 41', ratio: 'landscape', src: 'concept-05/photos/landscape-41.webp' },
       { label: 'Landscape 42', ratio: 'landscape', src: 'concept-05/photos/landscape-42.webp' },
-      { label: 'Landscape 43', ratio: 'landscape', src: 'concept-05/photos/landscape-43.webp' },
       { label: 'Landscape 44', ratio: 'landscape', src: 'concept-05/photos/landscape-44.webp' },
       { label: 'Landscape 45', ratio: 'landscape', src: 'concept-05/photos/landscape-45.webp' },
       { label: 'Landscape 46', ratio: 'landscape', src: 'concept-05/photos/landscape-46.webp' },
@@ -1138,6 +1146,10 @@ body.lb-open{ overflow:hidden; }
       { label: 'Landscape 48', ratio: 'landscape', src: 'concept-05/photos/landscape-48.webp' },
       { label: 'Landscape 51', ratio: 'landscape', src: 'concept-05/photos/landscape-51.webp' },
       { label: 'Landscape 52', ratio: 'landscape', src: 'concept-05/photos/landscape-52.webp' },
+      { label: 'Landscape 53', ratio: 'landscape', src: 'concept-05/photos/landscape-53.webp' },
+      { label: 'Landscape 54', ratio: 'landscape', src: 'concept-05/photos/landscape-54.webp' },
+      { label: 'Landscape 56', ratio: 'landscape', src: 'concept-05/photos/landscape-56.webp' },
+      { label: 'Landscape 57', ratio: 'landscape', src: 'concept-05/photos/landscape-57.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
       { label: 'Image 23', ratio: 'landscape', src: 'concept-05/photos/landscape-23.webp' },
@@ -1202,6 +1214,7 @@ body.lb-open{ overflow:hidden; }
       { label: 'Bali 11', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-11.webp' },
       { label: 'Bali 12', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-12.webp' },
       { label: 'Bali 14', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-14.webp' },
+      { label: 'Bali 18', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-18.webp' },
       { label: 'Bali 19', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-19.webp' },
       { label: 'Bali 20', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-20.webp' },
       { label: 'Bali 21', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-21.webp' },
@@ -1212,6 +1225,13 @@ body.lb-open{ overflow:hidden; }
       { label: 'Bali 26', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-26.webp' },
       { label: 'Bali 28', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-28.webp' },
       { label: 'Bali 29', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-29.webp' },
+      { label: 'Bali 30', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-30.webp' },
+      { label: 'Bali 31', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-31.webp' },
+      { label: 'Bali 32', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-32.webp' },
+      { label: 'Bali 33', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-33.webp' },
+      { label: 'Bali 34', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-34.webp' },
+      { label: 'Bali 35', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-35.webp' },
+      { label: 'Bali 36', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/bali-36.webp' },
       // EDIT: moved off the homepage field when the collage was shortened —
       // still fully browsable here in the category rail
       { label: 'Image 09', cat: 'Travel', ratio: 'landscape', src: 'concept-05/photos/personal-image09.webp' },
@@ -2002,7 +2022,7 @@ body.lb-open{ overflow:hidden; }
     const titleText = (story && story.title) || displayCat;
     const generic = !story && genericSubtitles[displayCat];
     const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
-    lbInfoTitle.innerHTML = titleText + ' <em>- ' + suffix + '</em>';
+    lbInfoTitle.innerHTML = titleText + ' <em>' + suffix + '</em>';
     lbInfoCat.style.display = '';
     lbInfoBody.innerHTML = story
       ? story.body.map(p => `<p>${p}</p>`).join('')
