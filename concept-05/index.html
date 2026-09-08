@@ -604,18 +604,31 @@ body.lb-open{ overflow:hidden; }
 }
 /* the image itself carries BOTH caps; width follows naturally but never
    exceeds the available middle space */
-.lb-frame.has-photo img{
+.lb-frame.has-photo .lb-stage-img{
   max-height:calc(61.05vh - 120px);
   max-width:calc(100vw - 21vw - 320px - 140px);
   width:auto; height:auto; display:block;
 }
 /* EDIT: We Shall Remember sized 7% smaller than the other categories */
-.lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 120px); }
+.lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 120px); }
 .lb-frame.ratio-landscape:not(.has-photo){ width:min(70vw, 900px); aspect-ratio:3/2; }
 .lb-frame.ratio-portrait:not(.has-photo){ width:min(38vw, 480px); aspect-ratio:2/3; }
 .lb-frame.has-photo{ width:auto; aspect-ratio:auto; }
 .lb-frame span{ padding:16px; }
 .lb-frame:not(.has-photo) img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* EDIT (perf): stage now loads a blurred thumbnail instantly (usually
+   already cached from the rail) behind the real photo, sized via the
+   thumbnail's own aspect ratio so the box never collapses to nothing while
+   waiting — the "white blank box" a slow connection used to show. The real
+   photo crossfades in over it once loaded. */
+.lb-frame{ position:relative; }
+.lb-blur{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; filter:blur(20px); transform:scale(1.15);
+  z-index:0; pointer-events:none;
+}
+.lb-stage-img{ position:relative; z-index:1; opacity:0; transition:opacity .35s ease; }
+.lb-stage-img.loaded{ opacity:1; }
 
 .lb-tags{
   /* float to the right of the centred photo without pushing it off-centre */
@@ -654,8 +667,8 @@ body.lb-open{ overflow:hidden; }
   .lb-info h3{ font-size:28px; }
   .lb-info p{ font-size:16px; }
   .lb-frame{ border-width:80px; max-width:calc(100vw - 100px - 220px - 280px); }
-  .lb-frame.has-photo img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
-  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 80px); }
+  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
+  .lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 80px); }
   .lb-tags{ width:120px; margin-left:10px; }
   .lb-stage::before{ flex-basis:120px; min-width:120px; }
 }
@@ -737,8 +750,8 @@ body.lb-open{ overflow:hidden; }
   .lb-frame{ border-width:44px; max-width:calc(100vw - 106px); }
   /* EDIT: 86vw did not account for the 44px mat on each side, so the frame
      overflowed the screen on narrow phones — subtract the mat instead. */
-  .lb-frame.has-photo img{ max-height:calc(61.05vh - 44px); max-width:calc(100vw - 106px); }
-  .lb-frame.subcat-WSR.has-photo img{ max-height:calc(56.78vh - 44px); }
+  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 44px); max-width:calc(100vw - 106px); }
+  .lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 44px); }
   .lb-frame.ratio-landscape:not(.has-photo), .lb-frame.ratio-portrait:not(.has-photo){ width:86vw; max-width:86vw; }
   /* EDIT: on phones un-pin the stage and stack tags below the photo */
   .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
@@ -921,31 +934,31 @@ body.lb-open{ overflow:hidden; }
 
     <!-- PAGE 1 (PSD group "copy") — 8 photos, the hero page around the name. -->
     <figure class="field-frame w-l1 border-thin" data-label="Image 36" data-num="36"><img src="photos/personal-32.webp" srcset="photos/thumb/personal-32.webp 400w, photos/med/personal-32.webp 1400w, photos/personal-32.webp 2000w" sizes="(max-width:760px) 82vw, 434px" alt="Image 36" fetchpriority="high" decoding="async"><figcaption>Travel</figcaption></figure>
-    <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="photos/landscape-40.webp" srcset="photos/thumb/landscape-40.webp 400w, photos/landscape-40.webp 1900w" sizes="(max-width:760px) 82vw, 249px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 37" data-num="37"><img src="photos/landscape-40.webp" srcset="photos/thumb/landscape-40.webp 400w, photos/med/landscape-40.webp 1400w, photos/landscape-40.webp 1900w" sizes="(max-width:760px) 82vw, 249px" alt="Image 37" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
     <figure class="field-frame w-l1 border-thick cap-top" data-label="Image 38" data-num="38"><img src="photos/fashion-01.webp" srcset="photos/thumb/fashion-01.webp 400w, photos/med/fashion-01.webp 1400w, photos/fashion-01.webp 1900w" sizes="(max-width:760px) 82vw, 390px" alt="Image 38" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-t1 border-gold" data-label="Image 39" data-num="39" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 2000w" sizes="(max-width:760px) 82vw, 150px" alt="Image 39" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 double-border cap-top" data-label="Image 40" data-num="40"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
-    <figure class="field-frame w-t1 border-thin" data-label="Image 41" data-num="41"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 156px" alt="Image 41" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
+    <figure class="field-frame w-t1 border-gold" data-label="Image 39" data-num="39" data-pool="Personal"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, 150px" alt="Image 39" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 double-border cap-top" data-label="Image 40" data-num="40"><div class="db-inner"><img src="photos/interiors-35.webp" srcset="photos/thumb/interiors-35.webp 400w, photos/med/interiors-35.webp 1400w, photos/interiors-35.webp 1500w" sizes="(max-width:760px) 82vw, 373px" alt="Image 40" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-t1 border-thin" data-label="Image 41" data-num="41"><img src="photos/fashion-05.webp" srcset="photos/thumb/fashion-05.webp 400w, photos/med/fashion-05.webp 1400w, photos/fashion-05.webp 1900w" sizes="(max-width:760px) 82vw, 156px" alt="Image 41" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-t1 border-thick" data-label="Image 42" data-num="42"><img src="photos/fashion-42.webp" srcset="photos/thumb/fashion-42.webp 400w, photos/fashion-42.webp 1268w" sizes="(max-width:760px) 82vw, 251px" alt="Image 42" fetchpriority="high" decoding="async"><figcaption>Fashion</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 43" data-num="43"><img src="photos/interiors-70.webp" srcset="photos/thumb/interiors-70.webp 400w, photos/interiors-70.webp 1001w" sizes="(max-width:760px) 82vw, 130px" alt="Image 43" loading="lazy" decoding="async"><figcaption>Interiors</figcaption></figure>
 
     <!-- PAGE 2 (PSD group "copy 2") — 6 photos. -->
     <figure class="field-frame w-t1 border-white-thick" data-label="Image 44" data-num="44"><img src="photos/portrait-41.webp" srcset="photos/thumb/portrait-41.webp 400w, photos/portrait-41.webp 1000w" sizes="(max-width:760px) 82vw, 357px" alt="Image 44" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-t1 border-gold" data-label="Image 45" data-num="45"><img src="photos/street-05.webp" srcset="photos/thumb/street-05.webp 400w, photos/street-05.webp 1334w" sizes="(max-width:760px) 82vw, 166px" alt="Image 45" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
-    <figure class="field-frame w-l1 border-thin cap-top" data-label="Image 46" data-num="46"><img src="photos/wellness-05.webp" srcset="photos/thumb/wellness-05.webp 400w, photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
-    <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 611px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
+    <figure class="field-frame w-l1 border-thin cap-top" data-label="Image 46" data-num="46"><img src="photos/wellness-05.webp" srcset="photos/thumb/wellness-05.webp 400w, photos/med/wellness-05.webp 1400w, photos/wellness-05.webp 1900w" sizes="(max-width:760px) 82vw, 659px" alt="Image 46" fetchpriority="high" decoding="async"><figcaption>Commercial</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 47" data-num="47"><div class="db-inner"><img src="photos/interiors-36.webp" srcset="photos/thumb/interiors-36.webp 400w, photos/med/interiors-36.webp 1400w, photos/interiors-36.webp 1500w" sizes="(max-width:760px) 82vw, 611px" alt="Image 47" fetchpriority="high" decoding="async"></div><figcaption>Interiors</figcaption></figure>
     <figure class="field-frame w-t1 border-black-thick" data-label="Image 48" data-num="48"><img src="photos/portrait-60.webp" srcset="photos/thumb/portrait-60.webp 400w, photos/portrait-60.webp 1000w" sizes="(max-width:760px) 82vw, 160px" alt="Image 48" loading="lazy" decoding="async"><figcaption>Portrait</figcaption></figure>
-    <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 49" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-white" data-label="Image 49" data-num="49"><img src="photos/personal-40.webp" srcset="photos/thumb/personal-40.webp 400w, photos/med/personal-40.webp 1400w, photos/personal-40.webp 1900w" sizes="(max-width:760px) 82vw, 244px" alt="Image 49" loading="lazy" decoding="async"><figcaption>Personal</figcaption></figure>
 
     <!-- PAGE 3 (PSD group "copy 4") — 4 photos. -->
     <figure class="field-frame w-t1 border-white cap-top" data-label="Image 50" data-num="50"><img src="photos/portrait-33.webp" srcset="photos/thumb/portrait-33.webp 400w, photos/portrait-33.webp 1267w" sizes="(max-width:760px) 82vw, 325px" alt="Image 50" fetchpriority="high" decoding="async"><figcaption>Portrait</figcaption></figure>
     <figure class="field-frame w-l1 border-thin" data-label="Image 51" data-num="51"><img src="photos/fashion-07.webp" srcset="photos/thumb/fashion-07.webp 400w, photos/fashion-07.webp 1300w" sizes="(max-width:760px) 82vw, 366px" alt="Image 51" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 887px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
-    <figure class="field-frame w-l1 border-gold" data-label="Image 53" data-num="53"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Image 53" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
+    <figure class="field-frame w-l1 double-border" data-label="Image 52" data-num="52"><div class="db-inner"><img src="photos/srilanka-04.webp" srcset="photos/thumb/srilanka-04.webp 400w, photos/med/srilanka-04.webp 1400w, photos/srilanka-04.webp 1900w" sizes="(max-width:760px) 82vw, 887px" alt="Image 52" fetchpriority="high" decoding="async"></div><figcaption>Travel</figcaption></figure>
+    <figure class="field-frame w-l1 border-gold" data-label="Image 53" data-num="53"><img src="photos/landscape-43.webp" srcset="photos/thumb/landscape-43.webp 400w, photos/med/landscape-43.webp 1400w, photos/landscape-43.webp 1900w" sizes="(max-width:760px) 82vw, 335px" alt="Image 53" loading="lazy" decoding="async"><figcaption>Landscape</figcaption></figure>
 
     <!-- PAGE 4 (PSD group "copy 3") — 2 photos, the final page. -->
     <figure class="field-frame w-t1 border-black-thick cap-top" data-label="Image 54" data-num="54"><img src="photos/fashion-40.webp" srcset="photos/thumb/fashion-40.webp 400w, photos/fashion-40.webp 1267w" sizes="(max-width:760px) 82vw, 542px" alt="Image 54" loading="lazy" decoding="async"><figcaption>Fashion</figcaption></figure>
-    <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 536px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
+    <figure class="field-frame w-l1 border-white-thick" data-label="Image 55" data-num="55"><img src="photos/personal-04.webp" srcset="photos/thumb/personal-04.webp 400w, photos/med/personal-04.webp 1400w, photos/personal-04.webp 1900w" sizes="(max-width:760px) 82vw, 536px" alt="Image 55" fetchpriority="high" decoding="async"><figcaption>Personal</figcaption></figure>
 </div>
 </div>
 
@@ -2000,10 +2013,48 @@ body.lb-open{ overflow:hidden; }
     const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
     if (info.src) {
       lbFrame.classList.add('has-photo');
-      lbFrame.innerHTML = `<img src="${info.src}" alt="${localLabel}" decoding="async">`;
-      const _img = lbFrame.querySelector('img');
-      if (_img.complete) { /* already cached — fitStage() below covers it */ }
-      else _img.addEventListener('load', fitStage, { once: true });
+      // EDIT (perf): used to load the raw full-resolution file (often
+      // 500KB+) directly with nothing shown while it downloaded — on a slow
+      // connection that read as a blank white box. Now: the already-tiny
+      // thumbnail (usually already cached from the rail) shows blurred
+      // behind the photo and sizes the frame immediately via its own aspect
+      // ratio, while the real photo loads from the smaller ~1400px "med"
+      // file instead of the full original and crossfades in on top.
+      const thumbSrc = variantSrc(info.src, 'thumb');
+      const medSrc = variantSrc(info.src, 'med');
+      lbFrame.innerHTML = `<img class="lb-blur" src="${thumbSrc}" alt="" aria-hidden="true" decoding="async"><img class="lb-stage-img" src="${medSrc}" alt="${localLabel}" decoding="async">`;
+      const _blur = lbFrame.querySelector('.lb-blur');
+      const _img = lbFrame.querySelector('.lb-stage-img');
+      // EDIT: aspect-ratio alone doesn't give the flex-fit frame a real
+      // pixel size before the sharp image has bytes (the frame sizes itself
+      // off the img's rendered box, and a bare aspect-ratio + auto width/
+      // height on a not-yet-loaded replaced element resolves to nothing in
+      // this flex layout) - so read the frame's own max-height/max-width
+      // (already resolved to real px by the browser for the current
+      // breakpoint/subcat) and set an explicit pixel box from the blur
+      // thumbnail's ratio instead. Cleared once the real photo loads so
+      // fitStage()'s own sizing takes back over exactly as before.
+      const applyRatio = () => {
+        if (!_blur.naturalWidth) return;
+        const ratio = _blur.naturalWidth / _blur.naturalHeight;
+        const maxH = parseFloat(getComputedStyle(_img).maxHeight) || 0;
+        const maxW = parseFloat(getComputedStyle(_img).maxWidth) || Infinity;
+        if (maxH > 0) {
+          let h = maxH, w = h * ratio;
+          if (w > maxW) { w = maxW; h = w / ratio; }
+          _img.style.height = h + 'px';
+          _img.style.width = w + 'px';
+        }
+      };
+      if (_blur.complete) applyRatio(); else _blur.addEventListener('load', applyRatio, { once: true });
+      const markLoaded = () => {
+        _img.classList.add('loaded');
+        _img.style.height = '';
+        _img.style.width = '';
+        fitStage();
+      };
+      if (_img.complete) markLoaded();
+      else _img.addEventListener('load', markLoaded, { once: true });
       // EDIT: real photos size the frame by their own height (max-height on the
       // img), so any ratio — landscape, portrait, cinematic — displays fully and
       // stays centred. No forced aspect-ratio on the frame.
@@ -2049,6 +2100,19 @@ body.lb-open{ overflow:hidden; }
     const activeThumb = lbRail.children[currentPos];
     if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     fitStage();
+    preloadNeighbors();
+  }
+
+  // EDIT (perf): warm the browser cache for the next/previous photo's "med"
+  // file so stepping through a category feels instant instead of paying the
+  // download cost fresh on every click.
+  function preloadNeighbors() {
+    if (currentCategoryItems.length < 2) return;
+    [1, -1].forEach(delta => {
+      const idx = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
+      const src = currentCategoryItems[idx] && currentCategoryItems[idx].info.src;
+      if (src) { const im = new Image(); im.src = variantSrc(src, 'med'); }
+    });
   }
 
   // Measures the real, current gap between the rail and the info panel and
@@ -2059,7 +2123,7 @@ body.lb-open{ overflow:hidden; }
   function fitStage() {
     const info = document.querySelector('.lb-info');
     const frame = document.querySelector('.lb-frame');
-    const img = frame && frame.querySelector('img');
+    const img = frame && frame.querySelector('.lb-stage-img');
     const tags = document.querySelector('.lb-tags');
     if (!info || !frame) return;
     const stage = frame.closest('.lb-stage');
