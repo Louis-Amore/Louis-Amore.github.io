@@ -758,7 +758,17 @@ body.lb-open{ overflow:hidden; }
 }
 
 @media (max-width:760px){
-  .fixed-name{ display:none; }
+  /* EDIT: previously hidden entirely at this width — a fixed name had no
+     safe place to live once photos are back in normal document flow. Now
+     made static/in-flow instead, so it sits as an ordinary block at the
+     top of the page and can never collide with anything below it. */
+  .fixed-name{
+    display:block; position:relative; top:auto; left:auto; transform:none;
+    padding:90px 24px 10px;
+  }
+  .fixed-name .name-note{
+    position:static; transform:none; margin:18px auto 0; width:52ch; max-width:min(52ch, 86vw);
+  }
   .field{ height:auto; }
   .field-frame{
     position:static !important; left:auto !important; top:auto !important;
@@ -809,7 +819,13 @@ body.lb-open{ overflow:hidden; }
      on the wide layout. Same fix as true mobile: hide it here too, since a
      fixed name has no safe place to live once the photos are back in normal
      document flow and can be anywhere on screen at any scroll position. */
-  .fixed-name{ display:none; }
+  .fixed-name{
+    display:block; position:relative; top:auto; left:auto; transform:none;
+    padding:90px 24px 10px;
+  }
+  .fixed-name .name-note{
+    position:static; transform:none; margin:18px auto 0; width:52ch; max-width:min(52ch, 86vw);
+  }
   .field{ height:auto !important; }
   .field-inner{
     position:static; left:auto; right:auto;
