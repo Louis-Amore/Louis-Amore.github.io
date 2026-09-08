@@ -618,7 +618,12 @@ body.lb-open{ overflow:hidden; }
    thumbnail's own aspect ratio so the box never collapses to nothing while
    waiting — the "white blank box" a slow connection used to show. The real
    photo crossfades in over it once loaded. */
-.lb-frame{ position:relative; }
+/* EDIT (fix): the blur filter's soft edge isn't clipped by the image's own
+   box — without overflow:hidden here it visually bled several px out past
+   the photo and into the white mat, showing as a stray blurry halo. Clip it
+   to the frame's own content box (box-shadow is unaffected — it's painted
+   outside the border box, not inside as content, so it still shows). */
+.lb-frame{ position:relative; overflow:hidden; }
 .lb-blur{
   position:absolute; inset:0; width:100%; height:100%;
   object-fit:cover; filter:blur(20px); transform:scale(1.15);
