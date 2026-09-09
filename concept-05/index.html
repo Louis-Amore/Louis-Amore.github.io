@@ -677,6 +677,23 @@ body.lb-open{ overflow:hidden; }
 .lb-tags{
   /* float to the right of the centred photo without pushing it off-centre */
   position:absolute; left:100%; top:0; margin-left:14px; width:220px;
+  /* EDIT: this box never had a background of its own — it was always meant
+     to float directly over whatever's behind it. That's invisible while
+     browsing (nothing behind it but the page), but the moment a single photo
+     is open there's a dimmed grid — or, when stacked below a tall photo, the
+     info panel's own column — right behind/beside it, showing through with
+     no separation. Reported twice as "the caption is overlapping the grid /
+     the text column", both times because this box was genuinely transparent,
+     not because of a positioning bug (fitStage's beside/below decision was
+     landing in the right place both times — the box itself just had nothing
+     behind it of its own). A solid card, matching the photo's own white mat,
+     fixes every variant of this at once regardless of where fitStage puts it.
+     box-sizing is the page-wide border-box reset (see `*{box-sizing:border-box}`
+     near the top of this stylesheet), so the padding below is already
+     included in every width fitStage() measures or sets on this element —
+     nothing in that convergence math needed to change. */
+  background:#ffffff; padding:16px 18px;
+  box-shadow:0 12px 30px rgba(17,17,16,0.12);
 }
 /* no left spacer needed now the photo is screen-centred */
 .lb-stage::before{ display:none; }
@@ -2089,6 +2106,16 @@ body.lb-open{ overflow:hidden; }
       : '';
     const caption = photoCaptions[info.label];
     const stageEl = lbFrame.closest('.lb-stage');
+    // EDIT: captions temporarily disabled site-wide, on request, until there's
+    // a better place to put them — always take the existing "no caption
+    // assigned" path (same one Portrait/Fashion/etc. already use every day)
+    // instead of the caption-box branch below. This reuses layout that's
+    // already proven safe rather than adding a new hidden state; the caption
+    // text/data itself is left untouched so it can be switched back on later
+    // by restoring the two lines commented out just below.
+    stageEl.classList.add('no-tags');
+    lbTagsText.innerHTML = '';
+    /*
     if (caption) {
       stageEl.classList.remove('no-tags');
       lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
@@ -2096,6 +2123,7 @@ body.lb-open{ overflow:hidden; }
       stageEl.classList.add('no-tags');
       lbTagsText.innerHTML = '';
     }
+    */
   }
 
   // Opens one photo enlarged in the existing white-mat "window", reusing
@@ -2425,11 +2453,15 @@ body.lb-open{ overflow:hidden; }
       return;
     }
     const SAFETY = 16;
-    // EDIT: raised from 70px. A 70px column turns a caption into one or two
-    // words per line, which is what made the Unconditional Love captions look
-    // broken. Below this width the box is no longer worth having beside the
-    // photo at all, so the loop stacks it underneath instead.
-    const MIN_TAGS = 150;
+    // EDIT: raised from 70px, then again from 150px once the box gained its
+    // own background/padding (36px of horizontal padding now eats into this
+    // same border-box width) — without the bump, the floor left LESS actual
+    // text width than before and made captions wrap tighter than intended at
+    // the same nominal width. 186 keeps the same ~150px of real text room
+    // the 150px floor used to give when the box had no padding at all. Below
+    // this width the box is no longer worth having beside the photo at all,
+    // so the loop stacks it underneath instead.
+    const MIN_TAGS = 186;
     const MIN_MAT = 60;   // the design's original mat width — never go below it
     // Neither the photo's rendered width nor exactly where it centres is
     // reliably predictable from outside the flex/centring layout (it depends
