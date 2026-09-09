@@ -1861,6 +1861,14 @@ body.lb-open{ overflow:hidden; }
     // would render past MAX_ROW_HEIGHT, so photos read as a gallery grid
     // rather than a couple of oversized prints.
     const MAX_ROW_HEIGHT = 300;
+    // A genuine diptych pair is exempt from MAX_ROW_HEIGHT (see below), and
+    // that's deliberate — the size contrast against the 3-up rows is the
+    // whole point. But when BOTH photos in the pair are portrait-oriented,
+    // fitting them to the full panel width can stretch the row past 1000px
+    // on a wide screen, which reads as oversized rather than dramatic. Cap
+    // just that specific case, and only past this height — landscape-mixed
+    // pairs (which never come close to this height anyway) are untouched.
+    const MAX_PORTRAIT_DIPTYCH_HEIGHT = 750;
     const rows = [];
     let idx = 0, p = 0;
     while (idx < gridItemsCache.length) {
@@ -1890,7 +1898,16 @@ body.lb-open{ overflow:hidden; }
       if (gridItemsCache.length - (idx + group.length) === 1) {
         group = gridItemsCache.slice(idx, idx + group.length + 1);
       }
-      rows.push({ items: group, height: fitRow(group) });
+      let rowHeight = fitRow(group);
+      // Both-portrait diptych, over the ceiling: clamp the height rather
+      // than growing the row into a 3-up (that would break the pairing).
+      // The row then renders narrower than the panel and centers itself
+      // (see the render loop's justify-content) instead of stretching
+      // full-width at an oversized height.
+      if (group.length === 2 && group[0].r < 1 && group[1].r < 1 && rowHeight > MAX_PORTRAIT_DIPTYCH_HEIGHT) {
+        rowHeight = MAX_PORTRAIT_DIPTYCH_HEIGHT;
+      }
+      rows.push({ items: group, height: rowHeight });
       idx += group.length; p += 1;
     }
     // The forward pass can only grow a row by pulling photos AHEAD of it,
@@ -1959,6 +1976,11 @@ body.lb-open{ overflow:hidden; }
     rows.forEach((row) => {
       const rowEl = document.createElement('div');
       rowEl.className = 'grid-row';
+      // A height-clamped portrait diptych renders narrower than the full
+      // panel width (its two images no longer add up to fill it) — center
+      // it rather than leaving it stuck to the left edge. This is a no-op
+      // for every normal row, which already sums to the full width.
+      rowEl.style.justifyContent = 'center';
       row.items.forEach((it) => {
         const img = document.createElement('img');
         img.src = variantSrc(it.item.info.src, 'med');
