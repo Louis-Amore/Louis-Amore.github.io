@@ -1860,10 +1860,20 @@ body.lb-open{ overflow:hidden; }
     while (idx < gridItemsCache.length) {
       let n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
       let group = gridItemsCache.slice(idx, idx + n);
-      let height = fitRow(group);
-      while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
-        group = gridItemsCache.slice(idx, idx + group.length + 1);
-        height = fitRow(group);
+      // A 2-up row is a deliberate "diptych" pairing — the rhythm pattern
+      // means it to read larger and more dramatic than the 3-up rows around
+      // it, and that size CONTRAST is the whole point. So a genuine pair is
+      // exempt from the cap entirely, at any panel width, rather than
+      // forcibly grown into a 3-up the moment it gets tall on a wide screen
+      // — which would just flatten every row to the same size and erase the
+      // effect this rhythm exists to create. The cap only ever applies to
+      // 3-up-or-bigger rows.
+      if (group.length > 2) {
+        let height = fitRow(group);
+        while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
+          group = gridItemsCache.slice(idx, idx + group.length + 1);
+          height = fitRow(group);
+        }
       }
       // never leave exactly one photo dangling for the next row to open
       // with — an orphaned single photo would stretch across the FULL
@@ -1873,41 +1883,45 @@ body.lb-open{ overflow:hidden; }
       // cap check just above).
       if (gridItemsCache.length - (idx + group.length) === 1) {
         group = gridItemsCache.slice(idx, idx + group.length + 1);
-        height = fitRow(group);
       }
-      rows.push({ items: group, height });
+      rows.push({ items: group, height: fitRow(group) });
       idx += group.length; p += 1;
     }
     // The forward pass can only grow a row by pulling photos AHEAD of it,
-    // so a row can still land over the cap when it's short on leftovers
-    // with nothing ahead left to borrow (most often, but not only, the
-    // very last row). Only rows that were ALREADY over cap right here get
-    // a fix attempt below — a row that only becomes tall as a side effect
-    // of donating a photo elsewhere is left alone, so an unavoidable
-    // remainder can't be relocated somewhere new (in particular, never
-    // pushed all the way back to row 0, which for an all-landscape category
-    // has near-identical row heights and nothing "cheap" to hide it in).
+    // so a 3-up-or-bigger row can still land over the cap when it's short
+    // on leftovers with nothing ahead left to borrow (most often, but not
+    // only, the very last row). Only such rows — never a genuine 2-up
+    // diptych pair, which is allowed to run tall by design — get a fix
+    // attempt below, and only the ones that were ALREADY over cap right
+    // here: a row that only becomes tall as a side effect of donating a
+    // photo elsewhere is left alone, so an unavoidable remainder can't be
+    // relocated somewhere new (in particular, never pushed all the way back
+    // to row 0, which for an all-landscape category has near-identical row
+    // heights and nothing "cheap" to hide it in).
     const overCapIdx = [];
     for (let i = 0; i < rows.length; i++) {
-      if (rows[i].height > MAX_ROW_HEIGHT) overCapIdx.push(i);
+      if (rows[i].items.length > 2 && rows[i].height > MAX_ROW_HEIGHT) overCapIdx.push(i);
     }
     overCapIdx.reverse().forEach((i) => {
       if (i < 1) return;
       const cur = rows[i];
       const prev = rows[i - 1];
       // keep pulling one photo at a time from the row immediately before it
-      // as long as each hop actually shrinks cur further and doesn't just
-      // create a new over-cap row in prev's place — an unhelpful or unsafe
-      // hop is worse than leaving the original (genuinely unavoidable) row
-      // as-is, so this stops the moment either condition fails rather than
-      // forcing a fix through at the cost of moving the problem elsewhere.
+      // as long as each hop actually shrinks cur further — this stops the
+      // moment a hop stops helping, rather than forcing one through at the
+      // cost of moving the problem elsewhere. If the donation happens to
+      // leave prev with exactly 2 items, that's just a new (legitimate)
+      // diptych pair and is allowed to run tall like any other; the only
+      // hop refused is one that would leave prev itself a 3-up-or-bigger
+      // row that's STILL over cap, which would just relocate the same
+      // problem instead of solving it.
       while (cur.height > MAX_ROW_HEIGHT && prev.items.length > 2) {
         const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
         const candidatePrev = prev.items.slice(0, -1);
         const newCurHeight = fitRow(candidateCur);
         const newPrevHeight = fitRow(candidatePrev);
         if (newCurHeight >= cur.height) break;
-        if (newPrevHeight > MAX_ROW_HEIGHT) break;
+        if (candidatePrev.length > 2 && newPrevHeight > MAX_ROW_HEIGHT) break;
         prev.items = candidatePrev;
         prev.height = newPrevHeight;
         cur.items = candidateCur;
@@ -1915,17 +1929,18 @@ body.lb-open{ overflow:hidden; }
       }
     });
 
-    // A row can still be stuck over cap after the hop pass above when it and
-    // its neighbours share (near-)identical aspect ratios — donating a photo
-    // one at a time just swaps which of the two rows is the oversized one,
-    // since a uniform-ratio row's height depends only on how many photos are
-    // in it. In that case, fold the whole oversized row into the one before
-    // it rather than trading the problem back and forth: more photos sharing
-    // one row can only make it shorter, so a full merge — even though it
-    // breaks the usual 2/3-photo rhythm for that one row — reliably clears
-    // the cap where a single-photo hop cannot.
+    // A 3-up-or-bigger row can still be stuck over cap after the hop pass
+    // above when it and its neighbours share (near-)identical aspect ratios
+    // — donating a photo one at a time just swaps which of the two rows is
+    // the oversized one, since a uniform-ratio row's height depends only on
+    // how many photos are in it. In that case, fold the whole oversized row
+    // into the one before it rather than trading the problem back and forth:
+    // more photos sharing one row can only make it shorter, so a full merge
+    // — even though it breaks the usual 2/3-photo rhythm for that one row —
+    // reliably clears the cap where a single-photo hop cannot. Never applies
+    // to a genuine 2-up diptych row, which isn't a problem to begin with.
     for (let i = rows.length - 1; i >= 1; i--) {
-      if (rows[i].height <= MAX_ROW_HEIGHT) continue;
+      if (rows[i].items.length <= 2 || rows[i].height <= MAX_ROW_HEIGHT) continue;
       const merged = rows[i - 1].items.concat(rows[i].items);
       const mergedHeight = fitRow(merged);
       if (mergedHeight <= MAX_ROW_HEIGHT) {
