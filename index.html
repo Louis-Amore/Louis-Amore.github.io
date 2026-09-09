@@ -1884,6 +1884,25 @@ body.lb-open{ overflow:hidden; }
           group = gridItemsCache.slice(idx, idx + group.length + 1);
           height = fitRow(group);
         }
+      } else if (group.length === 2 && group[0].r < 1 && group[1].r < 1 && fitRow(group) > MAX_PORTRAIT_DIPTYCH_HEIGHT) {
+        // Both-portrait diptych, over the ceiling: grow it forward the same
+        // way an oversized 3-up+ row grows above, pulling in the next
+        // photo(s) until it clears the ceiling — NOT by clamping the row's
+        // height. Clamping left the pair narrower than the panel, and
+        // centering that leftover space (an earlier attempt at this) showed
+        // up as an odd empty gap on either side rather than a clean
+        // edge-to-edge grid. Once the pairing has to give, bring it all the
+        // way down to the ordinary row cap rather than leaving it in
+        // between. Only genuinely oversized portrait+portrait pairs are
+        // ever affected; every other diptych keeps its intentional,
+        // uncapped size. If there's nothing left to grow into (last row),
+        // leave it as a genuine oversized pair — the same accepted,
+        // unavoidable edge case as everywhere else in this function.
+        let height = fitRow(group);
+        while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
+          group = gridItemsCache.slice(idx, idx + group.length + 1);
+          height = fitRow(group);
+        }
       }
       // never leave exactly one photo dangling for the next row to open
       // with — an orphaned single photo would stretch across the FULL
@@ -1894,16 +1913,7 @@ body.lb-open{ overflow:hidden; }
       if (gridItemsCache.length - (idx + group.length) === 1) {
         group = gridItemsCache.slice(idx, idx + group.length + 1);
       }
-      let rowHeight = fitRow(group);
-      // Both-portrait diptych, over the ceiling: clamp the height rather
-      // than growing the row into a 3-up (that would break the pairing).
-      // The row then renders narrower than the panel and centers itself
-      // (see the render loop's justify-content) instead of stretching
-      // full-width at an oversized height.
-      if (group.length === 2 && group[0].r < 1 && group[1].r < 1 && rowHeight > MAX_PORTRAIT_DIPTYCH_HEIGHT) {
-        rowHeight = MAX_PORTRAIT_DIPTYCH_HEIGHT;
-      }
-      rows.push({ items: group, height: rowHeight });
+      rows.push({ items: group, height: fitRow(group) });
       idx += group.length; p += 1;
     }
     // The forward pass can only grow a row by pulling photos AHEAD of it,
@@ -1917,9 +1927,18 @@ body.lb-open{ overflow:hidden; }
     // relocated somewhere new (in particular, never pushed all the way back
     // to row 0, which for an all-landscape category has near-identical row
     // heights and nothing "cheap" to hide it in).
+    // A row's own height ceiling: 3-up-or-bigger always uses the ordinary
+    // cap; an exactly-2-item row is uncapped UNLESS it's a both-portrait
+    // pair, which gets the stricter portrait ceiling — everything this
+    // function does with "is this row over cap" reduces to this one check.
+    function capFor(items) {
+      if (items.length > 2) return MAX_ROW_HEIGHT;
+      if (items.length === 2 && items[0].r < 1 && items[1].r < 1) return MAX_PORTRAIT_DIPTYCH_HEIGHT;
+      return Infinity;
+    }
     const overCapIdx = [];
     for (let i = 0; i < rows.length; i++) {
-      if (rows[i].items.length > 2 && rows[i].height > MAX_ROW_HEIGHT) overCapIdx.push(i);
+      if (rows[i].height > capFor(rows[i].items)) overCapIdx.push(i);
     }
     overCapIdx.reverse().forEach((i) => {
       if (i < 1) return;
@@ -1933,8 +1952,12 @@ body.lb-open{ overflow:hidden; }
       // diptych pair and is allowed to run tall like any other; the only
       // hop refused is one that would leave prev itself a 3-up-or-bigger
       // row that's STILL over cap, which would just relocate the same
-      // problem instead of solving it.
-      while (cur.height > MAX_ROW_HEIGHT && prev.items.length > 2) {
+      // problem instead of solving it. The moment cur itself grows past 2
+      // items (e.g. a stuck last-row portrait pair pulling its first
+      // neighbour in), capFor(cur.items) switches from the portrait ceiling
+      // to the ordinary one — it's no longer a pair, so it's held to the
+      // same standard as every other row instead of stopping early at 750.
+      while (cur.height > capFor(cur.items) && prev.items.length > 2) {
         const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
         const candidatePrev = prev.items.slice(0, -1);
         const newCurHeight = fitRow(candidateCur);
@@ -1972,11 +1995,6 @@ body.lb-open{ overflow:hidden; }
     rows.forEach((row) => {
       const rowEl = document.createElement('div');
       rowEl.className = 'grid-row';
-      // A height-clamped portrait diptych renders narrower than the full
-      // panel width (its two images no longer add up to fill it) — center
-      // it rather than leaving it stuck to the left edge. This is a no-op
-      // for every normal row, which already sums to the full width.
-      rowEl.style.justifyContent = 'center';
       row.items.forEach((it) => {
         const img = document.createElement('img');
         img.src = variantSrc(it.item.info.src, 'med');
