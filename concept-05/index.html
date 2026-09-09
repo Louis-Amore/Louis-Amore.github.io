@@ -556,12 +556,49 @@ body.lb-open{ overflow:hidden; }
 }
 .lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
+/* EDIT: no-rail redesign — the thumbnail strip is replaced by a full
+   scrollable justified-mosaic grid showing every photo in the category,
+   with a deliberate "rhythm" of row sizes (2-up vs 3-up) so even an
+   all-landscape set doesn't read as a flat, uniform strip. Real per-photo
+   ratios (probed from each photo's own dimensions, the same technique
+   layoutCollageRail already used) mean every ratio — landscape, portrait,
+   or anything added later, including a square — packs edge-to-edge with no
+   gaps and no cropping. Clicking a tile opens it enlarged in the same
+   white-mat "window" used elsewhere, over a dimmed backdrop; clicking away
+   closes it back to the grid. */
+.lb-rail{ display:none; }
+.lb-grid-wrap{
+  flex:1 1 auto; height:100%; min-height:0; overflow-y:auto; box-sizing:border-box;
+  padding:28px 32px;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.lb-grid-wrap::-webkit-scrollbar{ width:0; height:0; display:none; }
+.grid-row{ display:flex; gap:8px; margin-bottom:8px; }
+.grid-row img{
+  display:block; object-fit:cover; cursor:pointer;
+  transition:opacity .15s ease;
+}
+.grid-row img:hover{ opacity:.88; }
+/* dimming layer behind the enlarged single photo. NOTE: this must live
+   INSIDE #lightbox (appended there in JS, never document.body) — #lightbox
+   is itself position:fixed with z-index:100 over the whole page, so a
+   body-level sibling would paint BEHIND the lightbox's own content
+   (including the grid) regardless of its own z-index. */
+.lb-click-backdrop{
+  position:fixed; inset:0; background:rgba(20,19,16,0.5); z-index:2;
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+.lb-click-backdrop.show{ opacity:1; pointer-events:auto; }
+
 .lb-stage-wrap{
   /* pin to the whole viewport so the photo is dead-centre of the SCREEN
-     (matching the approved layout); click-through except on the photo */
+     (matching the approved layout); click-through except on the photo.
+     EDIT: hidden by default now — it's only the single-photo "window"
+     opened on top of the grid, not the default view. */
   position:fixed; inset:0; z-index:3; pointer-events:none;
-  display:flex; align-items:center; justify-content:center; padding:40px;
+  display:none; align-items:center; justify-content:center; padding:40px;
 }
+#lightbox.lb-single-open .lb-stage-wrap{ display:flex; }
 #lightbox.open .lb-stage-wrap .lb-stage,
 #lightbox.open .lb-stage-wrap .lb-frame,
 #lightbox.open .lb-stage-wrap .lb-tags{ pointer-events:auto; }
@@ -595,18 +632,20 @@ body.lb-open{ overflow:hidden; }
      screens keep a mat that is proportionate to the photo instead of eating it. */
   border-width:clamp(60px, 7vw, 120px);
   height:auto; max-height:calc(61.05vh);
-  /* EDIT: cap width to the space BETWEEN the collage (30vw, max 440px on the
-     left) and the info panel (320px on the right), minus the 120px mat and
-     some breathing room — so on a narrow/snapped window the photo shrinks to
-     fit instead of overflowing the panels. */
-  max-width:calc(100vw - 21vw - 320px - 140px);
+  /* EDIT: cap width to the space left of the info panel (320px on the
+     right), minus the 120px mat and some breathing room — so on a narrow/
+     snapped window the photo shrinks to fit instead of overflowing the
+     panel. (No longer subtracts a rail width — the rail is gone; fitStage()
+     below still measures the real rendered gap and shrinks further if
+     needed, so this is just a sane starting cap.) */
+  max-width:calc(100vw - 320px - 140px);
   box-shadow:0 24px 60px rgba(17,17,16,0.14);
 }
 /* the image itself carries BOTH caps; width follows naturally but never
    exceeds the available middle space */
 .lb-frame.has-photo .lb-stage-img{
   max-height:calc(61.05vh - 120px);
-  max-width:calc(100vw - 21vw - 320px - 140px);
+  max-width:calc(100vw - 320px - 140px);
   width:auto; height:auto; display:block;
 }
 /* EDIT: We Shall Remember sized 7% smaller than the other categories */
@@ -660,7 +699,7 @@ body.lb-open{ overflow:hidden; }
 
 @media (min-width:761px) and (max-width:1150px){
   .lb-topbar{ grid-template-columns:100px 1fr 100px; padding:16px 20px; }
-  .lb-rail{ width:100px; flex:0 0 100px; padding:10px; gap:8px; }
+  .lb-grid-wrap{ padding:16px; }
   .lb-stage-wrap{ padding:20px; }
   /* EDIT: scoped to :not(.has-photo) to match the base rules above. These
      forced a fixed frame width regardless of the actual photo, so a real
@@ -671,8 +710,8 @@ body.lb-open{ overflow:hidden; }
   .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
   .lb-info h3{ font-size:28px; }
   .lb-info p{ font-size:16px; }
-  .lb-frame{ border-width:80px; max-width:calc(100vw - 100px - 220px - 280px); }
-  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 100px - 220px - 280px); }
+  .lb-frame{ border-width:80px; max-width:calc(100vw - 220px - 280px); }
+  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 220px - 280px); }
   .lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 80px); }
   .lb-tags{ width:120px; margin-left:10px; }
   .lb-stage::before{ flex-basis:120px; min-width:120px; }
@@ -722,6 +761,11 @@ body.lb-open{ overflow:hidden; }
 @media (max-width:760px){
   .lb-topbar{ display:flex; justify-content:space-between; }
   .lb-body{ flex-direction:column; }
+  /* EDIT: the grid takes the rail's old spot as the flexible top area —
+     stacked column layout needs an explicit height (flex:1 1 auto alone
+     doesn't reliably size a scrolling child once the parent switches to
+     column direction), same as the rail used to need one. */
+  .lb-grid-wrap{ height:56vh; padding:16px; }
   .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12);
     /* EDIT: the real, deeper fix behind the scroll-hint work above — a
        swipe on the rail was scrolling the WHOLE PAGE instead of just the
@@ -758,8 +802,12 @@ body.lb-open{ overflow:hidden; }
   .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 44px); max-width:calc(100vw - 106px); }
   .lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 44px); }
   .lb-frame.ratio-landscape:not(.has-photo), .lb-frame.ratio-portrait:not(.has-photo){ width:86vw; max-width:86vw; }
-  /* EDIT: on phones un-pin the stage and stack tags below the photo */
-  .lb-stage-wrap{ position:relative; inset:auto; z-index:auto; pointer-events:auto; flex:1 1 auto; }
+  /* EDIT: on phones un-pin the stage and stack tags below the photo.
+     Keep z-index:3 (matching desktop) rather than auto — the grid-backdrop
+     dimming layer sits at z-index:2, and an auto value here would drop the
+     enlarged photo BELOW that backdrop instead of above it, dimming the
+     photo along with the grid behind it. */
+  .lb-stage-wrap{ position:relative; inset:auto; z-index:3; pointer-events:auto; flex:1 1 auto; }
 }
 
 /* Below 1024px there just isn't room for the tags box to float beside the
@@ -1588,8 +1636,8 @@ body.lb-open{ overflow:hidden; }
 
     currentPos = currentCategoryItems.findIndex(x => x.i === index);
 
-    buildRail();
-    render();
+    renderGrid();
+    openSinglePhoto(currentPos);
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
@@ -1627,8 +1675,7 @@ body.lb-open{ overflow:hidden; }
     if (currentCategoryItems.length === 0) return;
 
     currentPos = 0;
-    buildRail();
-    render();
+    renderGrid();
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
@@ -1682,8 +1729,13 @@ body.lb-open{ overflow:hidden; }
           : 0);
     if (currentPos === -1) currentPos = 0;
 
-    buildRail();
-    render();
+    renderGrid();
+    // only auto-open a single photo when a specific one was actually
+    // requested (a direct field-photo click redirected here); a plain
+    // menu-driven subcategory click just shows the grid.
+    if (startIndex !== undefined || startSrc !== undefined) {
+      openSinglePhoto(currentPos);
+    }
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('lb-open');
@@ -1691,6 +1743,7 @@ body.lb-open{ overflow:hidden; }
   }
 
   function closeLightbox() {
+    closeSinglePhoto();
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('lb-open');
@@ -1705,106 +1758,231 @@ body.lb-open{ overflow:hidden; }
     return src.replace(/photos\//, 'photos/' + kind + '/');
   }
 
-  function buildRail() {
-    lbRail.innerHTML = '';
-    currentCategoryItems.forEach((item, pos) => {
-      const thumb = document.createElement('div');
-      thumb.className = 'lb-thumb ratio-' + item.info.ratio;
-      const localNum = String(pos + 1).padStart(2, '0');
-      if (item.info.src) {
-        // The whole rail is already fully visible the instant a category
-        // opens (it's a small on-screen panel, not off-screen content), so
-        // loading="lazy" was deferring images that never actually needed
-        // deferring — browsers vary in how conservative their "near
-        // viewport" heuristic is (Safari/mobile especially), which could
-        // add a real, felt delay before thumbnails start appearing even
-        // though nothing here needs scrolling into view. Removed; kept
-        // decoding="async" so decoding still doesn't block the main thread.
-        thumb.innerHTML = `<img src="${variantSrc(item.info.src, 'thumb')}" alt="Image ${localNum}" decoding="async">`;
-        const tImg = thumb.querySelector('img');
-        const fitThumb = () => { if (tImg.naturalWidth) thumb.style.aspectRatio = tImg.naturalWidth + ' / ' + tImg.naturalHeight; };
-        if (tImg.complete) fitThumb(); else tImg.addEventListener('load', fitThumb);
-      } else {
-        thumb.innerHTML = `<div class="ph">Image ${localNum}</div>`;
-      }
-      thumb.addEventListener('click', () => { currentPos = pos; render(); });
-      lbRail.appendChild(thumb);
+  // ---------------------------------------------------------------------
+  // No-rail redesign: the rail's thumbnail strip is replaced by one
+  // continuously scrollable justified-mosaic grid of every photo in the
+  // category/subcategory. Real per-photo ratios come from probing each
+  // photo's own dimensions (the same naturalWidth/naturalHeight technique
+  // the old masonry rail used) so any ratio — landscape, portrait, or
+  // something new added later — packs edge-to-edge with no gaps and no
+  // cropping. Rows are grouped in a deliberate "rhythm" of 2-up/3-up sizes
+  // (never two 2-up rows back to back, never three identical sizes running
+  // together) so even an all-landscape set like Bali reads with some
+  // visual variation instead of a flat, uniform strip. Clicking a tile
+  // opens it enlarged in the existing lb-frame "window"; clicking away
+  // (the dimmed backdrop) returns to the grid.
+  const lbGridWrap = document.createElement('div');
+  lbGridWrap.className = 'lb-grid-wrap';
+  lbGridWrap.id = 'lb-grid-wrap';
+  lbRail.insertAdjacentElement('afterend', lbGridWrap);
+
+  // #lightbox itself is position:fixed with z-index:100 over the whole
+  // page, so appending this to document.body would tuck it BEHIND the
+  // lightbox's own content (including the grid) — it needs to live inside
+  // #lightbox to share its stacking context.
+  const gridBackdrop = document.createElement('div');
+  gridBackdrop.className = 'lb-click-backdrop';
+  gridBackdrop.id = 'lb-grid-backdrop';
+  lightbox.appendChild(gridBackdrop);
+  gridBackdrop.addEventListener('click', closeSinglePhoto);
+
+  function probeRatio(item) {
+    return new Promise((resolve) => {
+      const fallback = item.info.ratio === 'portrait' ? 2 / 3 : 1.5;
+      if (!item.info.src) { resolve(fallback); return; }
+      const probe = new Image();
+      const done = () => resolve(probe.naturalWidth && probe.naturalHeight ? probe.naturalWidth / probe.naturalHeight : fallback);
+      probe.onload = done;
+      probe.onerror = done;
+      probe.src = variantSrc(item.info.src, 'thumb');
     });
-    layoutCollageRail();
   }
 
-  // Masonry layout for the collage rail: 2 columns, stacked by real image
-  // ratio so nothing overlaps. Recomputes on resize.
-  function layoutCollageRail() {
-    if (!lbRail || lbRail.offsetParent === null) return;
-    const tiles = [...lbRail.querySelectorAll('.lb-thumb')];
-    if (!tiles.length) return;
-    const pad = 20, gap = 12;
-    const railW = lbRail.clientWidth - pad * 2;
-    const visibleH = lbRail.clientHeight - pad * 2;
+  // 2-up/3-up rhythm pattern: randomised so the bigger pair-rows don't
+  // cluster or land in predictable spots, but never two pair-rows back to
+  // back and never three identical sizes running together.
+  function buildRhythmPattern(rowsNeeded) {
+    const pattern = [];
+    for (let i = 0; i < rowsNeeded; i++) {
+      const options = [2, 2, 3, 3, 3];
+      let choice = options[Math.floor(Math.random() * options.length)];
+      if (pattern.length >= 2 && pattern[pattern.length - 1] === choice && pattern[pattern.length - 2] === choice) {
+        choice = choice === 3 ? 2 : 3;
+      }
+      if (choice === 2 && pattern.length && pattern[pattern.length - 1] === 2) choice = 3;
+      pattern.push(choice);
+    }
+    return pattern;
+  }
 
-    const ratios = tiles.map(t => {
-      const img = t.querySelector('img');
-      if (img && img.naturalWidth) return img.naturalWidth / img.naturalHeight;
-      return t.classList.contains('ratio-portrait') ? 2 / 3 : 1.5;
+  let gridItemsCache = [];
+  let gridPatternCache = [];
+
+  function renderGrid() {
+    closeSinglePhoto();
+    showCategoryInfo();
+    lbGridWrap.innerHTML = '';
+    gridItemsCache = [];
+    gridPatternCache = [];
+    const withPos = currentCategoryItems
+      .map((item, pos) => ({ item, pos }))
+      .filter((x) => x.item.info.src);
+    Promise.all(withPos.map((x) => probeRatio(x.item))).then((ratios) => {
+      gridItemsCache = withPos.map((x, i) => ({ item: x.item, pos: x.pos, r: ratios[i] }));
+      gridPatternCache = buildRhythmPattern(Math.ceil(gridItemsCache.length / 2) + 1);
+      layoutGrid();
     });
+  }
 
-    // pack tiles into n columns at a given tile width (shortest column wins)
-    function pack(ncols, colW) {
-      const colH = new Array(ncols).fill(0);
-      const pos = ratios.map(r => {
-        const th = colW / r;
-        let c = 0; for (let k = 1; k < ncols; k++) if (colH[k] < colH[c]) c = k;
-        const top = colH[c];
-        colH[c] += th + gap;
-        return { c, top, h: th };
+  function layoutGrid() {
+    if (!gridItemsCache.length) return;
+    // clientWidth includes the wrap's own left/right padding — the actual
+    // space available to lay images out in is narrower than that by
+    // exactly that padding, or every row overflows past the padding edge.
+    const gwStyle = getComputedStyle(lbGridWrap);
+    const containerWidth = lbGridWrap.clientWidth - parseFloat(gwStyle.paddingLeft || '0') - parseFloat(gwStyle.paddingRight || '0');
+    if (!containerWidth) return;
+    const gap = 8;
+    function fitRow(arr) {
+      const s = arr.reduce((a, it) => a + it.r, 0);
+      return (containerWidth - gap * (arr.length - 1)) / s;
+    }
+    const rows = [];
+    let idx = 0, p = 0;
+    while (idx < gridItemsCache.length) {
+      const n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
+      rows.push({ items: gridItemsCache.slice(idx, idx + n) });
+      idx += n; p += 1;
+    }
+    rows.forEach((row) => { row.height = fitRow(row.items); });
+    // an orphaned single-photo last row would get stretched across the
+    // FULL width alone, ballooning its height and squashing every row
+    // above it once the panel scales — borrow one photo back from the
+    // previous row instead so the last row always has at least 2.
+    while (rows.length >= 2 && rows[rows.length - 1].items.length < 2 && rows[rows.length - 2].items.length > 1) {
+      const prev = rows[rows.length - 2];
+      const last = rows[rows.length - 1];
+      last.items.unshift(prev.items.pop());
+      prev.height = fitRow(prev.items);
+      last.height = fitRow(last.items);
+    }
+
+    lbGridWrap.innerHTML = '';
+    rows.forEach((row) => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'grid-row';
+      row.items.forEach((it) => {
+        const img = document.createElement('img');
+        img.src = variantSrc(it.item.info.src, 'med');
+        img.alt = it.item.info.label || '';
+        img.decoding = 'async';
+        img.style.height = row.height + 'px';
+        img.style.width = (it.r * row.height) + 'px';
+        img.addEventListener('click', () => openSinglePhoto(it.pos));
+        rowEl.appendChild(img);
       });
-      return { pos, height: Math.max(...colH) - gap };
-    }
-
-    let ncols = railW > 300 ? 2 : 1;
-    let colW = (railW - gap * (ncols - 1)) / ncols;
-    let laid = pack(ncols, colW);
-
-    // EDIT: a short series used to leave the rail half empty, which made a
-    // tight edit look thin rather than deliberate. If a set doesn't fill the
-    // panel, fall back to fewer, LARGER tiles sized to fill the height.
-    // Big sets are untouched — they still scroll at the normal tile size.
-    if (laid.height < visibleH) {
-      for (let n = 1; n < ncols; n++) {
-        const maxW = (railW - gap * (n - 1)) / n;
-        const base = pack(n, maxW);
-        if (!base.height) continue;
-        const w = Math.min(maxW, maxW * (visibleH / base.height));
-        if (w > colW) { ncols = n; colW = w; laid = pack(n, w); }
-      }
-    }
-
-    // centre a short set rather than stranding it at the top of the panel
-    const offset = Math.max(0, (visibleH - laid.height) / 2);
-    const totalW = ncols * colW + gap * (ncols - 1);
-    const left0 = pad + Math.max(0, (railW - totalW) / 2);
-
-    tiles.forEach((t, i) => {
-      const q = laid.pos[i];
-      t.style.width = colW + 'px';
-      t.style.height = q.h + 'px';
-      t.style.left = (left0 + q.c * (colW + gap)) + 'px';
-      t.style.top = (offset + q.top) + 'px';
+      lbGridWrap.appendChild(rowEl);
     });
+  }
+  window.addEventListener('resize', () => setTimeout(layoutGrid, 120));
 
-    let spacer = lbRail.querySelector('.rail-spacer');
-    if (!spacer) { spacer = document.createElement('div'); spacer.className = 'rail-spacer'; lbRail.appendChild(spacer); }
-    spacer.style.cssText = 'position:absolute; left:0; top:0; width:1px; pointer-events:none;';
-    spacer.style.height = (offset + laid.height + pad) + 'px';
-    lbRail.style.minHeight = '';
+  // Default (no photo open) info panel: just the category/subcategory's own
+  // story, if it has one, plus the topbar count of everything in the grid.
+  function showCategoryInfo() {
+    const displayCat = currentBrowseSubcat
+      ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat)
+      : (currentCategoryItems[0] ? currentCategoryItems[0].info.cat : '');
+    lbCat.textContent = displayCat;
+    const n = currentCategoryItems.length;
+    lbCount.textContent = String(n).padStart(2, '0') + (n === 1 ? ' Photo' : ' Photos');
+    lbInfoCat.textContent = displayCat;
+    const story = subcatToProject[displayCat];
+    const titleText = (story && story.title) || displayCat;
+    const generic = !story && genericSubtitles[displayCat];
+    lbInfoTitle.innerHTML = generic ? (titleText + ' <em>' + generic + '</em>') : titleText;
+    lbInfoBody.innerHTML = story
+      ? story.body.map((p) => `<p>${p}</p>`).join('')
+        + (story.quote ? `<div class="q">“${story.quote}”${story.quoteAttr ? `<span>— ${story.quoteAttr}</span>` : ''}</div>` : '')
+      : '';
   }
 
-  // relayout when images finish loading (ratios become known) and on resize
-  window.addEventListener('resize', () => setTimeout(layoutCollageRail, 120));
-  document.addEventListener('load', (e) => {
-    if (e.target && e.target.tagName === 'IMG' && e.target.closest('#lb-rail')) layoutCollageRail();
-  }, true);
+  // Per-photo info panel + caption box, shown only while the single-photo
+  // overlay is open.
+  function showPhotoInfo(item, pos, displayCat) {
+    const info = item.info;
+    lbInfoCat.textContent = info.cat || displayCat;
+    const story = imageToProject[info.label] || subcatToProject[displayCat];
+    const titleText = (story && story.title) || displayCat;
+    const generic = !story && genericSubtitles[displayCat];
+    const suffix = generic || ('Image&nbsp;' + String(pos + 1).padStart(2, '0'));
+    lbInfoTitle.innerHTML = titleText + ' <em>' + suffix + '</em>';
+    lbInfoBody.innerHTML = story
+      ? story.body.map((p) => `<p>${p}</p>`).join('')
+        + (story.quote ? `<div class="q">“${story.quote}”${story.quoteAttr ? `<span>— ${story.quoteAttr}</span>` : ''}</div>` : '')
+      : '';
+    const caption = photoCaptions[info.label];
+    const stageEl = lbFrame.closest('.lb-stage');
+    if (caption) {
+      stageEl.classList.remove('no-tags');
+      lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
+    } else {
+      stageEl.classList.add('no-tags');
+      lbTagsText.innerHTML = '';
+    }
+  }
+
+  // Opens one photo enlarged in the existing white-mat "window", reusing
+  // the same blur-placeholder progressive-load technique as before.
+  function openSinglePhoto(pos) {
+    currentPos = pos;
+    const item = currentCategoryItems[pos];
+    const info = item.info;
+    const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
+    lbFrame.className = 'lb-frame ratio-' + info.ratio + ' has-photo';
+    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
+    lbFrame.style.aspectRatio = '';
+    lbFrame.style.removeProperty('--ar');
+    const localLabel = 'Image ' + String(pos + 1).padStart(2, '0');
+    const thumbSrc = variantSrc(info.src, 'thumb');
+    const medSrc = variantSrc(info.src, 'med');
+    lbFrame.innerHTML = `<img class="lb-blur" src="${thumbSrc}" alt="" aria-hidden="true" decoding="async"><img class="lb-stage-img" src="${medSrc}" alt="${localLabel}" decoding="async">`;
+    const _blur = lbFrame.querySelector('.lb-blur');
+    const _img = lbFrame.querySelector('.lb-stage-img');
+    const applyRatio = () => {
+      if (!_blur.naturalWidth) return;
+      const ratio = _blur.naturalWidth / _blur.naturalHeight;
+      const maxH = parseFloat(getComputedStyle(_img).maxHeight) || 0;
+      const maxW = parseFloat(getComputedStyle(_img).maxWidth) || Infinity;
+      if (maxH > 0) {
+        let h = maxH, w = h * ratio;
+        if (w > maxW) { w = maxW; h = w / ratio; }
+        _img.style.height = h + 'px';
+        _img.style.width = w + 'px';
+      }
+    };
+    if (_blur.complete) applyRatio(); else _blur.addEventListener('load', applyRatio, { once: true });
+    const markLoaded = () => {
+      _img.classList.add('loaded');
+      _img.style.height = '';
+      _img.style.width = '';
+      fitStage();
+    };
+    if (_img.complete) markLoaded(); else _img.addEventListener('load', markLoaded, { once: true });
+
+    lbCat.textContent = displayCat;
+    lbCount.textContent = String(pos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
+    showPhotoInfo(item, pos, displayCat);
+
+    lightbox.classList.add('lb-single-open');
+    gridBackdrop.classList.add('show');
+    fitStage();
+  }
+
+  function closeSinglePhoto() {
+    lightbox.classList.remove('lb-single-open');
+    gridBackdrop.classList.remove('show');
+    showCategoryInfo();
+  }
 
   // EDIT: a "project" is a story that can span several photos — its title
   // and write-up always show in the info panel for every image listed
@@ -1992,130 +2170,8 @@ body.lb-open{ overflow:hidden; }
     },
   };
 
-  const defaultStory = {
-    title: null, // falls back to "Category — Image N"
-    body: [
-      "A short paragraph about this project — the brief, the location, who it was for, or anything you want visitors to know.",
-      "A second paragraph if you need more room to talk through the shoot, the client, or the story behind it."
-    ]
-  };
-
-  function render() {
-    const active = currentCategoryItems[currentPos];
-    const info = active.info;
-    lbFrame.className = 'lb-frame ratio-' + info.ratio;
-    // EDIT: tag the frame with the current subcategory so specific series
-    // (e.g. WSR) can carry their own size cap
-    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
-    lbFrame.style.aspectRatio = '';
-    lbFrame.style.removeProperty('--ar');
-    const localLabel = 'Image ' + String(currentPos + 1).padStart(2, '0');
-    if (info.src) {
-      lbFrame.classList.add('has-photo');
-      // EDIT (perf): used to load the raw full-resolution file (often
-      // 500KB+) directly with nothing shown while it downloaded — on a slow
-      // connection that read as a blank white box. Now: the already-tiny
-      // thumbnail (usually already cached from the rail) shows blurred
-      // behind the photo and sizes the frame immediately via its own aspect
-      // ratio, while the real photo loads from the smaller ~1400px "med"
-      // file instead of the full original and crossfades in on top.
-      const thumbSrc = variantSrc(info.src, 'thumb');
-      const medSrc = variantSrc(info.src, 'med');
-      lbFrame.innerHTML = `<img class="lb-blur" src="${thumbSrc}" alt="" aria-hidden="true" decoding="async"><img class="lb-stage-img" src="${medSrc}" alt="${localLabel}" decoding="async">`;
-      const _blur = lbFrame.querySelector('.lb-blur');
-      const _img = lbFrame.querySelector('.lb-stage-img');
-      // EDIT: aspect-ratio alone doesn't give the flex-fit frame a real
-      // pixel size before the sharp image has bytes (the frame sizes itself
-      // off the img's rendered box, and a bare aspect-ratio + auto width/
-      // height on a not-yet-loaded replaced element resolves to nothing in
-      // this flex layout) - so read the frame's own max-height/max-width
-      // (already resolved to real px by the browser for the current
-      // breakpoint/subcat) and set an explicit pixel box from the blur
-      // thumbnail's ratio instead. Cleared once the real photo loads so
-      // fitStage()'s own sizing takes back over exactly as before.
-      const applyRatio = () => {
-        if (!_blur.naturalWidth) return;
-        const ratio = _blur.naturalWidth / _blur.naturalHeight;
-        const maxH = parseFloat(getComputedStyle(_img).maxHeight) || 0;
-        const maxW = parseFloat(getComputedStyle(_img).maxWidth) || Infinity;
-        if (maxH > 0) {
-          let h = maxH, w = h * ratio;
-          if (w > maxW) { w = maxW; h = w / ratio; }
-          _img.style.height = h + 'px';
-          _img.style.width = w + 'px';
-        }
-      };
-      if (_blur.complete) applyRatio(); else _blur.addEventListener('load', applyRatio, { once: true });
-      const markLoaded = () => {
-        _img.classList.add('loaded');
-        _img.style.height = '';
-        _img.style.width = '';
-        fitStage();
-      };
-      if (_img.complete) markLoaded();
-      else _img.addEventListener('load', markLoaded, { once: true });
-      // EDIT: real photos size the frame by their own height (max-height on the
-      // img), so any ratio — landscape, portrait, cinematic — displays fully and
-      // stays centred. No forced aspect-ratio on the frame.
-    } else {
-      lbFrame.classList.remove('has-photo');
-      lbFrame.innerHTML = `<span>${localLabel}</span>`;
-    }
-    const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
-    lbCat.textContent = displayCat;
-    lbCount.textContent = String(currentPos + 1).padStart(2, '0') + ' / ' + String(currentCategoryItems.length).padStart(2, '0');
-    lbInfoCat.textContent = info.cat || displayCat;
-
-    // per-photo project wins; otherwise fall back to the subcategory's own
-    const story = imageToProject[info.label] || subcatToProject[displayCat];
-    // EDIT: unassigned photos show only "<Category> - Image NN" on the right —
-    // no default text, no category eyebrow; single hyphen separator throughout.
-    // Categories with a shared generic subtitle (genericSubtitles) show that
-    // phrase instead of the per-photo "Image NN" — one consistent line for
-    // every photo in the set.
-    const titleText = (story && story.title) || displayCat;
-    const generic = !story && genericSubtitles[displayCat];
-    const suffix = generic || ('Image&nbsp;' + String(currentPos + 1).padStart(2, '0'));
-    lbInfoTitle.innerHTML = titleText + ' <em>' + suffix + '</em>';
-    lbInfoCat.style.display = '';
-    lbInfoBody.innerHTML = story
-      ? story.body.map(p => `<p>${p}</p>`).join('')
-        + (story.quote ? `<div class="q">\u201C${story.quote}\u201D${story.quoteAttr ? `<span>\u2014 ${story.quoteAttr}</span>` : ''}</div>` : '')
-      : '';
-
-    const caption = photoCaptions[info.label];
-    const stageEl = lbFrame.closest('.lb-stage');
-    // small per-photo caption floats beside the photo (info panel keeps the
-    // big series write-up on the far right)
-    if (caption) {
-      stageEl.classList.remove('no-tags');
-      lbTagsText.innerHTML = `<strong>${caption.name}</strong><br>${caption.text}`;
-    } else {
-      stageEl.classList.add('no-tags');
-      lbTagsText.innerHTML = '';
-    }
-
-    Array.from(lbRail.children).forEach((el, i) => el.classList.toggle('active', i === currentPos));
-    const activeThumb = lbRail.children[currentPos];
-    if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    fitStage();
-    preloadNeighbors();
-  }
-
-  // EDIT (perf): warm the browser cache for the next/previous photo's "med"
-  // file so stepping through a category feels instant instead of paying the
-  // download cost fresh on every click.
-  function preloadNeighbors() {
-    if (currentCategoryItems.length < 2) return;
-    [1, -1].forEach(delta => {
-      const idx = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
-      const src = currentCategoryItems[idx] && currentCategoryItems[idx].info.src;
-      if (src) { const im = new Image(); im.src = variantSrc(src, 'med'); }
-    });
-  }
-
-  // Measures the real, current gap between the rail and the info panel and
-  // subtracts the tags box's real rendered footprint (when it's showing),
+  // Measures the real, current gap to the info panel and subtracts the
+  // tags box's real rendered footprint (when it's showing),
   // then caps the photo to whatever's left — guaranteed not to overlap
   // either neighbour, at any viewport width, rather than a hand-derived
   // pixel formula that has to be re-verified every time anything nearby changes.
@@ -2234,15 +2290,6 @@ body.lb-open{ overflow:hidden; }
   }
   window.addEventListener('resize', () => setTimeout(fitStage, 120));
 
-  function step(delta) {
-    currentPos = (currentPos + delta + currentCategoryItems.length) % currentCategoryItems.length;
-    render();
-  }
-
-  // clicking the stage photo advances to the next image in the category
-  lbFrame.style.cursor = 'pointer';
-  lbFrame.addEventListener('click', () => step(1));
-
   frameList.forEach((frame, i) => {
     frame.style.cursor = 'pointer';
     frame.addEventListener('click', () => openLightbox(i));
@@ -2335,9 +2382,13 @@ body.lb-open{ overflow:hidden; }
 
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') step(-1);
-    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'Escape') {
+      // Escape closes whichever layer is on top: the single-photo overlay
+      // first (back to the grid), or the whole lightbox if just the grid
+      // is showing.
+      if (lightbox.classList.contains('lb-single-open')) closeSinglePhoto();
+      else closeLightbox();
+    }
   });
 
   // EDIT: deep-link support for the per-category "share" pages (e.g.
