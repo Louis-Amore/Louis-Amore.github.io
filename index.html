@@ -1857,29 +1857,24 @@ body.lb-open{ overflow:hidden; }
     // would render past MAX_ROW_HEIGHT, so photos read as a gallery grid
     // rather than a couple of oversized prints.
     const MAX_ROW_HEIGHT = 300;
-    // A 2-up row is a deliberate "diptych" pairing, meant to read larger and
-    // more dramatic than the 3-up rows around it for contrast — so it gets
-    // its own, much higher ceiling rather than MAX_ROW_HEIGHT. But a pair of
-    // two portrait photos can still stretch past 900px on a wide panel to
-    // fill the full row width, which reads as too big even for a deliberate
-    // diptych. MAX_DIPTYCH_HEIGHT catches only that extreme case — every
-    // diptych comfortably under it (the ~400-560px range) is untouched.
-    const MAX_DIPTYCH_HEIGHT = 600;
     const rows = [];
     let idx = 0, p = 0;
     while (idx < gridItemsCache.length) {
       let n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
       let group = gridItemsCache.slice(idx, idx + n);
-      {
+      // A 2-up row is a deliberate "diptych" pairing — the rhythm pattern
+      // means it to read larger and more dramatic than the 3-up rows around
+      // it, and that size CONTRAST is the whole point. So a genuine pair is
+      // exempt from the cap entirely, at any panel width, rather than
+      // forcibly grown into a 3-up the moment it gets tall on a wide screen
+      // — which would just flatten every row to the same size and erase the
+      // effect this rhythm exists to create. The cap only ever applies to
+      // 3-up-or-bigger rows.
+      if (group.length > 2) {
         let height = fitRow(group);
-        let threshold = group.length > 2 ? MAX_ROW_HEIGHT : MAX_DIPTYCH_HEIGHT;
-        while (height > threshold && idx + group.length < gridItemsCache.length) {
+        while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
           group = gridItemsCache.slice(idx, idx + group.length + 1);
           height = fitRow(group);
-          // once a diptych grows past 2 items it's no longer a deliberate
-          // pairing — it immediately falls under the same 3-up-or-bigger
-          // cap as everything else, not the higher diptych ceiling.
-          threshold = group.length > 2 ? MAX_ROW_HEIGHT : MAX_DIPTYCH_HEIGHT;
         }
       }
       // never leave exactly one photo dangling for the next row to open
@@ -1894,25 +1889,20 @@ body.lb-open{ overflow:hidden; }
       rows.push({ items: group, height: fitRow(group) });
       idx += group.length; p += 1;
     }
-    // Every row has its own cap depending on its size: a 2-up diptych gets
-    // the higher MAX_DIPTYCH_HEIGHT ceiling, anything bigger gets the
-    // regular MAX_ROW_HEIGHT — same rule the forward pass above just used.
-    const capFor = (items) => (items.length > 2 ? MAX_ROW_HEIGHT : MAX_DIPTYCH_HEIGHT);
-
     // The forward pass can only grow a row by pulling photos AHEAD of it,
-    // so a row (2-up diptych or 3-up-or-bigger) can still land over ITS OWN
-    // cap when it's short on leftovers with nothing ahead left to borrow —
-    // most often, but not only, the very last row (a trailing 2-photo
-    // diptych with nothing left to grow into is exactly this case). Only
-    // rows that were ALREADY over their own cap right here get a fix
-    // attempt below: a row that only becomes tall as a side effect of
-    // donating a photo elsewhere is left alone, so an unavoidable remainder
-    // can't be relocated somewhere new (in particular, never pushed all the
-    // way back to row 0, which for an all-landscape category has
-    // near-identical row heights and nothing "cheap" to hide it in).
+    // so a 3-up-or-bigger row can still land over the cap when it's short
+    // on leftovers with nothing ahead left to borrow (most often, but not
+    // only, the very last row). Only such rows — never a genuine 2-up
+    // diptych pair, which is allowed to run tall by design — get a fix
+    // attempt below, and only the ones that were ALREADY over cap right
+    // here: a row that only becomes tall as a side effect of donating a
+    // photo elsewhere is left alone, so an unavoidable remainder can't be
+    // relocated somewhere new (in particular, never pushed all the way back
+    // to row 0, which for an all-landscape category has near-identical row
+    // heights and nothing "cheap" to hide it in).
     const overCapIdx = [];
     for (let i = 0; i < rows.length; i++) {
-      if (rows[i].height > capFor(rows[i].items)) overCapIdx.push(i);
+      if (rows[i].items.length > 2 && rows[i].height > MAX_ROW_HEIGHT) overCapIdx.push(i);
     }
     overCapIdx.reverse().forEach((i) => {
       if (i < 1) return;
@@ -1921,19 +1911,19 @@ body.lb-open{ overflow:hidden; }
       // keep pulling one photo at a time from the row immediately before it
       // as long as each hop actually shrinks cur further — this stops the
       // moment a hop stops helping, rather than forcing one through at the
-      // cost of moving the problem elsewhere. The donor is only refused a
-      // hop if IT would end up over ITS OWN cap afterwards (checked with the
-      // same size-dependent capFor — a donation that leaves prev at exactly
-      // 2 items is fine as long as that new diptych stays under
-      // MAX_DIPTYCH_HEIGHT), which would just relocate the same problem
-      // instead of solving it.
-      while (cur.height > capFor(cur.items) && prev.items.length > 2) {
+      // cost of moving the problem elsewhere. If the donation happens to
+      // leave prev with exactly 2 items, that's just a new (legitimate)
+      // diptych pair and is allowed to run tall like any other; the only
+      // hop refused is one that would leave prev itself a 3-up-or-bigger
+      // row that's STILL over cap, which would just relocate the same
+      // problem instead of solving it.
+      while (cur.height > MAX_ROW_HEIGHT && prev.items.length > 2) {
         const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
         const candidatePrev = prev.items.slice(0, -1);
         const newCurHeight = fitRow(candidateCur);
         const newPrevHeight = fitRow(candidatePrev);
         if (newCurHeight >= cur.height) break;
-        if (newPrevHeight > capFor(candidatePrev)) break;
+        if (candidatePrev.length > 2 && newPrevHeight > MAX_ROW_HEIGHT) break;
         prev.items = candidatePrev;
         prev.height = newPrevHeight;
         cur.items = candidateCur;
@@ -1941,20 +1931,21 @@ body.lb-open{ overflow:hidden; }
       }
     });
 
-    // A row can still be stuck over ITS OWN cap after the hop pass above
-    // when it and its neighbours share (near-)identical aspect ratios —
-    // donating a photo one at a time just swaps which of the two rows is
+    // A 3-up-or-bigger row can still be stuck over cap after the hop pass
+    // above when it and its neighbours share (near-)identical aspect ratios
+    // — donating a photo one at a time just swaps which of the two rows is
     // the oversized one, since a uniform-ratio row's height depends only on
     // how many photos are in it. In that case, fold the whole oversized row
     // into the one before it rather than trading the problem back and forth:
     // more photos sharing one row can only make it shorter, so a full merge
     // — even though it breaks the usual 2/3-photo rhythm for that one row —
-    // reliably clears the cap where a single-photo hop cannot.
+    // reliably clears the cap where a single-photo hop cannot. Never applies
+    // to a genuine 2-up diptych row, which isn't a problem to begin with.
     for (let i = rows.length - 1; i >= 1; i--) {
-      if (rows[i].height <= capFor(rows[i].items)) continue;
+      if (rows[i].items.length <= 2 || rows[i].height <= MAX_ROW_HEIGHT) continue;
       const merged = rows[i - 1].items.concat(rows[i].items);
       const mergedHeight = fitRow(merged);
-      if (mergedHeight <= capFor(merged)) {
+      if (mergedHeight <= MAX_ROW_HEIGHT) {
         rows[i - 1] = { items: merged, height: mergedHeight };
         rows.splice(i, 1);
       }
