@@ -1870,6 +1870,20 @@ body.lb-open{ overflow:hidden; }
     while (idx < gridItemsCache.length) {
       let n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
       let group = gridItemsCache.slice(idx, idx + n);
+      // groupsConsumed tracks how many PATTERN entries this row has eaten
+      // (1 so far, itself) — growth below can absorb more, and whatever the
+      // final count is gets added to `p` once the row is finished, so the
+      // pattern's own position never drifts out of step with where `idx`
+      // actually is (see note on nextGroupSize below).
+      let groupsConsumed = 1;
+      // Looks ahead to what the NEXT pattern-designated group would be,
+      // sized to whatever's actually left in the category. Returns null
+      // when there's nothing left to grow into.
+      function nextGroupSize() {
+        const remaining = gridItemsCache.length - (idx + group.length);
+        if (remaining <= 0) return null;
+        return Math.min(gridPatternCache[(p + groupsConsumed) % gridPatternCache.length], remaining);
+      }
       // A 2-up row is a deliberate "diptych" pairing — the rhythm pattern
       // means it to read larger and more dramatic than the 3-up rows around
       // it, and that size CONTRAST is the whole point. So a genuine pair is
@@ -1878,29 +1892,49 @@ body.lb-open{ overflow:hidden; }
       // — which would just flatten every row to the same size and erase the
       // effect this rhythm exists to create. The cap only ever applies to
       // 3-up-or-bigger rows.
+      //
+      // Growth absorbs a WHOLE upcoming pattern-group at a time (not one
+      // flat photo at a time, as an earlier version did) and — critically —
+      // stops the moment the next group in line is itself a planned 2-up.
+      // The flat, one-photo-at-a-time version had no idea a diptych was
+      // coming up next and would happily eat straight through its first
+      // photo (then its second, then keep going) while chasing the cap —
+      // for a portrait-heavy or uniform-ratio category this could chain
+      // through MANY planned rows, diptychs included, before finally
+      // landing under cap, which is why diptychs were showing up on some
+      // reshuffles and not others ("no Diptyque at all"). Absorbing whole
+      // groups also keeps `p` and `idx` in lockstep (see groupsConsumed
+      // above), which the old per-photo version silently didn't.
       if (group.length > 2) {
         let height = fitRow(group);
-        while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
-          group = gridItemsCache.slice(idx, idx + group.length + 1);
+        while (height > MAX_ROW_HEIGHT) {
+          const nSize = nextGroupSize();
+          if (nSize === null || nSize === 2) break;
+          group = gridItemsCache.slice(idx, idx + group.length + nSize);
+          groupsConsumed += 1;
           height = fitRow(group);
         }
       } else if (group.length === 2 && group[0].r < 1 && group[1].r < 1 && fitRow(group) > MAX_PORTRAIT_DIPTYCH_HEIGHT) {
         // Both-portrait diptych, over the ceiling: grow it forward the same
-        // way an oversized 3-up+ row grows above, pulling in the next
-        // photo(s) until it clears the ceiling — NOT by clamping the row's
-        // height. Clamping left the pair narrower than the panel, and
+        // way an oversized 3-up+ row grows above — NOT by clamping the
+        // row's height. Clamping left the pair narrower than the panel, and
         // centering that leftover space (an earlier attempt at this) showed
         // up as an odd empty gap on either side rather than a clean
         // edge-to-edge grid. Once the pairing has to give, bring it all the
         // way down to the ordinary row cap rather than leaving it in
         // between. Only genuinely oversized portrait+portrait pairs are
         // ever affected; every other diptych keeps its intentional,
-        // uncapped size. If there's nothing left to grow into (last row),
-        // leave it as a genuine oversized pair — the same accepted,
-        // unavoidable edge case as everywhere else in this function.
+        // uncapped size. If there's nothing left to grow into, or the very
+        // next thing in line is ANOTHER planned pair, stop and leave this
+        // one as a genuine oversized pair instead of eating the next
+        // diptych too — the same accepted, unavoidable edge case as
+        // everywhere else in this function.
         let height = fitRow(group);
-        while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
-          group = gridItemsCache.slice(idx, idx + group.length + 1);
+        while (height > MAX_ROW_HEIGHT) {
+          const nSize = nextGroupSize();
+          if (nSize === null || nSize === 2) break;
+          group = gridItemsCache.slice(idx, idx + group.length + nSize);
+          groupsConsumed += 1;
           height = fitRow(group);
         }
       }
@@ -1914,7 +1948,7 @@ body.lb-open{ overflow:hidden; }
         group = gridItemsCache.slice(idx, idx + group.length + 1);
       }
       rows.push({ items: group, height: fitRow(group) });
-      idx += group.length; p += 1;
+      idx += group.length; p += groupsConsumed;
     }
     // The forward pass can only grow a row by pulling photos AHEAD of it,
     // so a 3-up-or-bigger row can still land over the cap when it's short
@@ -1980,9 +2014,14 @@ body.lb-open{ overflow:hidden; }
     // more photos sharing one row can only make it shorter, so a full merge
     // — even though it breaks the usual 2/3-photo rhythm for that one row —
     // reliably clears the cap where a single-photo hop cannot. Never applies
-    // to a genuine 2-up diptych row, which isn't a problem to begin with.
+    // to a genuine 2-up diptych row, which isn't a problem to begin with —
+    // and never folds INTO a predecessor that's a genuine 2-up diptych
+    // either, which would just quietly erase it as an unlucky side effect
+    // of fixing a different row. In that case leave the oversized row be;
+    // it's the same accepted, unavoidable edge case as everywhere else.
     for (let i = rows.length - 1; i >= 1; i--) {
       if (rows[i].items.length <= 2 || rows[i].height <= MAX_ROW_HEIGHT) continue;
+      if (rows[i - 1].items.length === 2) continue;
       const merged = rows[i - 1].items.concat(rows[i].items);
       const mergedHeight = fitRow(merged);
       if (mergedHeight <= MAX_ROW_HEIGHT) {
