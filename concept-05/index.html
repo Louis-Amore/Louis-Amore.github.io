@@ -1847,24 +1847,91 @@ body.lb-open{ overflow:hidden; }
       const s = arr.reduce((a, it) => a + it.r, 0);
       return (containerWidth - gap * (arr.length - 1)) / s;
     }
+    // EDIT: a 2-up (or even 3-up) row of mostly-landscape photos can land a
+    // real, tall row height once it's stretched to fill a wide desktop
+    // panel — the rhythm pattern was only ever about how many share a row,
+    // with nothing capping how big that made them. Keep the same rhythm
+    // (which row gets more items) but add more photos to any row that
+    // would render past MAX_ROW_HEIGHT, so photos read as a gallery grid
+    // rather than a couple of oversized prints.
+    const MAX_ROW_HEIGHT = 300;
     const rows = [];
     let idx = 0, p = 0;
     while (idx < gridItemsCache.length) {
-      const n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
-      rows.push({ items: gridItemsCache.slice(idx, idx + n) });
-      idx += n; p += 1;
+      let n = Math.min(gridPatternCache[p % gridPatternCache.length], gridItemsCache.length - idx);
+      let group = gridItemsCache.slice(idx, idx + n);
+      let height = fitRow(group);
+      while (height > MAX_ROW_HEIGHT && idx + group.length < gridItemsCache.length) {
+        group = gridItemsCache.slice(idx, idx + group.length + 1);
+        height = fitRow(group);
+      }
+      // never leave exactly one photo dangling for the next row to open
+      // with — an orphaned single photo would stretch across the FULL
+      // width alone next time round, ballooning its height. Fold it into
+      // THIS row instead (one more photo sharing a row only ever makes
+      // each one a little smaller, never bigger, so this can't undo the
+      // cap check just above).
+      if (gridItemsCache.length - (idx + group.length) === 1) {
+        group = gridItemsCache.slice(idx, idx + group.length + 1);
+        height = fitRow(group);
+      }
+      rows.push({ items: group, height });
+      idx += group.length; p += 1;
     }
-    rows.forEach((row) => { row.height = fitRow(row.items); });
-    // an orphaned single-photo last row would get stretched across the
-    // FULL width alone, ballooning its height and squashing every row
-    // above it once the panel scales — borrow one photo back from the
-    // previous row instead so the last row always has at least 2.
-    while (rows.length >= 2 && rows[rows.length - 1].items.length < 2 && rows[rows.length - 2].items.length > 1) {
-      const prev = rows[rows.length - 2];
-      const last = rows[rows.length - 1];
-      last.items.unshift(prev.items.pop());
-      prev.height = fitRow(prev.items);
-      last.height = fitRow(last.items);
+    // The forward pass can only grow a row by pulling photos AHEAD of it,
+    // so a row can still land over the cap when it's short on leftovers
+    // with nothing ahead left to borrow (most often, but not only, the
+    // very last row). Only rows that were ALREADY over cap right here get
+    // a fix attempt below — a row that only becomes tall as a side effect
+    // of donating a photo elsewhere is left alone, so an unavoidable
+    // remainder can't be relocated somewhere new (in particular, never
+    // pushed all the way back to row 0, which for an all-landscape category
+    // has near-identical row heights and nothing "cheap" to hide it in).
+    const overCapIdx = [];
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].height > MAX_ROW_HEIGHT) overCapIdx.push(i);
+    }
+    overCapIdx.reverse().forEach((i) => {
+      if (i < 1) return;
+      const cur = rows[i];
+      const prev = rows[i - 1];
+      // keep pulling one photo at a time from the row immediately before it
+      // as long as each hop actually shrinks cur further and doesn't just
+      // create a new over-cap row in prev's place — an unhelpful or unsafe
+      // hop is worse than leaving the original (genuinely unavoidable) row
+      // as-is, so this stops the moment either condition fails rather than
+      // forcing a fix through at the cost of moving the problem elsewhere.
+      while (cur.height > MAX_ROW_HEIGHT && prev.items.length > 2) {
+        const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
+        const candidatePrev = prev.items.slice(0, -1);
+        const newCurHeight = fitRow(candidateCur);
+        const newPrevHeight = fitRow(candidatePrev);
+        if (newCurHeight >= cur.height) break;
+        if (newPrevHeight > MAX_ROW_HEIGHT) break;
+        prev.items = candidatePrev;
+        prev.height = newPrevHeight;
+        cur.items = candidateCur;
+        cur.height = newCurHeight;
+      }
+    });
+
+    // A row can still be stuck over cap after the hop pass above when it and
+    // its neighbours share (near-)identical aspect ratios — donating a photo
+    // one at a time just swaps which of the two rows is the oversized one,
+    // since a uniform-ratio row's height depends only on how many photos are
+    // in it. In that case, fold the whole oversized row into the one before
+    // it rather than trading the problem back and forth: more photos sharing
+    // one row can only make it shorter, so a full merge — even though it
+    // breaks the usual 2/3-photo rhythm for that one row — reliably clears
+    // the cap where a single-photo hop cannot.
+    for (let i = rows.length - 1; i >= 1; i--) {
+      if (rows[i].height <= MAX_ROW_HEIGHT) continue;
+      const merged = rows[i - 1].items.concat(rows[i].items);
+      const mergedHeight = fitRow(merged);
+      if (mergedHeight <= MAX_ROW_HEIGHT) {
+        rows[i - 1] = { items: merged, height: mergedHeight };
+        rows.splice(i, 1);
+      }
     }
 
     lbGridWrap.innerHTML = '';
