@@ -2100,6 +2100,33 @@ body.lb-open{ overflow:hidden; }
 
   // Opens one photo enlarged in the existing white-mat "window", reusing
   // the same blur-placeholder progressive-load technique as before.
+  //
+  // EDIT: a direct field-photo click (openLightbox/openLightboxBySubcat with
+  // a startIndex/startSrc) calls renderGrid() and openSinglePhoto() back to
+  // back, without waiting for the grid's own async ratio-probing to finish —
+  // and this function's OWN final fitStage() call (bottom of this function)
+  // runs synchronously too, before either of THIS photo's own images have
+  // loaded. At that instant the frame has no real photo data to measure yet,
+  // so fitStage() can only guess "no overlap, stay beside" — a guess that
+  // stays on screen, caption and all, until something re-measures it. On a
+  // fast/local connection the real photo (or at least its blur placeholder)
+  // finishes loading within a few ms and a later fitStage() call quietly
+  // corrects it before anyone notices. On a real connection — especially
+  // with a whole category's worth of thumbnails competing for the same
+  // handful of connections — that window can last long enough to see and
+  // screenshot: a caption sitting beside the photo, overlapping the dimmed
+  // grid behind it ("the words are still to the side and overlapping").
+  // Confirmed by reproducing this exact sequence with an artificial per-image
+  // delay: the caption really does render beside/overlapping for a real,
+  // measurable stretch before self-correcting.
+  // Fix: hide the caption the instant a new photo starts opening, and only
+  // reveal it once a fitStage() call has run with actual image data behind
+  // it (the blur placeholder's own load, or the full photo's) — see the
+  // `reveal` parameter on fitStage() below. The premature call at the very
+  // end of this function no longer gets to leave a guess on screen; it can
+  // still run (harmless — the caption stays invisible either way), but
+  // nothing is shown until the layout decision is one fitStage() actually
+  // had real dimensions to make.
   function openSinglePhoto(pos) {
     currentPos = pos;
     const item = currentCategoryItems[pos];
@@ -2109,6 +2136,8 @@ body.lb-open{ overflow:hidden; }
     if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
     lbFrame.style.aspectRatio = '';
     lbFrame.style.removeProperty('--ar');
+    const _tagsBox = document.querySelector('.lb-tags');
+    if (_tagsBox) _tagsBox.style.visibility = 'hidden';
     const localLabel = 'Image ' + String(pos + 1).padStart(2, '0');
     const thumbSrc = variantSrc(info.src, 'thumb');
     const medSrc = variantSrc(info.src, 'med');
@@ -2125,6 +2154,10 @@ body.lb-open{ overflow:hidden; }
         if (w > maxW) { w = maxW; h = w / ratio; }
         _img.style.height = h + 'px';
         _img.style.width = w + 'px';
+        // the blur placeholder just gave the frame its first REAL size —
+        // safe to measure and reveal the caption now, rather than waiting
+        // for the much-larger full photo to finish loading too.
+        fitStage(true);
       }
     };
     if (_blur.complete) applyRatio(); else _blur.addEventListener('load', applyRatio, { once: true });
@@ -2132,7 +2165,7 @@ body.lb-open{ overflow:hidden; }
       _img.classList.add('loaded');
       _img.style.height = '';
       _img.style.width = '';
-      fitStage();
+      fitStage(true);
     };
     if (_img.complete) markLoaded(); else _img.addEventListener('load', markLoaded, { once: true });
 
@@ -2360,7 +2393,15 @@ body.lb-open{ overflow:hidden; }
   // then caps the photo to whatever's left — guaranteed not to overlap
   // either neighbour, at any viewport width, rather than a hand-derived
   // pixel formula that has to be re-verified every time anything nearby changes.
-  function fitStage() {
+  // EDIT: `reveal` — openSinglePhoto() hides the caption box the instant a
+  // new photo starts opening (see there for why) and only openSinglePhoto's
+  // own applyRatio()/markLoaded() callbacks pass `reveal:true` here, once
+  // there's an actual photo (blur placeholder or full image) behind the
+  // measurement. Every other caller (resize, fonts.ready, the premature
+  // call at the very end of openSinglePhoto itself) omits it and just
+  // recomputes the layout without touching visibility — so a guess made
+  // before any image data exists can never be the one shown on screen.
+  function fitStage(reveal) {
     const info = document.querySelector('.lb-info');
     const frame = document.querySelector('.lb-frame');
     const img = frame && frame.querySelector('.lb-stage-img');
@@ -2380,6 +2421,7 @@ body.lb-open{ overflow:hidden; }
     // photo and leave.
     if (window.innerWidth <= 1150) {
       if (tags && window.innerWidth > 760) syncStackedTags(frame, tags);
+      if (reveal && tags) tags.style.visibility = '';
       return;
     }
     const SAFETY = 16;
@@ -2468,6 +2510,7 @@ body.lb-open{ overflow:hidden; }
         img.style.maxHeight = next + 'px';
       }
     }
+    if (reveal && tags) tags.style.visibility = '';
   }
   function syncStackedTags(frame, tags) {
     if (!frame || !tags) return;
