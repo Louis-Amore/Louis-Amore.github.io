@@ -2417,6 +2417,18 @@ body.lb-open{ overflow:hidden; }
     tags.style.width = Math.round(frame.getBoundingClientRect().width) + 'px';
   }
   window.addEventListener('resize', () => setTimeout(fitStage, 120));
+  // fitStage() measures the caption's REAL rendered text to decide whether it
+  // fits beside the photo or needs to drop below it — but the caption uses
+  // custom web fonts (EB Garamond/Fraunces) that can still be downloading the
+  // first time a photo opens. If fitStage() runs against the fallback system
+  // font (narrower, wraps differently) and decides the caption fits beside
+  // the photo, the real font can then swap in and reflow wider/taller with
+  // nothing re-checking the fit — leaving the caption wedged beside the photo
+  // and overlapping whatever's behind it. Re-run once the real fonts are
+  // confirmed loaded to catch and correct exactly that case.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => fitStage());
+  }
 
   frameList.forEach((frame, i) => {
     frame.style.cursor = 'pointer';
