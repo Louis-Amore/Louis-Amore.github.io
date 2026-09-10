@@ -1810,6 +1810,15 @@ body.lb-open{ overflow:hidden; }
     // rather than a couple of oversized prints.
     const MAX_ROW_HEIGHT = 360;
     const MAX_DIPTYCH_HEIGHT = 500;
+    // EDIT: a both-portrait pair reported as still too big even under the
+    // general diptych cap (two narrow columns means each has to grow
+    // TALLER to fill the same row width, so a portrait+portrait pair hits
+    // a noticeably bigger height than a mixed or both-landscape pair at
+    // the same cap) — given its own, roughly-half-of-that ceiling.
+    const MAX_PORTRAIT_DIPTYCH_HEIGHT = 250;
+    function diptychCapFor(g) {
+      return (g[0].r < 1 && g[1].r < 1) ? MAX_PORTRAIT_DIPTYCH_HEIGHT : MAX_DIPTYCH_HEIGHT;
+    }
     const rows = [];
     let idx = 0, p = 0;
     while (idx < gridItemsCache.length) {
@@ -1832,9 +1841,12 @@ body.lb-open{ overflow:hidden; }
       // A 2-up row is a deliberate "diptych" pairing — the rhythm pattern
       // means it to read larger and more dramatic than the 3-up rows around
       // it, and that size CONTRAST is still the whole point, just at a
-      // smaller gap than before: EVERY diptych (any ratio combination, not
-      // just a both-portrait pair) now gets capped at MAX_DIPTYCH_HEIGHT,
-      // still meaningfully bigger than an ordinary row's MAX_ROW_HEIGHT.
+      // smaller gap than before: every diptych gets capped, at
+      // MAX_DIPTYCH_HEIGHT normally or the stricter MAX_PORTRAIT_DIPTYCH_
+      // HEIGHT when both photos are portrait-oriented (two narrow columns
+      // means each has to grow taller to fill the same row width, so a
+      // portrait+portrait pair reads much bigger than any other pairing at
+      // the same cap) — see diptychCapFor() above, shared with capFor().
       //
       // Growth absorbs a WHOLE upcoming pattern-group at a time (not one
       // flat photo at a time, as an earlier version did) and — critically —
@@ -1857,7 +1869,7 @@ body.lb-open{ overflow:hidden; }
           groupsConsumed += 1;
           height = fitRow(group);
         }
-      } else if (group.length === 2 && fitRow(group) > MAX_DIPTYCH_HEIGHT) {
+      } else if (group.length === 2 && fitRow(group) > diptychCapFor(group)) {
         // Any diptych over the ceiling: grow it forward the same way an
         // oversized 3-up+ row grows above — NOT by clamping the row's
         // height. Clamping left the pair narrower than the panel, and
@@ -1902,74 +1914,105 @@ body.lb-open{ overflow:hidden; }
     // relocated somewhere new (in particular, never pushed all the way back
     // to row 0, which for an all-landscape category has near-identical row
     // heights and nothing "cheap" to hide it in).
-    // A row's own height ceiling: 3-up-or-bigger uses the ordinary cap,
-    // an exactly-2-item row (any ratio combination) uses the diptych
-    // ceiling — everything this function does with "is this row over cap"
-    // reduces to this one check.
+    // A row's own height ceiling: 3-up-or-bigger uses the ordinary cap, an
+    // exactly-2-item row uses whichever diptych ceiling diptychCapFor()
+    // picks for that pairing — everything this function does with "is this
+    // row over cap" reduces to this one check.
     function capFor(items) {
       if (items.length > 2) return MAX_ROW_HEIGHT;
-      if (items.length === 2) return MAX_DIPTYCH_HEIGHT;
+      if (items.length === 2) return diptychCapFor(items);
       return Infinity;
     }
-    const overCapIdx = [];
-    for (let i = 0; i < rows.length; i++) {
-      if (rows[i].height > capFor(rows[i].items)) overCapIdx.push(i);
-    }
-    overCapIdx.reverse().forEach((i) => {
-      if (i < 1) return;
+    // Try to fix an over-cap row `i` by pulling one photo from an EARLIER
+    // row, shifting it through every row in between one hop at a time (each
+    // intermediate row keeps its own photo count — it just hands its last
+    // photo forward and receives one from behind — so nothing changes shape
+    // except the donor, which loses one, and row i, which gains one).
+    // EDIT (Sep 10): the original version only ever looked at the row
+    // directly before `i` and gave up if THAT one couldn't spare a photo
+    // without busting its own cap. With the tighter portrait-diptych cap
+    // that immediate neighbour is very often already full itself, so this
+    // now walks all the way back to row 0 if it has to, checking every row
+    // along the way (both the donor and every row the photo passes through)
+    // against ITS OWN cap before committing — a hop that would just move
+    // the violation somewhere else is skipped in favor of an earlier row
+    // that can actually absorb it.
+    function tryHop(i) {
       const cur = rows[i];
-      const prev = rows[i - 1];
-      // keep pulling one photo at a time from the row immediately before it
-      // as long as each hop actually shrinks cur further — this stops the
-      // moment a hop stops helping, rather than forcing one through at the
-      // cost of moving the problem elsewhere. If the donation happens to
-      // leave prev with exactly 2 items, that's just a new (legitimate)
-      // diptych pair and is allowed to run tall like any other; the only
-      // hop refused is one that would leave prev itself a 3-up-or-bigger
-      // row that's STILL over cap, which would just relocate the same
-      // problem instead of solving it. The moment cur itself grows past 2
-      // items (e.g. a stuck last-row diptych pulling its first neighbour
-      // in), capFor(cur.items) switches from the diptych ceiling to the
-      // ordinary one — it's no longer a pair, so it's held to the same
-      // standard as every other row instead of stopping early.
-      while (cur.height > capFor(cur.items) && prev.items.length > 2) {
-        const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
-        const candidatePrev = prev.items.slice(0, -1);
-        const newCurHeight = fitRow(candidateCur);
-        const newPrevHeight = fitRow(candidatePrev);
-        if (newCurHeight >= cur.height) break;
-        if (candidatePrev.length > 2 && newPrevHeight > MAX_ROW_HEIGHT) break;
-        prev.items = candidatePrev;
-        prev.height = newPrevHeight;
-        cur.items = candidateCur;
-        cur.height = newCurHeight;
+      for (let j = i - 1; j >= 0; j--) {
+        if (rows[j].items.length <= 2) continue; // never break up a diptych to feed another row
+        const donorNewItems = rows[j].items.slice(0, -1);
+        const donorNewHeight = fitRow(donorNewItems);
+        if (donorNewHeight > capFor(donorNewItems)) continue;
+        let carry = rows[j].items[rows[j].items.length - 1];
+        const pending = [{ idx: j, items: donorNewItems, height: donorNewHeight }];
+        let ok = true;
+        for (let k = j + 1; k < i; k++) {
+          const combined = [carry].concat(rows[k].items);
+          const kNewItems = combined.slice(0, -1);
+          const kNewHeight = fitRow(kNewItems);
+          if (kNewHeight > capFor(kNewItems)) { ok = false; break; }
+          pending.push({ idx: k, items: kNewItems, height: kNewHeight });
+          carry = combined[combined.length - 1];
+        }
+        if (!ok) continue;
+        const iNewItems = [carry].concat(cur.items);
+        const iNewHeight = fitRow(iNewItems);
+        if (iNewHeight >= cur.height) continue; // this donor doesn't actually help
+        pending.forEach((s) => { rows[s.idx].items = s.items; rows[s.idx].height = s.height; });
+        cur.items = iNewItems;
+        cur.height = iNewHeight;
+        return true;
       }
-    });
-
-    // A 3-up-or-bigger row can still be stuck over cap after the hop pass
-    // above when it and its neighbours share (near-)identical aspect ratios
-    // — donating a photo one at a time just swaps which of the two rows is
-    // the oversized one, since a uniform-ratio row's height depends only on
-    // how many photos are in it. In that case, fold the whole oversized row
-    // into the one before it rather than trading the problem back and forth:
-    // more photos sharing one row can only make it shorter, so a full merge
-    // — even though it breaks the usual 2/3-photo rhythm for that one row —
-    // reliably clears the cap where a single-photo hop cannot. Never applies
-    // to a genuine 2-up diptych row, which isn't a problem to begin with —
-    // and never folds INTO a predecessor that's a genuine 2-up diptych
-    // either, which would just quietly erase it as an unlucky side effect
-    // of fixing a different row. In that case leave the oversized row be;
-    // it's the same accepted, unavoidable edge case as everywhere else.
-    for (let i = rows.length - 1; i >= 1; i--) {
-      if (rows[i].items.length <= 2 || rows[i].height <= MAX_ROW_HEIGHT) continue;
-      if (rows[i - 1].items.length === 2) continue;
-      const merged = rows[i - 1].items.concat(rows[i].items);
-      const mergedHeight = fitRow(merged);
-      if (mergedHeight <= MAX_ROW_HEIGHT) {
-        rows[i - 1] = { items: merged, height: mergedHeight };
-        rows.splice(i, 1);
+      return false;
+    }
+    function runHopPass() {
+      const overCapIdx = [];
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].height > capFor(rows[i].items)) overCapIdx.push(i);
+      }
+      overCapIdx.reverse().forEach((i) => {
+        if (i < 1) return;
+        while (rows[i].height > capFor(rows[i].items) && tryHop(i)) { /* keep hopping back until it stops helping */ }
+      });
+    }
+    // A 3-up-or-bigger row can still be stuck over cap after hopping when it
+    // and its neighbours share (near-)identical aspect ratios — donating a
+    // photo one at a time just swaps which of the two rows is the oversized
+    // one, since a uniform-ratio row's height depends only on how many
+    // photos are in it. In that case, fold the whole oversized row into the
+    // one before it rather than trading the problem back and forth: more
+    // photos sharing one row can only make it shorter. Never applies to a
+    // genuine 2-up diptych row, which isn't a problem to begin with — and
+    // never folds INTO a predecessor that's a genuine 2-up diptych either,
+    // which would just quietly erase it as a side effect of fixing something
+    // else.
+    function runMergePass() {
+      for (let i = rows.length - 1; i >= 1; i--) {
+        if (rows[i].items.length <= 2 || rows[i].height <= MAX_ROW_HEIGHT) continue;
+        if (rows[i - 1].items.length === 2) continue;
+        const merged = rows[i - 1].items.concat(rows[i].items);
+        const mergedHeight = fitRow(merged);
+        if (mergedHeight <= MAX_ROW_HEIGHT) {
+          rows[i - 1] = { items: merged, height: mergedHeight };
+          rows.splice(i, 1);
+        }
       }
     }
+    // Merge first: consolidating consecutive over-cap 3-up+ rows into fewer,
+    // larger, comfortably-under-cap rows is what actually creates the spare
+    // room a later hop needs to reach a stranded diptych (most often the
+    // very last row) — running hop first, before that room exists, was why
+    // a tight last-row diptych so often stayed stuck even though an earlier
+    // row technically had "enough" photos. Merge again afterward in case
+    // hopping freed up a further merge. A residual stuck row (almost always
+    // row 0, which has nothing before it to pull from, or occasionally a
+    // last-row diptych when even the consolidated rows are too tight to
+    // spare a photo without breaking their own cap) is the same accepted,
+    // unavoidable edge case as everywhere else in this function.
+    runMergePass();
+    runHopPass();
+    runMergePass();
 
     lbGridWrap.innerHTML = '';
     rows.forEach((row) => {
