@@ -1808,15 +1808,8 @@ body.lb-open{ overflow:hidden; }
     // (which row gets more items) but add more photos to any row that
     // would render past MAX_ROW_HEIGHT, so photos read as a gallery grid
     // rather than a couple of oversized prints.
-    const MAX_ROW_HEIGHT = 300;
-    // A genuine diptych pair is exempt from MAX_ROW_HEIGHT (see below), and
-    // that's deliberate — the size contrast against the 3-up rows is the
-    // whole point. But when BOTH photos in the pair are portrait-oriented,
-    // fitting them to the full panel width can stretch the row past 1000px
-    // on a wide screen, which reads as oversized rather than dramatic. Cap
-    // just that specific case, and only past this height — landscape-mixed
-    // pairs (which never come close to this height anyway) are untouched.
-    const MAX_PORTRAIT_DIPTYCH_HEIGHT = 750;
+    const MAX_ROW_HEIGHT = 360;
+    const MAX_DIPTYCH_HEIGHT = 500;
     const rows = [];
     let idx = 0, p = 0;
     while (idx < gridItemsCache.length) {
@@ -1838,12 +1831,10 @@ body.lb-open{ overflow:hidden; }
       }
       // A 2-up row is a deliberate "diptych" pairing — the rhythm pattern
       // means it to read larger and more dramatic than the 3-up rows around
-      // it, and that size CONTRAST is the whole point. So a genuine pair is
-      // exempt from the cap entirely, at any panel width, rather than
-      // forcibly grown into a 3-up the moment it gets tall on a wide screen
-      // — which would just flatten every row to the same size and erase the
-      // effect this rhythm exists to create. The cap only ever applies to
-      // 3-up-or-bigger rows.
+      // it, and that size CONTRAST is still the whole point, just at a
+      // smaller gap than before: EVERY diptych (any ratio combination, not
+      // just a both-portrait pair) now gets capped at MAX_DIPTYCH_HEIGHT,
+      // still meaningfully bigger than an ordinary row's MAX_ROW_HEIGHT.
       //
       // Growth absorbs a WHOLE upcoming pattern-group at a time (not one
       // flat photo at a time, as an earlier version did) and — critically —
@@ -1866,21 +1857,19 @@ body.lb-open{ overflow:hidden; }
           groupsConsumed += 1;
           height = fitRow(group);
         }
-      } else if (group.length === 2 && group[0].r < 1 && group[1].r < 1 && fitRow(group) > MAX_PORTRAIT_DIPTYCH_HEIGHT) {
-        // Both-portrait diptych, over the ceiling: grow it forward the same
-        // way an oversized 3-up+ row grows above — NOT by clamping the
-        // row's height. Clamping left the pair narrower than the panel, and
+      } else if (group.length === 2 && fitRow(group) > MAX_DIPTYCH_HEIGHT) {
+        // Any diptych over the ceiling: grow it forward the same way an
+        // oversized 3-up+ row grows above — NOT by clamping the row's
+        // height. Clamping left the pair narrower than the panel, and
         // centering that leftover space (an earlier attempt at this) showed
         // up as an odd empty gap on either side rather than a clean
         // edge-to-edge grid. Once the pairing has to give, bring it all the
         // way down to the ordinary row cap rather than leaving it in
-        // between. Only genuinely oversized portrait+portrait pairs are
-        // ever affected; every other diptych keeps its intentional,
-        // uncapped size. If there's nothing left to grow into, or the very
-        // next thing in line is ANOTHER planned pair, stop and leave this
-        // one as a genuine oversized pair instead of eating the next
-        // diptych too — the same accepted, unavoidable edge case as
-        // everywhere else in this function.
+        // between. If there's nothing left to grow into, or the very next
+        // thing in line is ANOTHER planned pair, stop and leave this one as
+        // a genuine oversized pair instead of eating the next diptych too —
+        // the same accepted, unavoidable edge case as everywhere else in
+        // this function.
         let height = fitRow(group);
         while (height > MAX_ROW_HEIGHT) {
           const nSize = nextGroupSize();
@@ -1913,13 +1902,13 @@ body.lb-open{ overflow:hidden; }
     // relocated somewhere new (in particular, never pushed all the way back
     // to row 0, which for an all-landscape category has near-identical row
     // heights and nothing "cheap" to hide it in).
-    // A row's own height ceiling: 3-up-or-bigger always uses the ordinary
-    // cap; an exactly-2-item row is uncapped UNLESS it's a both-portrait
-    // pair, which gets the stricter portrait ceiling — everything this
-    // function does with "is this row over cap" reduces to this one check.
+    // A row's own height ceiling: 3-up-or-bigger uses the ordinary cap,
+    // an exactly-2-item row (any ratio combination) uses the diptych
+    // ceiling — everything this function does with "is this row over cap"
+    // reduces to this one check.
     function capFor(items) {
       if (items.length > 2) return MAX_ROW_HEIGHT;
-      if (items.length === 2 && items[0].r < 1 && items[1].r < 1) return MAX_PORTRAIT_DIPTYCH_HEIGHT;
+      if (items.length === 2) return MAX_DIPTYCH_HEIGHT;
       return Infinity;
     }
     const overCapIdx = [];
@@ -1939,10 +1928,10 @@ body.lb-open{ overflow:hidden; }
       // hop refused is one that would leave prev itself a 3-up-or-bigger
       // row that's STILL over cap, which would just relocate the same
       // problem instead of solving it. The moment cur itself grows past 2
-      // items (e.g. a stuck last-row portrait pair pulling its first
-      // neighbour in), capFor(cur.items) switches from the portrait ceiling
-      // to the ordinary one — it's no longer a pair, so it's held to the
-      // same standard as every other row instead of stopping early at 750.
+      // items (e.g. a stuck last-row diptych pulling its first neighbour
+      // in), capFor(cur.items) switches from the diptych ceiling to the
+      // ordinary one — it's no longer a pair, so it's held to the same
+      // standard as every other row instead of stopping early.
       while (cur.height > capFor(cur.items) && prev.items.length > 2) {
         const candidateCur = [prev.items[prev.items.length - 1]].concat(cur.items);
         const candidatePrev = prev.items.slice(0, -1);
