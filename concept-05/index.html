@@ -535,38 +535,22 @@ body.lb-open{ overflow:hidden; }
 
 .lb-body{ flex:1 1 auto; display:flex; min-height:0; }
 
-.lb-rail{
-  width:21vw; max-width:310px; flex:0 0 21vw; overflow-y:auto; padding:20px;
-  display:block; position:relative; border-right:1px solid rgba(17,17,16,0.12);
-  height:100%; min-height:0;
-  /* invisible scrollbar — still scrolls, just no visible bar */
-  scrollbar-width:none; -ms-overflow-style:none;
-}
-.lb-rail::-webkit-scrollbar{ width:0; height:0; display:none; }
-.lb-thumb{
-  position:absolute; margin:0; padding:0; background:#fff; cursor:pointer;
-  box-shadow:0 6px 16px rgba(20,19,16,.14); opacity:1; border:none;
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.lb-thumb:hover{ transform:scale(1.03); box-shadow:0 14px 30px rgba(20,19,16,.26); z-index:5; }
-.lb-thumb.active{ opacity:1; }
-.lb-thumb .ph{
-  display:flex; align-items:center; justify-content:center; width:100%; height:100%;
-  font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; background:#e7e4dc;
-}
-.lb-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-/* EDIT: no-rail redesign — the thumbnail strip is replaced by a full
-   scrollable justified-mosaic grid showing every photo in the category,
-   with a deliberate "rhythm" of row sizes (2-up vs 3-up) so even an
-   all-landscape set doesn't read as a flat, uniform strip. Real per-photo
-   ratios (probed from each photo's own dimensions, the same technique
-   layoutCollageRail already used) mean every ratio — landscape, portrait,
+/* EDIT: this whole file used to have a masonry thumbnail rail here (a
+   fixed-width scrolling column of small tiles, built by a buildRail()/
+   layoutCollageRail() pair) as the way to pick a photo. The no-rail
+   redesign below replaced it outright with a full scrollable
+   justified-mosaic grid showing every photo in the category, with a
+   deliberate "rhythm" of row sizes (2-up vs 3-up) so even an all-landscape
+   set doesn't read as a flat, uniform strip. Real per-photo ratios (probed
+   from each photo's own dimensions) mean every ratio — landscape, portrait,
    or anything added later, including a square — packs edge-to-edge with no
    gaps and no cropping. Clicking a tile opens it enlarged in the same
    white-mat "window" used elsewhere, over a dimmed backdrop; clicking away
-   closes it back to the grid. */
-.lb-rail{ display:none; }
+   closes it back to the grid. The old rail's CSS/markup/JS (the empty
+   #lb-rail div, its scrollbar styling, .lb-thumb tile styles, and the
+   iOS touch-scroll-chaining fix that only ever applied to it) has been
+   removed as dead weight — nothing on the live site creates a .lb-thumb
+   tile or shows the rail column any more. */
 .lb-grid-wrap{
   flex:1 1 auto; height:100%; min-height:0; overflow-y:auto; box-sizing:border-box;
   padding:28px 32px;
@@ -783,30 +767,6 @@ body.lb-open{ overflow:hidden; }
      doesn't reliably size a scrolling child once the parent switches to
      column direction), same as the rail used to need one. */
   .lb-grid-wrap{ height:56vh; padding:16px; }
-  .lb-rail{ width:100%; max-width:none; flex:0 0 auto; height:38vh; overflow-y:auto; border-right:none; border-bottom:1px solid rgba(17,17,16,0.12);
-    /* EDIT: the real, deeper fix behind the scroll-hint work above — a
-       swipe on the rail was scrolling the WHOLE PAGE instead of just the
-       rail itself (confirmed via screen recording: repeated swipes on the
-       rail kept landing on the stage photo below rather than revealing
-       more thumbnails). overscroll-behavior-y:contain stops the gesture
-       from "chaining" through to the page once the rail's own scroll hits
-       its start/end — the rail now properly owns its own scroll instead
-       of handing it off. -webkit-overflow-scrolling adds native momentum
-       scrolling on iOS specifically, so it also feels right, not just
-       behaves right. */
-    overscroll-behavior-y:contain; -webkit-overflow-scrolling:touch; }
-  /* EDIT: on mobile the rail is a SEPARATE, independently-scrolling area
-     stacked above the page's own scroll — with the scrollbar hidden (the
-     desktop/tablet default), there's nothing telling a visitor this box
-     scrolls on its own, so a downward swipe on it can easily be mistaken
-     for scrolling the whole page instead. Restore a thin, subtle scrollbar
-     here specifically (kept invisible elsewhere, where this ambiguity
-     doesn't really come up) as a clear, standard, universally-understood
-     "this scrolls" signal. */
-  .lb-rail{ scrollbar-width:thin; -ms-overflow-style:auto; }
-  .lb-rail::-webkit-scrollbar{ width:4px; height:4px; display:block; }
-  .lb-rail::-webkit-scrollbar-track{ background:transparent; }
-  .lb-rail::-webkit-scrollbar-thumb{ background:rgba(17,17,16,0.28); border-radius:4px; }
   .lb-topbar{ grid-template-columns:100px 1fr 100px; }
   .lb-bottombar{ padding-left:28px; padding-right:28px; }
   /* EDIT: the base max-width formula assumes the desktop collage + info panel
@@ -1049,7 +1009,6 @@ body.lb-open{ overflow:hidden; }
     <button id="lb-close">Close ✕</button>
   </div>
   <div class="lb-body">
-    <div class="lb-rail" id="lb-rail"></div>
     <div class="lb-stage-wrap">
       <div class="lb-stage">
         <div class="lb-frame" id="lb-frame"><span id="lb-frame-label">Image</span></div>
@@ -1091,37 +1050,6 @@ body.lb-open{ overflow:hidden; }
   const lbFrame = document.getElementById('lb-frame');
   const lbCat = document.getElementById('lb-cat');
   const lbCount = document.getElementById('lb-count');
-  const lbRail = document.getElementById('lb-rail');
-
-  // EDIT: overscroll-behavior-y:contain (added earlier) is the
-  // theoretically-correct CSS fix for scroll chaining, but iOS Safari has
-  // long-documented gaps in its support for this property — specifically
-  // around the rubber-band/bounce effect at a scroll boundary, which can
-  // still chain through to the page even with "contain" set. Confirmed via
-  // user report that the CSS-only fix genuinely wasn't enough in practice.
-  // This is the more reliable, browser-independent backup: track touch
-  // direction manually, and only when the rail is ALREADY at its scroll
-  // boundary in that direction do we stop the swipe from continuing on to
-  // scroll the page — normal scrolling within the rail is untouched.
-  (function railTouchContain() {
-    if (!lbRail) return;
-    let lastY = 0;
-    lbRail.addEventListener('touchstart', (e) => {
-      if (e.touches.length) lastY = e.touches[0].clientY;
-    }, { passive: true });
-    lbRail.addEventListener('touchmove', (e) => {
-      if (!e.touches.length) return;
-      const currentY = e.touches[0].clientY;
-      const deltaY = currentY - lastY; // >0: finger moving down (wants content ABOVE); <0: wants content BELOW
-      const atTop = lbRail.scrollTop <= 0;
-      const atBottom = Math.ceil(lbRail.scrollTop + lbRail.clientHeight) >= lbRail.scrollHeight;
-      if ((deltaY > 0 && atTop) || (deltaY < 0 && atBottom)) {
-        e.preventDefault();
-      }
-      lastY = currentY;
-    }, { passive: false });
-  })();
-
   const lbInfoCat = document.getElementById('lb-info-cat');
   const lbInfoTitle = document.getElementById('lb-info-title');
   const lbInfoBody = document.getElementById('lb-info-body');
@@ -1792,7 +1720,11 @@ body.lb-open{ overflow:hidden; }
   const lbGridWrap = document.createElement('div');
   lbGridWrap.className = 'lb-grid-wrap';
   lbGridWrap.id = 'lb-grid-wrap';
-  lbRail.insertAdjacentElement('afterend', lbGridWrap);
+  // EDIT: used to be inserted "afterend" of the old #lb-rail div (removed —
+  // see the dead-rail cleanup note near .lb-grid-wrap's CSS); inserting as
+  // .lb-body's first child puts it in the exact same spot, immediately
+  // before .lb-stage-wrap.
+  document.querySelector('.lb-body').insertAdjacentElement('afterbegin', lbGridWrap);
 
   // #lightbox itself is position:fixed with z-index:100 over the whole
   // page, so appending this to document.body would tuck it BEHIND the
