@@ -1985,11 +1985,26 @@ body.lb-open{ overflow:hidden; }
       rowEl.className = 'grid-row';
       row.items.forEach((it) => {
         const img = document.createElement('img');
+        const tileW = Math.round(it.r * row.height);
+        // Grid tiles now cover a full category/subcat at once (no more
+        // rail scrolling), and a 2-up diptych row in particular can run
+        // much wider/taller than a normal row by design (see the row-
+        // height-cap notes above) — so every tile got the flat 1400px
+        // 'med' image regardless of how small it actually renders, and
+        // ALL of them started downloading immediately since none were
+        // marked lazy. Fixed the same way the rest of the site already
+        // sizes images: a real srcset (400px thumb / 1400px med) with
+        // sizes matching the tile's actual on-screen width, so small
+        // tiles pull the small file, plus loading="lazy" so only the
+        // rows near the viewport fetch anything up front.
+        img.srcset = variantSrc(it.item.info.src, 'thumb') + ' 400w, ' + variantSrc(it.item.info.src, 'med') + ' 1400w';
+        img.sizes = tileW + 'px';
         img.src = variantSrc(it.item.info.src, 'med');
         img.alt = it.item.info.label || '';
         img.decoding = 'async';
+        img.loading = 'lazy';
         img.style.height = row.height + 'px';
-        img.style.width = (it.r * row.height) + 'px';
+        img.style.width = tileW + 'px';
         img.addEventListener('click', () => openSinglePhoto(it.pos));
         rowEl.appendChild(img);
       });
