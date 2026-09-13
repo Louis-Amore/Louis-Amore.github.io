@@ -1796,6 +1796,11 @@ body.lb-open{ overflow:hidden; }
     const gwStyle = getComputedStyle(lbGridWrap);
     const containerWidth = lbGridWrap.clientWidth - parseFloat(gwStyle.paddingLeft || '0') - parseFloat(gwStyle.paddingRight || '0');
     if (!containerWidth) return;
+    // Same idea, vertically: the wrap panel is always sized to fill the
+    // available screen height (so a big category scrolls nicely instead of
+    // stretching the whole page) — used below to grow rows into any leftover
+    // space a shorter category/shuffle leaves unused (see runFillPass).
+    const containerHeight = lbGridWrap.clientHeight - parseFloat(gwStyle.paddingTop || '0') - parseFloat(gwStyle.paddingBottom || '0');
     const gap = 8;
     function fitRow(arr) {
       const s = arr.reduce((a, it) => a + it.r, 0);
@@ -2013,6 +2018,61 @@ body.lb-open{ overflow:hidden; }
     runMergePass();
     runHopPass();
     runMergePass();
+
+    // EDIT: the panel above always reserves the full screen height (so a
+    // photo-heavy category scrolls nicely instead of stretching the whole
+    // page) — but the row-height caps above are a MAXIMUM, not a target, so
+    // a smaller category (or a shuffle that happens to consolidate rows
+    // hard) can settle well under that full height, leaving real blank
+    // space above the fixed "Back" bar. A row can only get taller by
+    // sharing its fixed container width among FEWER photos (that's the
+    // same math the caps above use in reverse) — so filling that gap means
+    // splitting an over-consolidated row back into two smaller ones, never
+    // stretching a row past the container width, which would just trade a
+    // gap below for an overflow to the side.
+    function trySplit(i) {
+      const row = rows[i];
+      if (row.items.length <= 3) return false; // never break up an already-minimal row
+      let best = null;
+      for (let k = 2; k <= row.items.length - 2; k++) {
+        const left = row.items.slice(0, k);
+        const right = row.items.slice(k);
+        const leftHeight = fitRow(left);
+        const rightHeight = fitRow(right);
+        if (leftHeight > capFor(left) || rightHeight > capFor(right)) continue;
+        const balance = Math.abs(left.length - right.length);
+        if (!best || balance < best.balance) {
+          best = { left, right, leftHeight, rightHeight, balance };
+        }
+      }
+      if (!best) return false;
+      rows.splice(i, 1,
+        { items: best.left, height: best.leftHeight },
+        { items: best.right, height: best.rightHeight }
+      );
+      return true;
+    }
+    function runFillPass() {
+      if (!containerHeight) return;
+      function totalContentHeight() {
+        return rows.reduce((sum, r) => sum + r.height, 0) + gap * Math.max(0, rows.length - 1);
+      }
+      let guard = 0;
+      // A few px of slack: not worth splitting a row over a rounding-level gap.
+      while (totalContentHeight() < containerHeight - 4 && guard < 200) {
+        guard++;
+        const candidates = rows
+          .map((r, idx) => ({ idx, len: r.items.length }))
+          .filter((c) => c.len > 3)
+          .sort((a, b) => b.len - a.len);
+        let splitDone = false;
+        for (const c of candidates) {
+          if (trySplit(c.idx)) { splitDone = true; break; }
+        }
+        if (!splitDone) break; // nothing left that can split without busting its own cap
+      }
+    }
+    runFillPass();
 
     lbGridWrap.innerHTML = '';
     rows.forEach((row) => {
