@@ -554,6 +554,10 @@ body.lb-open{ overflow:hidden; }
   scrollbar-width:none; -ms-overflow-style:none;
 }
 .lb-grid-wrap::-webkit-scrollbar{ width:0; height:0; display:none; }
+.lb-grid-empty{
+  font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  height:100%; display:flex; align-items:center; justify-content:center; text-align:center;
+}
 .grid-row{ display:flex; gap:8px; margin-bottom:8px; }
 .grid-row img{
   display:block; object-fit:cover; cursor:pointer;
@@ -1053,6 +1057,12 @@ body.lb-open{ overflow:hidden; }
   let currentCategoryItems = [];
   let currentPos = 0;
   let currentBrowseSubcat = null; // set only when actually browsing a subcategory, not just because one photo has one
+  // EDIT: which top-level category is being browsed, kept independently of
+  // currentCategoryItems — showCategoryInfo() used to read the category name
+  // off currentCategoryItems[0], which only works when the category actually
+  // has a photo in it; a category with zero photos so far (e.g. a brand new
+  // one waiting on its first upload) left the info panel title/eyebrow blank.
+  let currentBrowseCat = null;
 
   // frameInfo() reads img.src (a DOM property, always a full resolved URL);
   // the data arrays and getAttribute('src') calls elsewhere give back the
@@ -1081,6 +1091,12 @@ body.lb-open{ overflow:hidden; }
   // touching the homepage. Give each one a label (used for project/
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
+    // EDIT: new "Amore AI" category — real photos to follow; starts empty
+    // (see the IDX entry and the "coming soon" grid-empty state above) so
+    // the nav item is fully wired up and just needs entries added here,
+    // same shape as every other category's array, once photos are ready.
+    'Amore AI': [
+    ],
     'Interiors': [
       { label: 'Interiors 37', ratio: 'landscape', src: 'concept-05/photos/interiors-37.webp' },
       { label: 'Interiors 39', ratio: 'landscape', src: 'concept-05/photos/interiors-39.webp' },
@@ -1554,6 +1570,7 @@ body.lb-open{ overflow:hidden; }
       return;
     }
     currentBrowseSubcat = null;
+    currentBrowseCat = info.cat;
     // build the set of every photo in this same category, in page order
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
@@ -1593,6 +1610,7 @@ body.lb-open{ overflow:hidden; }
   // its own subcategory tag (that redirect only applies to direct photo clicks).
   function openLightboxByCategory(cat) {
     currentBrowseSubcat = null;
+    currentBrowseCat = cat;
     currentCategoryItems = frameList
       .map((f, i) => ({ i, info: frameInfo(f) }))
       .filter(x => x.info.cat === cat);
@@ -1616,7 +1634,13 @@ body.lb-open{ overflow:hidden; }
       [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
     }
 
-    if (currentCategoryItems.length === 0) return;
+    // EDIT: used to bail out here and do nothing at all when a category
+    // came up empty (no field frames tagged with it yet, no extras array),
+    // which meant clicking a genuinely new/not-yet-populated category in the
+    // nav produced zero visible feedback — looked exactly like a dead link.
+    // Now it opens normally; renderGrid()/showCategoryInfo() show the info
+    // panel plus a "coming soon" message in place of the grid (see the
+    // no-photos branch in renderGrid).
 
     currentPos = 0;
     renderGrid();
@@ -1781,6 +1805,17 @@ body.lb-open{ overflow:hidden; }
     const withPos = currentCategoryItems
       .map((item, pos) => ({ item, pos }))
       .filter((x) => x.item.info.src);
+    // EDIT: a category can genuinely have zero photos yet (freshly added to
+    // the nav, real photos still to come) — show a plain "coming soon" note
+    // in place of the grid instead of leaving a blank white panel, which
+    // otherwise looked exactly like something had failed to load.
+    if (!withPos.length) {
+      const empty = document.createElement('div');
+      empty.className = 'lb-grid-empty';
+      empty.textContent = 'More photos coming soon.';
+      lbGridWrap.appendChild(empty);
+      return;
+    }
     Promise.all(withPos.map((x) => probeRatio(x.item))).then((ratios) => {
       gridItemsCache = withPos.map((x, i) => ({ item: x.item, pos: x.pos, r: ratios[i] }));
       gridPatternCache = buildRhythmPattern(Math.ceil(gridItemsCache.length / 2) + 1);
@@ -2113,7 +2148,7 @@ body.lb-open{ overflow:hidden; }
   function showCategoryInfo() {
     const displayCat = currentBrowseSubcat
       ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat)
-      : (currentCategoryItems[0] ? currentCategoryItems[0].info.cat : '');
+      : (currentBrowseCat || (currentCategoryItems[0] ? currentCategoryItems[0].info.cat : ''));
     lbCat.textContent = displayCat;
     const n = currentCategoryItems.length;
     lbCount.textContent = String(n).padStart(2, '0') + (n === 1 ? ' Photo' : ' Photos');
@@ -2364,7 +2399,10 @@ body.lb-open{ overflow:hidden; }
     'Sri Lanka': 'Colour, culture, and coastline',
     'Truckers': 'Life on the road',
     'Workplace': 'Healthcare, tech, and daily work',
-    'Fashion': 'Editorial fashion work'
+    'Fashion': 'Editorial fashion work',
+    // EDIT: placeholder tagline for the new Amore AI category — easy to
+    // swap for the user's own wording once the real photos/framing arrive.
+    'Amore AI': 'Photography, reimagined with AI'
   };
 
   // EDIT: a short per-photo caption for the small box beside the image —
@@ -2615,7 +2653,13 @@ body.lb-open{ overflow:hidden; }
     ['Interiors', []],
     ['Personal', ['UL', 'WSR', 'Vape', 'Street', 'Truckers']],
     ['Landscape', []],
-    ['Commercial', ['Workplace', 'Wellness']]
+    ['Commercial', ['Workplace', 'Wellness']],
+    // EDIT: new top-level category (Sep 2026) for AI-assisted photography —
+    // real photos still to come, so extraCategoryPhotos['Amore AI'] below
+    // starts empty; the nav shows it with a "00 Photos" count and clicking
+    // it opens a "more photos coming soon" panel (see renderGrid) rather
+    // than doing nothing.
+    ['Amore AI', []]
   ];
   const idxList    = document.getElementById('idx-list');
 
