@@ -1091,11 +1091,11 @@ body.lb-open{ overflow:hidden; }
   // touching the homepage. Give each one a label (used for project/
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
-    // EDIT: new "Amore AI" category — real photos to follow; starts empty
-    // (see the IDX entry and the "coming soon" grid-empty state above) so
-    // the nav item is fully wired up and just needs entries added here,
-    // same shape as every other category's array, once photos are ready.
+    // EDIT: "Amore AI" category — first real photo added Sep 15 (a second
+    // photo the user sent in the same message didn't come through as a
+    // usable file — flagged to them; add it here the same way once resent).
     'Amore AI': [
+      { label: 'Amore AI 01', ratio: 'landscape', src: 'concept-05/photos/amoreai-01.webp' }
     ],
     'Interiors': [
       { label: 'Interiors 37', ratio: 'landscape', src: 'concept-05/photos/interiors-37.webp' },
@@ -2355,6 +2355,20 @@ body.lb-open{ overflow:hidden; }
         "This series follows a day at The Massage Lab, a London studio specialising in sports and remedial massage. The work moves fast and close — assisted stretches, deep tissue release, trigger point work — each treatment built around how a client actually moves, rather than a fixed routine."
       ],
       images: ['Wellness 05', 'Wellness 08', 'Wellness 09', 'Wellness 10', 'Wellness 11', 'Wellness 12', 'Wellness 13', 'Wellness 14', 'Wellness 15', 'Wellness 16', 'Wellness 17', 'Wellness 18', 'Wellness 19', 'Wellness 20', 'Wellness 21', 'Wellness 22']
+    },
+    'amore-ai': {
+      title: 'Amore AI — My photographs. Another reality.',
+      // Keyed by subcategory like Bali/Truckers/Sri Lanka above — every photo
+      // in the Amore AI category picks this up automatically as more are
+      // added, no image list to keep in step.
+      subcat: 'Amore AI',
+      body: [
+        "A photograph records what was there. But what about what could have been?",
+        "Amore AI is an ongoing exploration of my own photographic archive, returning to moments I’ve captured and allowing myself to change part of the story.",
+        "The place was real. The moment happened. And then I ask myself, what if?",
+        "I’m interested in the space between what I saw, what I remember, and what I can imagine."
+      ],
+      images: []
     }
   };
 
@@ -2399,10 +2413,10 @@ body.lb-open{ overflow:hidden; }
     'Sri Lanka': 'Colour, culture, and coastline',
     'Truckers': 'Life on the road',
     'Workplace': 'Healthcare, tech, and daily work',
-    'Fashion': 'Editorial fashion work',
-    // EDIT: placeholder tagline for the new Amore AI category — easy to
-    // swap for the user's own wording once the real photos/framing arrive.
-    'Amore AI': 'Photography, reimagined with AI'
+    'Fashion': 'Editorial fashion work'
+    // Amore AI's placeholder tagline was removed here — it now has a real
+    // project write-up (see the 'amore-ai' entry in `projects` above),
+    // which always takes priority over this generic-subtitle fallback.
   };
 
   // EDIT: a short per-photo caption for the small box beside the image —
@@ -2647,19 +2661,16 @@ body.lb-open{ overflow:hidden; }
   // Structure mirrors the site's own data so counts can never drift: a
   // category's number is exactly what opening it would show.
   const IDX = [
+    // EDIT: moved to the top of the nav per the user's request (Sep 15) —
+    // was appended last when the category was first created.
+    ['Amore AI', []],
     ['Travel', ['Bali', 'SriLanka']],
     ['Fashion', []],
     ['Portrait', []],
     ['Interiors', []],
     ['Personal', ['UL', 'WSR', 'Vape', 'Street', 'Truckers']],
     ['Landscape', []],
-    ['Commercial', ['Workplace', 'Wellness']],
-    // EDIT: new top-level category (Sep 2026) for AI-assisted photography —
-    // real photos still to come, so extraCategoryPhotos['Amore AI'] below
-    // starts empty; the nav shows it with a "00 Photos" count and clicking
-    // it opens a "more photos coming soon" panel (see renderGrid) rather
-    // than doing nothing.
-    ['Amore AI', []]
+    ['Commercial', ['Workplace', 'Wellness']]
   ];
   const idxList    = document.getElementById('idx-list');
 
