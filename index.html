@@ -2764,6 +2764,26 @@ body.lb-open{ overflow:hidden; }
       // is showing.
       if (lightbox.classList.contains('lb-single-open')) closeSinglePhoto();
       else closeLightbox();
+      return;
+    }
+    // EDIT: arrow-key support, requested alongside mouse hover feedback.
+    // Two contexts, two behaviors so every arrow key does something useful
+    // in both: with a single photo enlarged, any arrow steps to the
+    // previous/next photo (Left/Up = previous, Right/Down = next) — the
+    // same stepping the old rail design had before it was retired, just
+    // reachable from the keyboard instead of on-screen arrows this time.
+    // Back on the grid (no photo open), arrows scroll the grid up/down
+    // instead, since there's no discrete "selected" tile to move between.
+    const isArrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown';
+    if (!isArrow) return;
+    e.preventDefault();
+    if (lightbox.classList.contains('lb-single-open')) {
+      const goPrev = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
+      const next = currentPos + (goPrev ? -1 : 1);
+      if (next >= 0 && next < currentCategoryItems.length) openSinglePhoto(next);
+    } else {
+      const goUp = e.key === 'ArrowUp' || e.key === 'ArrowLeft';
+      lbGridWrap.scrollBy({ top: goUp ? -320 : 320, behavior: 'smooth' });
     }
   });
 
