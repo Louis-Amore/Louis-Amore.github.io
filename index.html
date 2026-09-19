@@ -1092,13 +1092,17 @@ body.lb-open{ overflow:hidden; }
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
     // EDIT: "Amore AI" category — first real photo added Sep 15. Second
-    // photo (the upside-down car) added Sep 19 after two earlier attempts to
-    // send it failed to arrive as a file; this one has its own per-photo
+    // photo (the wrecked car in bushes) added Sep 19 with its own per-photo
     // caption (see the 'amore-ai-02' project below) rather than sharing the
-    // category's general write-up.
+    // category's general write-up. Third photo (the original father/son +
+    // upside-down car in shallow water, from the very first Amore AI message
+    // — took several resend attempts before it arrived as a usable file) has
+    // no specific caption of its own, so it falls back to the general
+    // Amore AI write-up like 01 does.
     'Amore AI': [
       { label: 'Amore AI 01', ratio: 'landscape', src: 'concept-05/photos/amoreai-01.webp' },
-      { label: 'Amore AI 02', ratio: 'landscape', src: 'concept-05/photos/amoreai-02.webp' }
+      { label: 'Amore AI 02', ratio: 'landscape', src: 'concept-05/photos/amoreai-02.webp' },
+      { label: 'Amore AI 03', ratio: 'landscape', src: 'concept-05/photos/amoreai-03.webp' }
     ],
     'Interiors': [
       { label: 'Interiors 37', ratio: 'landscape', src: 'concept-05/photos/interiors-37.webp' },
