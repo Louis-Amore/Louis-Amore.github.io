@@ -1092,13 +1092,13 @@ body.lb-open{ overflow:hidden; }
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
     // EDIT: "Amore AI" category — first real photo added Sep 15. Second
-    // photo (the wrecked car in bushes) added Sep 19 with its own per-photo
-    // caption (see the 'amore-ai-02' project below) rather than sharing the
-    // category's general write-up. Third photo (the original father/son +
-    // upside-down car in shallow water, from the very first Amore AI message
-    // — took several resend attempts before it arrived as a usable file) has
-    // no specific caption of its own, so it falls back to the general
-    // Amore AI write-up like 01 does.
+    // photo (the wrecked car in bushes) added Sep 19. Third photo (the
+    // father/son + upside-down car in shallow water, from the very first
+    // Amore AI message — took several resend attempts before it arrived as
+    // a usable file) added same day. All three share the one general Amore
+    // AI write-up (subcatToProject) — a per-photo caption for 02 was tried
+    // and then removed at the user's request, so none of these photos has
+    // its own individual story.
     'Amore AI': [
       { label: 'Amore AI 01', ratio: 'landscape', src: 'concept-05/photos/amoreai-01.webp' },
       { label: 'Amore AI 02', ratio: 'landscape', src: 'concept-05/photos/amoreai-02.webp' },
@@ -2376,24 +2376,11 @@ body.lb-open{ overflow:hidden; }
         "I’m interested in the space between what I saw, what I remember, and what I can imagine."
       ],
       images: []
-    },
-    // Per-photo caption for "Amore AI 02" — shown only when this specific
-    // photo is opened (via imageToProject), while the grid overview still
-    // shows the general Amore AI write-up above. No `subcat` field here on
-    // purpose: that would apply this story to every photo in the category.
-    'amore-ai-02': {
-      title: 'What if #003 — Still Here',
-      images: ['Amore AI 02'],
-      body: [
-        "A photograph records what was there. But what about what could have been?",
-        "I’ve started returning to images from my archive and allowing myself to change part of the story.",
-        "Maybe it was driving. Maybe this is simply where it stopped. Years passed. It never left.",
-        "The place is real. The moment happened.",
-        "And then I ask myself, what if?",
-        "I’m interested in the space between what I saw, what I remember, and what I can imagine.",
-        "View the original photograph at <a href=\"https://www.instagram.com/louis_amore_photographer/\" target=\"_blank\" rel=\"noopener\">@louis_amore_photographer</a>."
-      ]
     }
+    // EDIT: a per-photo caption for "Amore AI 02" ('amore-ai-02' project,
+    // via imageToProject) was added Sep 19 then removed same day at the
+    // user's request — wants only the one general Amore AI write-up shown
+    // beside every photo in the category, no individual per-photo stories.
   };
 
   // Build a quick lookup: image label -> project
