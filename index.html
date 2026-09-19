@@ -21,16 +21,16 @@
 <meta property="og:title" content="Louis Amore — Photographer | London">
 <meta property="og:description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
 <meta property="og:url" content="https://louis-amore.github.io/">
-<meta property="og:image" content="https://louis-amore.github.io/concept-05/photos/landscape-59.jpg">
-<meta property="og:image:width" content="1500">
-<meta property="og:image:height" content="1001">
+<meta property="og:image" content="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg">
+<meta property="og:image:width" content="1900">
+<meta property="og:image:height" content="1266">
 <meta property="og:locale" content="en_GB">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Louis Amore — Photographer | London">
 <meta name="twitter:description" content="Louis Amore is a photographer based in London, working across fashion, portrait, commercial, interiors and personal documentary photography.">
-<meta name="twitter:image" content="https://louis-amore.github.io/concept-05/photos/landscape-59.jpg">
+<meta name="twitter:image" content="https://louis-amore.github.io/concept-05/photos/fashion-18.jpg">
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -46,7 +46,7 @@
   "name": "Louis Amore",
   "jobTitle": "Photographer",
   "url": "https://louis-amore.github.io/",
-  "image": "https://louis-amore.github.io/concept-05/photos/landscape-59.jpg",
+  "image": "https://louis-amore.github.io/concept-05/photos/fashion-18.jpg",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "London",
@@ -1091,7 +1091,11 @@ body.lb-open{ overflow:hidden; }
   // touching the homepage. Give each one a label (used for project/
   // caption lookups too) and a ratio ('landscape' or 'portrait').
   const extraCategoryPhotos = {
-    // EDIT: "Amore AI" category — two real photos added Sep 15.
+    // EDIT: "Amore AI" category — first real photo added Sep 15. Second
+    // photo (the upside-down car) added Sep 19 after two earlier attempts to
+    // send it failed to arrive as a file; this one has its own per-photo
+    // caption (see the 'amore-ai-02' project below) rather than sharing the
+    // category's general write-up.
     'Amore AI': [
       { label: 'Amore AI 01', ratio: 'landscape', src: 'concept-05/photos/amoreai-01.webp' },
       { label: 'Amore AI 02', ratio: 'landscape', src: 'concept-05/photos/amoreai-02.webp' }
@@ -2368,6 +2372,23 @@ body.lb-open{ overflow:hidden; }
         "I’m interested in the space between what I saw, what I remember, and what I can imagine."
       ],
       images: []
+    },
+    // Per-photo caption for "Amore AI 02" — shown only when this specific
+    // photo is opened (via imageToProject), while the grid overview still
+    // shows the general Amore AI write-up above. No `subcat` field here on
+    // purpose: that would apply this story to every photo in the category.
+    'amore-ai-02': {
+      title: 'What if #003 — Still Here',
+      images: ['Amore AI 02'],
+      body: [
+        "A photograph records what was there. But what about what could have been?",
+        "I’ve started returning to images from my archive and allowing myself to change part of the story.",
+        "Maybe it was driving. Maybe this is simply where it stopped. Years passed. It never left.",
+        "The place is real. The moment happened.",
+        "And then I ask myself, what if?",
+        "I’m interested in the space between what I saw, what I remember, and what I can imagine.",
+        "View the original photograph at <a href=\"https://www.instagram.com/louis_amore_photographer/\" target=\"_blank\" rel=\"noopener\">@louis_amore_photographer</a>."
+      ]
     }
   };
 
