@@ -1315,7 +1315,10 @@ body.lb-open{ overflow:hidden; }
       { label: 'UL 43', cat: 'Personal', ratio: 'portrait', src: 'concept-05/photos/personal-43.webp' },
       { label: 'UL 44', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-44.webp' },
       { label: 'UL 45', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-45.webp' },
-      { label: 'UL 46', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-46.webp' },
+      // UL 46 (personal-46.webp) removed Sep 20 — dHash-confirmed exact
+      // duplicate of the pre-existing UL 02 (personal-02.webp), a photo
+      // this session's local sandbox never had a copy of, so the earlier
+      // dedupe check (run only against locally-mirrored files) missed it.
     ],
     'WSR': [
       { label: 'WSR 01', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/wsr-01.webp' },
