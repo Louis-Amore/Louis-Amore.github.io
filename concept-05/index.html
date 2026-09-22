@@ -148,7 +148,7 @@ a{ color:inherit; text-decoration:none; }
    text over text is just unreadable. Here it cannot happen at any size. */
 .fixed-name .name-note{
   font-family:'Courier Prime', monospace; color:var(--muted);
-  font-size:13px; letter-spacing:.02em; line-height:1.85;
+  font-size:clamp(8px, calc(13px * (100vw / 1900px)), 13px); letter-spacing:.02em; line-height:1.85;
   text-align:center;
   /* EDIT: taken OUT of the lockup's flow and hung beneath the name instead.
      The lockup is centred on the screen, so while the paragraph counted toward
@@ -423,17 +423,17 @@ a{ color:inherit; text-decoration:none; }
   .field-frame[data-num="36"]{ --w:min(19.73cqw, 438px); --x:2.07cqw; --y:5.09cqw; --ar:1.490; --b:2px; --bc:#111110; --ny:-3.436cqw; }
   .field-frame[data-num="37"]{ --w:min(11.22cqw, 249px); --x:17.79cqw; --y:15.32cqw; --ar:1.465; --b:12px; --bc:#ffffff; --ny:-3.436cqw; }
   .field-frame[data-num="38"]{ --w:min(17.57cqw, 390px); --x:76.31cqw; --y:6.62cqw; --ar:1.483; --b:12px; --bc:#111110; }
-  .field-frame[data-num="39"]{ --w:min(8.92cqw, 198px); --x:70.05cqw; --y:13.29cqw; --ar:0.673; --b:6px; --bc:#a9852f; }
-  .field-frame[data-num="40"]{ --w:min(21.13cqw, 469px); --x:68.06cqw; --y:33.06cqw; --ar:1.388; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="39"]{ --w:min(8.92cqw, 198px); --x:70.05cqw; --y:13.29cqw; --ar:0.673; --b:6px; --bc:#a9852f; --ny:-4cqw; }
+  .field-frame[data-num="40"]{ --w:min(21.13cqw, 469px); --x:68.06cqw; --y:33.06cqw; --ar:1.388; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; --ny:3cqw; }
   .field-frame[data-num="41"]{ --w:min(7.21cqw, 160px); --x:61.89cqw; --y:42.43cqw; --ar:0.687; --b:2px; --bc:#111110; }
-  .field-frame[data-num="42"]{ --w:min(12.39cqw, 275px); --x:11.80cqw; --y:34.32cqw; --ar:0.686; --b:12px; --bc:#111110; --nx:-5cqw; --ny:-6cqw; }
-  .field-frame[data-num="43"]{ --w:min(6.40cqw, 142px); --x:21.94cqw; --y:47.88cqw; --ar:0.686; --b:6px; --bc:#a9852f; }
+  .field-frame[data-num="42"]{ --w:min(12.39cqw, 275px); --x:11.80cqw; --y:34.32cqw; --ar:0.686; --b:12px; --bc:#111110; --nx:-13cqw; --ny:-6cqw; }
+  .field-frame[data-num="43"]{ --w:min(6.40cqw, 142px); --x:21.94cqw; --y:47.88cqw; --ar:0.686; --b:6px; --bc:#a9852f; --nx:-17cqw; --ny:11cqw; }
 
   /* PAGE 2 (PSD group "copy 2", shift +63.063) — 6 photos. */
   .field-frame[data-num="44"]{ --w:min(18.24cqw, 405px); --x:73.78cqw; --y:103.87cqw; --ar:0.691; --b:24px; --bc:#ffffff; }
   .field-frame[data-num="45"]{ --w:min(8.02cqw, 178px); --x:69.87cqw; --y:122.61cqw; --ar:0.674; --b:6px; --bc:#a9852f; }
   .field-frame[data-num="46"]{ --w:min(27.79cqw, 617px); --x:68.02cqw; --y:69.46cqw; --ar:1.494; --b:2px; --bc:#111110; }
-  .field-frame[data-num="47"]{ --w:min(27.52cqw, 611px); --x:2.43cqw; --y:76.40cqw; --ar:1.386; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; }
+  .field-frame[data-num="47"]{ --w:min(27.52cqw, 611px); --x:2.43cqw; --y:76.40cqw; --ar:1.386; --b:48px; --bc:#111110; --inner:2px; --inner-c:#111110; --ny:13cqw; }
   .field-frame[data-num="48"]{ --w:min(7.21cqw, 160px); --x:26.58cqw; --y:91.67cqw; --ar:0.718; --b:24px; --bc:#111110; }
   .field-frame[data-num="49"]{ --w:min(12.07cqw, 268px); --x:59.96cqw; --y:85.54cqw; --ar:1.489; --b:12px; --bc:#ffffff; }
 
@@ -860,7 +860,7 @@ body.lb-open{ overflow:hidden; }
    encroach on the name (small at 1440px, worse the narrower it gets) —
    that needs its own fix, not just a lower number, so the width floor
    stays at 1500px for now. */
-@media (min-width:761px) and (max-width:1499px),
+@media (min-width:761px) and (max-width:979px),
        (min-width:761px) and (max-height:749px){
   /* EDIT: the name is fixed to the screen at every width above 760px (it's
      only hidden below that, on true mobile) — it was never actually immune
@@ -920,7 +920,7 @@ body.lb-open{ overflow:hidden; }
    re-measuring the current PSD layout directly — see the comment above the
    column-layout block for the full reasoning.)
    ========================================================================== */
-@media (min-width:1500px) and (min-height:750px){
+@media (min-width:980px) and (min-height:750px){
   /* the name sits in the middle of the first screen, and the category list
      at the vertical centre on the left, as asked */
   .fixed-name{ top:50% !important;
