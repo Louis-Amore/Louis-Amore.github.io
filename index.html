@@ -2372,31 +2372,12 @@ body.lb-open{ overflow:hidden; }
         "I’m interested in the space between what I saw, what I remember, and what I can imagine."
       ],
       images: []
-    },
-    // EDIT: Amore AI 04 gets its own per-photo story (rather than the shared
-    // category write-up) via the pre-existing imageToProject mechanism —
-    // keyed by `images`, no `subcat` field, so it doesn't override the
-    // generic write-up for the rest of the category. Added Sep 28.
-    'amore-ai-04': {
-      title: 'What if <a href="https://www.instagram.com/explore/tags/004/" target="_blank" rel="noopener">#004</a> — The Sign',
-      body: [
-        "My photographs. Another reality.",
-        "I met this man living beside the railway tracks in Sri Lanka, where he had built a simple home after the devastating tsunami of 2004.",
-        "I photographed him resting beneath his mosquito net, surrounded by the few possessions that made up his home.",
-        "Nothing was staged.",
-        "But there was something in the photograph that stayed with me.",
-        "Behind him, light coming through the wooden window had formed what appeared to be a cross.",
-        "It was really there. Nothing added. Nothing manipulated.",
-        "A coincidence? A trick of the light? Or a sign?",
-        "Returning to the photograph for Amore AI, I kept looking at that cross and found myself asking a different question.",
-        "What if he was the angel?",
-        "The place is real.<br>The man is real.<br>The moment happened.",
-        "And then I ask myself, what if?",
-        "I’m interested in the space between what I saw, what I remember, and what I can imagine.",
-        "View the original photograph at <a href=\"https://www.instagram.com/louis_amore_photographer/\" target=\"_blank\" rel=\"noopener\">@louis_amore_photographer</a>"
-      ],
-      images: ['Amore AI 04']
     }
+    // EDIT: Amore AI 04 briefly had its own per-photo story here ("What if
+    // #004 — The Sign"), removed Sep 28 at the user's request in favour of
+    // the shared category write-up above (same as photos 01-03). The
+    // imageToProject mechanism itself stays available for any future photo
+    // that genuinely needs its own story.
   };
 
   // Build a quick lookup: image label -> project
