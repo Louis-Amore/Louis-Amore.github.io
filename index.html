@@ -2762,6 +2762,17 @@ body.lb-open{ overflow:hidden; }
       if (lightbox.classList.contains('lb-single-open')) closeSinglePhoto();
       else closeLightbox();
     }
+    // EDIT: left/right arrow keys step to the previous/next photo while a
+    // single photo is open (added Sep 29). Wraps around at either end, same
+    // as clicking through the grid would eventually loop back. No-ops when
+    // just the grid (not a specific photo) is showing.
+    if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && lightbox.classList.contains('lb-single-open')) {
+      e.preventDefault();
+      const len = currentCategoryItems.length;
+      if (!len) return;
+      const delta = e.key === 'ArrowRight' ? 1 : -1;
+      openSinglePhoto((currentPos + delta + len) % len);
+    }
   });
 
   // EDIT: deep-link support for the per-category "share" pages (e.g.
