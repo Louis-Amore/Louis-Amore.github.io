@@ -2775,6 +2775,36 @@ body.lb-open{ overflow:hidden; }
     }
   });
 
+  // EDIT: swipe left/right to step through photos on touch devices, same
+  // stepping logic as the arrow keys above (added Oct 2). Only acts while a
+  // single photo is open; a mostly-vertical or short drag is left alone so
+  // it doesn't fight a scroll or a tap.
+  (function () {
+    const stageWrap = document.querySelector('.lb-stage-wrap');
+    if (!stageWrap) return;
+    let touchActive = false, touchStartX = 0, touchStartY = 0;
+    stageWrap.addEventListener('touchstart', (e) => {
+      touchActive = lightbox.classList.contains('lb-single-open') && e.touches.length === 1;
+      if (!touchActive) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    stageWrap.addEventListener('touchend', (e) => {
+      if (!touchActive) return;
+      touchActive = false;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      const SWIPE_THRESHOLD = 50;
+      if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        const len = currentCategoryItems.length;
+        if (!len) return;
+        const delta = dx < 0 ? 1 : -1; // swipe left -> next photo, swipe right -> previous
+        openSinglePhoto((currentPos + delta + len) % len);
+      }
+    }, { passive: true });
+  })();
+
   // EDIT: deep-link support for the per-category "share" pages (e.g.
   // bali.html) — they redirect here with ?subcat=Bali or ?cat=Fashion so
   // the right gallery opens automatically instead of landing on the plain
