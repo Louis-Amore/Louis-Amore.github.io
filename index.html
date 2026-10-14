@@ -584,51 +584,18 @@ body.lb-open{ overflow:hidden; }
   display:none; align-items:center; justify-content:center; padding:40px;
 }
 #lightbox.lb-single-open .lb-stage-wrap{ display:flex; }
-/* EDIT: fix for the photo rendering small with a lot of dead space to its
-   left on laptop/iPad-landscape widths (1151px+, where the 320px info
-   panel sits beside the photo rather than stacking below it). This wrap
-   centred the photo in the FULL viewport, ignoring the info panel on the
-   right — so fitStage()'s JS (further down) had to shrink the photo until
-   it cleared the panel, but a photo centred on the WHOLE screen only
-   clears a right-hand panel by shrinking much further than necessary,
-   wasting all the space it gave up on the left instead of using it.
-   Carving the panel's width out of the centring box here means the photo
-   centres in the space actually available to it, so it only shrinks as
-   much as it genuinely has to.
-   EDIT: the first version of this fix carved out the full 320px panel,
-   which made the photo noticeably bigger but shifted its centre ~160px
-   left of true screen-centre (half the panel width) — visibly "off
-   centre" on a screen this width. User chose (via AskUserQuestion) to
-   keep the photo just as big but narrow the caption panel ITSELF while a
-   single photo is open (same shrink-the-sidebar-text-column pattern
-   already used for the 761–1150px band below, just a touch narrower),
-   so there's less width to carve out in the first place and the leftover
-   shift is roughly half as noticeable, without giving up any photo size. */
-@media (min-width:1151px){
-  .lb-stage-wrap{ inset:0 180px 0 0; }
-  /* EDIT: narrowing the panel (below) moved it over grid photo tiles that
-     were never meant to show through it — the grid itself is still laid
-     out for the full 320px reservation, so the freed-up 140px strip is
-     real grid content, not blank page background. .lb-info has never had
-     a background of its own (same latent issue .lb-tags had — see that
-     fix's comment above), which was invisible until a photo now sits
-     directly behind it. First attempt gave it the same solid white card
-     .lb-tags uses but left it stretched the FULL height of the column
-     (.lb-info's normal flex behaviour) — for a short caption that's a
-     huge, mostly-empty white slab next to the photo, reported back as
-     "untidy... a mess", fair enough. `align-self:flex-start` + `height:
-     auto` stop it stretching, so the white card now hugs just the text,
-     top-aligned beside the photo — same small-floating-card look
-     `.lb-tags` already has elsewhere, not a full-height panel.
-     `max-height`/`overflow-y` kept as a safety net for a longer caption. */
-  #lightbox.lb-single-open .lb-info{
-    width:180px !important; flex:0 0 180px !important; padding:20px 18px !important;
-    background:#ffffff; box-shadow:0 12px 30px rgba(17,17,16,0.12);
-    align-self:flex-start; height:auto; max-height:70vh; overflow-y:auto;
-  }
-  #lightbox.lb-single-open .lb-info h3{ font-size:22px; }
-  #lightbox.lb-single-open .lb-info p{ font-size:14px; }
-}
+/* EDIT: three rounds today tried to both enlarge the photo on laptop/iPad-
+   landscape widths (1151px+) AND keep it clear of the 320px info panel —
+   carving the panel's width out of this wrap's centring box, then also
+   narrowing the panel itself to reduce the off-centre shift that carving
+   caused, then making its new white background hug just the text instead
+   of the full column height. User's actual call, once they saw it: don't
+   bother keeping the photo clear of the panel at all — leave the panel
+   exactly as it always was (width, background, position) and just let the
+   photo render at its natural size, overlap be damned. So this wrap is
+   back to the original plain full-viewport centring, .lb-info further
+   down has no single-photo-view overrides left, and fitStage() (below)
+   no longer shrinks anything to avoid the panel — see its own comment. */
 #lightbox.open .lb-stage-wrap .lb-stage,
 #lightbox.open .lb-stage-wrap .lb-frame,
 #lightbox.open .lb-stage-wrap .lb-tags{ pointer-events:auto; }
@@ -2598,7 +2565,20 @@ body.lb-open{ overflow:hidden; }
     // width, which is the full width of the viewport, not the photo's. A long
     // caption therefore ran straight out under the info panel. Match it to the
     // photo and leave.
-    if (window.innerWidth <= 1150) {
+    // EDIT: the loop below this point existed to shrink the photo (and, before
+    // captions were globally turned off, the caption box) until neither one
+    // touched the info panel — at laptop/iPad-landscape widths (1151px+) that
+    // meant shrinking the photo quite a lot, since the panel is a fixed 320px
+    // no matter how little width is left over. After going back and forth on
+    // a same-width fix (narrower photo vs. narrower panel vs. narrower panel
+    // centred), the user's call was simpler than any of those: keep the photo
+    // at its natural size and don't worry about a little overlap with the
+    // panel. So this now always takes the early return — the convergence loop
+    // below is effectively retired (kept rather than deleted in case a reason
+    // to resurrect it shows up later), and the photo is capped only by the
+    // plain CSS max-width/max-height on .lb-frame/.lb-stage-img further up,
+    // same as it always was below 1150px.
+    {
       if (tags && window.innerWidth > 760) syncStackedTags(frame, tags);
       if (reveal && tags) tags.style.visibility = '';
       return;
