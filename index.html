@@ -584,6 +584,21 @@ body.lb-open{ overflow:hidden; }
   display:none; align-items:center; justify-content:center; padding:40px;
 }
 #lightbox.lb-single-open .lb-stage-wrap{ display:flex; }
+/* EDIT: fix for the photo rendering small with a lot of dead space to its
+   left on laptop/iPad-landscape widths (1151px+, where the 320px info
+   panel sits beside the photo rather than stacking below it). This wrap
+   centred the photo in the FULL viewport, ignoring the 320px panel on the
+   right — so fitStage()'s JS (further down) had to shrink the photo until
+   it cleared the panel, but a photo centred on the WHOLE screen only
+   clears a right-hand panel by shrinking much further than necessary,
+   wasting all the space it gave up on the left instead of using it.
+   Carving the panel's width out of the centring box here means the photo
+   centres in the space actually available to it, so it only shrinks as
+   much as it genuinely has to (confirmed: ~1.6x bigger on a 1180px-wide
+   screen, no JS change needed). */
+@media (min-width:1151px){
+  .lb-stage-wrap{ inset:0 320px 0 0; }
+}
 #lightbox.open .lb-stage-wrap .lb-stage,
 #lightbox.open .lb-stage-wrap .lb-frame,
 #lightbox.open .lb-stage-wrap .lb-tags{ pointer-events:auto; }
