@@ -712,8 +712,16 @@ body.lb-open{ overflow:hidden; }
   .lb-info{ width:220px !important; flex:0 0 220px !important; padding:24px 20px !important; }
   .lb-info h3{ font-size:28px; }
   .lb-info p{ font-size:16px; }
-  .lb-frame{ border-width:80px; max-width:calc(100vw - 220px - 280px); }
-  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 220px - 280px); }
+  /* EDIT: fix for "photo looks tiny on a tablet with lots of empty space
+     around it". This formula used to subtract 220px (info panel) + 280px
+     (room for the tags box beside the photo) = 500px of width that was
+     never actually there to give back — at this breakpoint the tags box
+     already stacks BELOW the photo (see the max-width:1150px rule further
+     down), not beside it, so there's no side panel to make room for. Only
+     the mat border + a little air need subtracting now, same pattern as
+     the phone-width fix below. */
+  .lb-frame{ border-width:80px; max-width:calc(100vw - 180px); }
+  .lb-frame.has-photo .lb-stage-img{ max-height:calc(61.05vh - 80px); max-width:calc(100vw - 180px); }
   .lb-frame.subcat-WSR.has-photo .lb-stage-img{ max-height:calc(56.78vh - 80px); }
   .lb-tags{ width:120px; margin-left:10px; }
   .lb-stage::before{ flex-basis:120px; min-width:120px; }
