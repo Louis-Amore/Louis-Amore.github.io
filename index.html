@@ -612,15 +612,22 @@ body.lb-open{ overflow:hidden; }
      real grid content, not blank page background. .lb-info has never had
      a background of its own (same latent issue .lb-tags had — see that
      fix's comment above), which was invisible until a photo now sits
-     directly behind it. Give it the same solid white card treatment
-     .lb-tags already uses, scoped to single-photo view only so the
-     default grid view (where this was never a problem) is untouched. */
+     directly behind it. First attempt gave it the same solid white card
+     .lb-tags uses but left it stretched the FULL height of the column
+     (.lb-info's normal flex behaviour) — for a short caption that's a
+     huge, mostly-empty white slab next to the photo, reported back as
+     "untidy... a mess", fair enough. `align-self:flex-start` + `height:
+     auto` stop it stretching, so the white card now hugs just the text,
+     top-aligned beside the photo — same small-floating-card look
+     `.lb-tags` already has elsewhere, not a full-height panel.
+     `max-height`/`overflow-y` kept as a safety net for a longer caption. */
   #lightbox.lb-single-open .lb-info{
-    width:180px !important; flex:0 0 180px !important; padding:24px 18px !important;
+    width:180px !important; flex:0 0 180px !important; padding:20px 18px !important;
     background:#ffffff; box-shadow:0 12px 30px rgba(17,17,16,0.12);
+    align-self:flex-start; height:auto; max-height:70vh; overflow-y:auto;
   }
-  #lightbox.lb-single-open .lb-info h3{ font-size:28px; }
-  #lightbox.lb-single-open .lb-info p{ font-size:16px; }
+  #lightbox.lb-single-open .lb-info h3{ font-size:22px; }
+  #lightbox.lb-single-open .lb-info p{ font-size:14px; }
 }
 #lightbox.open .lb-stage-wrap .lb-stage,
 #lightbox.open .lb-stage-wrap .lb-frame,
