@@ -1244,6 +1244,13 @@ body.lb-open{ overflow:hidden; }
       { label: 'Wellness 21', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-21.webp' },
       { label: 'Wellness 22', cat: 'Commercial', ratio: 'landscape', src: 'concept-05/photos/wellness-22.webp' },
     ],
+    // EDIT: new Commercial subcategory (Oct 19), added empty ahead of real
+    // photos — same pattern as Amore AI when it was first created: the nav
+    // entry shows up now with a "More photos coming soon." empty state
+    // (renderGrid's no-photos branch) instead of a dead link, and real
+    // photos get added here later exactly like any Workplace/Wellness entry.
+    'Food and Drink': [
+    ],
     'Street': [
       { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-40.webp' },
       // EDIT: street-05.webp sits on two home-field frames (39/45) that are
@@ -1530,6 +1537,7 @@ body.lb-open{ overflow:hidden; }
   const subcatNames = {
     'Workplace': 'Workplace',
     'Wellness': 'Wellness',
+    'Food and Drink': 'Food and Drink',
     'UL': 'Unconditional Love',
     'Bali': 'Bali',
     'WSR': 'We Shall Remember',
@@ -1711,7 +1719,14 @@ body.lb-open{ overflow:hidden; }
       [currentCategoryItems[i], currentCategoryItems[j]] = [currentCategoryItems[j], currentCategoryItems[i]];
     }
 
-    if (currentCategoryItems.length === 0) return; // nothing tagged into this subcategory yet
+    // EDIT: used to bail out here and leave whatever was on screen untouched
+    // when a subcategory came up empty — harmless while every subcategory
+    // always had real photos, but adding "Food and Drink" ahead of its own
+    // photos (Oct 19) exposed it: clicking it while the parent Commercial
+    // grid was already open did nothing, since renderGrid() below was never
+    // reached. Same fix as openLightboxByCategory got for the same bug —
+    // let it proceed; renderGrid()'s own no-photos branch shows a proper
+    // "More photos coming soon." message instead of a silent no-op.
 
     currentPos = startSrc !== undefined
       ? currentCategoryItems.findIndex(x => normalizeSrc(x.info.src) === normalizeSrc(startSrc))
@@ -2711,7 +2726,7 @@ body.lb-open{ overflow:hidden; }
     ['Interiors', []],
     ['Personal', ['UL', 'WSR', 'Vape', 'Street', 'Truckers']],
     ['Landscape', []],
-    ['Commercial', ['Workplace', 'Wellness']]
+    ['Commercial', ['Workplace', 'Wellness', 'Food and Drink']]
   ];
   const idxList    = document.getElementById('idx-list');
 
