@@ -1249,7 +1249,16 @@ body.lb-open{ overflow:hidden; }
     // entry shows up now with a "More photos coming soon." empty state
     // (renderGrid's no-photos branch) instead of a dead link, and real
     // photos get added here later exactly like any Workplace/Wellness entry.
+    // EDIT: first 6 real photos added same day (oysters, sashimi, cheese/
+    // dips, octopus, padron peppers, green herb stew) — same shape as every
+    // other subcat entry.
     'Food and Drink': [
+      { label: 'Food and Drink 01', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-01.webp' },
+      { label: 'Food and Drink 02', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-02.webp' },
+      { label: 'Food and Drink 03', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-03.webp' },
+      { label: 'Food and Drink 04', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-04.webp' },
+      { label: 'Food and Drink 05', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-05.webp' },
+      { label: 'Food and Drink 06', cat: 'Commercial', ratio: 'portrait', src: 'concept-05/photos/food-and-drink-06.webp' },
     ],
     'Street': [
       { label: 'Street 40', cat: 'Personal', ratio: 'landscape', src: 'concept-05/photos/personal-40.webp' },
@@ -2272,7 +2281,13 @@ body.lb-open{ overflow:hidden; }
     const info = item.info;
     const displayCat = currentBrowseSubcat ? (subcatNames[currentBrowseSubcat] || currentBrowseSubcat) : info.cat;
     lbFrame.className = 'lb-frame ratio-' + info.ratio + ' has-photo';
-    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat);
+    // EDIT: subcat keys used to always be a single word (WSR, Bali, Vape...)
+    // so turning one into a CSS class name was always safe. "Food and Drink"
+    // is the first subcat whose key is its plain display name and contains
+    // spaces — classList.add() throws on a token with spaces, which broke
+    // opening ANY photo in this subcat. Sanitized so any subcat name (with
+    // spaces or other punctuation) is safe as a class token going forward.
+    if (currentBrowseSubcat) lbFrame.classList.add('subcat-' + currentBrowseSubcat.replace(/[^A-Za-z0-9_-]+/g, '-'));
     lbFrame.style.aspectRatio = '';
     lbFrame.style.removeProperty('--ar');
     const _tagsBox = document.querySelector('.lb-tags');
